@@ -3,43 +3,37 @@
     
     import '@skeletonlabs/skeleton/themes/theme-rocket.css';
     import '@skeletonlabs/skeleton/styles/skeleton.css';
-    import { TabAnchor, TabGroup } from "@skeletonlabs/skeleton";
+
+    import { AppShell } from '@skeletonlabs/skeleton';
+    import { AppRail, AppRailTile, AppRailAnchor } from '@skeletonlabs/skeleton';
+
+    import { page } from '$app/stores';
     
     import 'iconify-icon'
-
-    import { page } from "$app/stores";
 </script>
 
-<div class="min-h-screen flex flex-col">
-    <TabGroup 
-        justify="justify-end"
-        active="variant-filled-primary"
-        hover="hover:variant-soft-primary"
-        flex="flex-1 lg:flex-none"
-        rounded=""
-        border=""
-        class="bg-surface-100-800-token w-full"
-    >
-        <TabAnchor href="/" selected={$page.url.pathname === '/'}>
+
+<AppShell>
+	<svelte:fragment slot="sidebarLeft">       
+        <AppRail>
             <svelte:fragment slot="lead">
+                <AppRailAnchor href="/" >(Boot Scoot n Juke)</AppRailAnchor>
+            </svelte:fragment>
+            <AppRailAnchor href="/" selected={$page.url.pathname === '/'}>
                 <iconify-icon icon="mdi:home" style="font-size: 2rem;"></iconify-icon>
-            </svelte:fragment>
-            <span>Home</span>
-        </TabAnchor>
-        <TabAnchor href="/teams" selected={$page.url.pathname === '/teams'}>
-            <svelte:fragment slot="lead">
+            </AppRailAnchor>
+	        <AppRailAnchor href="/teams" selected={$page.url.pathname === '/teams'}>
                 <iconify-icon icon="mdi:account-group" style="font-size: 2rem;"></iconify-icon>
-            </svelte:fragment>
-            <span>Teams</span>
-        </TabAnchor>
-        <TabAnchor href="/leaderboards" selected={$page.url.pathname === '/leaderboards'}>
-            <svelte:fragment slot="lead">
+            </AppRailAnchor>
+	        <AppRailAnchor href="/leaderboards" selected={$page.url.pathname === '/leaderboards'}>
                 <iconify-icon icon="mdi:trophy" style="font-size: 2rem;"></iconify-icon>
-            </svelte:fragment>
-            <span>Leaderboards</span>
-        </TabAnchor>
-    </TabGroup>
-    <div>
-        <slot />
-    </div>
-</div>
+            </AppRailAnchor>
+        </AppRail>
+    </svelte:fragment>
+	<!-- (sidebarRight) -->
+	<!-- (pageHeader) -->
+	<!-- Router Slot -->
+	<slot />
+	<!-- ---- / ---- -->
+	<svelte:fragment slot="footer">Footer</svelte:fragment>
+</AppShell>
