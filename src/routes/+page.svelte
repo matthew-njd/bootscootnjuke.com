@@ -1,10 +1,11 @@
 <script lang="ts">
     import { db } from "$lib/firebase"
-    import { collection, getDocs } from "firebase/firestore";
+    import { collection, getDocs, type DocumentData } from "firebase/firestore";
 
     import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
     import type { TableSource } from '@skeletonlabs/skeleton';
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     const sourceData = [
         { position: 1, owner: "Matthew D'Agostino"},
     ];
@@ -13,27 +14,51 @@
 	    head: ['Owners'],
 	    body: tableMapperValues(sourceData, ['owner']),
     };
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    async function getAllOwners() {
-        const owners = await getDocs(collection(db, "owners"));
-        console.log(owners.size);
+    async function getOwnersName() {
+        try {
+            let arr: DocumentData[] = []
 
-        owners.forEach((owner) => {
-            
-            console.log(owner.data().name);
-        })
+            const owners = await getDocs(collection(db, "owners"));
+            owners.forEach((owner) => {
+                arr.push(owner.data().name);
+            });
+
+            return arr;
+        } catch (error) {
+            console.error("Error fetching owners:", error);
+            throw error;
+        }
     }
-    getAllOwners();
 
+    getOwnersName()
+        .then((owners) => {
+            let arr: { position: number; owner: DocumentData; }[] = [];
+            owners.forEach((owner, i) =>{
+                arr.push({ position: i + 1, owner: owner},)
+            }) 
+            console.log(arr);
+
+            //TODO make html table source = to below
+            const ownersTable: TableSource = {
+                head: ['Owners'],
+                body: tableMapperValues(arr, ['owner']),
+            };
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     async function getOwnerStats(docId: string) {
         const seasons = await getDocs(collection(db, "owners", docId, "seasons"));
         seasons.forEach((season) => {
             console.log(season.id, " => ", season.data());
         });
     }
-
-    //getOwnerStats("matthew_dagostino");
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 </script>
 
 <div class="grid place-content-center h-80">
