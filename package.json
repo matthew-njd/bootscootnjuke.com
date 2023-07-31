@@ -24,6 +24,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^10.1.0"
+		"firebase": "^10.1.0",
+		"iconify-icon": "^1.0.8"
 	}
 }
