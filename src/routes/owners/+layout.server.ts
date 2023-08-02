@@ -1,32 +1,12 @@
-import { db } from "$lib/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { getOwners } from "$lib/db";
 
 export async function load() {
-  interface Owner {
-    docId: string;
-    name: string;
-  }
   try {
-    const ownersObj: Owner[] = [];
-    const docRef = await getDocs(collection(db, "owners"));
+    const owners = await getOwners();
 
-    docRef.forEach((owner) => {
-      ownersObj.push({ docId: owner.id, name: owner.data().name });
-    });
-
-    return { ...ownersObj };
+    return { owners };
   } catch (error) {
-    console.error("Error loading owners:", error);
+    console.error("Error fetching data from Firebase:", error);
     throw error;
   }
-}
-
-async function getOwnersSeasons(docId: string) {
-  let seasons: any[] = [];
-  const seasonsPerOwner = await getDocs(
-    collection(db, "owners", docId, "seasons")
-  );
-  seasonsPerOwner.forEach((seasonPerOwner) => {
-    seasons.push(seasonPerOwner.data());
-  });
 }
