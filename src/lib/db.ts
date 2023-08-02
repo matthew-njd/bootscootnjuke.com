@@ -11,8 +11,9 @@ export async function getOwners(): Promise<Owner[]> {
 
     return {
       id: o.id,
-      name: data.name,
       active: data.active,
+      name: data.name,
+      bio: data.bio,
     };
   });
 }

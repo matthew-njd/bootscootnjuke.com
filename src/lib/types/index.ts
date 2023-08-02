@@ -1,7 +1,8 @@
 export interface Owner {
   id: string;
-  name: string;
   active: boolean;
+  name: string;
+  bio: string;
 }
 
 export interface Season {
