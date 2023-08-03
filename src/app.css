@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Abril Fatface";
+  src: url("/fonts/AbrilFatface-Regular.ttf");
+}
+
+:root {
+  --theme-font-family-base: "Abril Fatface", sans-serif;
+  --theme-font-family-heading: "Abril Fatface", sans-serif;
+}
+
 html,
 body {
   @apply h-full overflow-hidden;

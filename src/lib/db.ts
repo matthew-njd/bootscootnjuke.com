@@ -28,7 +28,7 @@ export async function getSeasons(ownerId: string): Promise<Season[]> {
     return {
       id: s.id,
       year: data.year,
-      team: data.team,
+      team: data.team_name,
       wins: data.wins,
       loses: data.loses,
       ptsFor: data.pts_for,
