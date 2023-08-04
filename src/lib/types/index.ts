@@ -3,6 +3,7 @@ export interface Owner {
   active: boolean;
   name: string;
   bio: string;
+  logo: string;
 }
 
 export interface Season {
