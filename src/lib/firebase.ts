@@ -15,7 +15,6 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 
-const storage = getStorage(app);
-export const logosRef = ref(storage, "logos");
+export const storage = getStorage(app);
 
 export const db = getFirestore();

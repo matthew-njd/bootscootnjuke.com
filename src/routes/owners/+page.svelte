@@ -1,15 +1,17 @@
 <script lang="ts">
+    import { storage } from "$lib/firebase";
+    console.log(storage);
     export let data;
-    console.log(data.owners);
 </script>
 
 <div class="">
     <div class="py-8">
         <h1 class="text-4xl text-center">Boot Scoot n Juke Owners</h1>
-        {#each data.owners as {id, name, active, bio}}
+        {#each data.owners as {id, name, active, bio, logo}}
                 {#if active === true}
                     <a href="/owners/{id}" class="block card card-hover m-4">
                         <header class="card-header">
+                            <img src="" alt="Owner's Logo" />
                             <h2 class="text-xl">{name}</h2>
                         </header>
 	                    <section class="p-4">Bio: {bio}</section>
