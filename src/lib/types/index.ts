@@ -16,3 +16,20 @@ export interface Season {
   ptsAgst: number;
   finalPlace: number;
 }
+
+export interface Database {
+  public: {
+    Tables: {
+      owners: {
+        Row: {
+          id: number;
+          ownerId: string;
+          name: string;
+          active: boolean;
+          bio: string;
+          logoUrl: string;
+        };
+      };
+    };
+  };
+}

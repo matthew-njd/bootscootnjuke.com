@@ -2,6 +2,8 @@ import { collection, getDocs } from "@firebase/firestore";
 import { db } from "$lib/firebase";
 import type { Owner, Season } from "$lib/types";
 
+import { supabase } from "$lib/supabase";
+
 export async function getOwners(): Promise<Owner[]> {
   const colRef = collection(db, "owners");
   const snapshot = await getDocs(colRef);
@@ -38,3 +40,16 @@ export async function getSeasons(ownerId: string): Promise<Season[]> {
     };
   });
 }
+
+export const getOwnersSupa = async () => {
+  let { data: owners, error } = await supabase
+    .from("owners")
+    .select("*")
+    .order("ownerId", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return owners;
+  }
+};

@@ -6,7 +6,7 @@ export async function load({ params }) {
   const owners = await getOwners();
 
   // Gets a specific owner
-  const owner = owners.find((owner) => owner.id === params.owner);
+  const owner = owners?.find((owner) => owner.id === params.owner);
 
   // Get seasons based on the owner
   const seasons = await getSeasons(params.owner);
