@@ -1,22 +1,3 @@
-export interface Owner {
-  id: string;
-  active: boolean;
-  name: string;
-  bio: string;
-  logo: string;
-}
-
-export interface Season {
-  id: string;
-  year: number;
-  team: string;
-  wins: number;
-  loses: number;
-  ptsFor: number;
-  ptsAgst: number;
-  finalPlace: number;
-}
-
 export interface Database {
   public: {
     Tables: {
@@ -30,7 +11,7 @@ export interface Database {
           logoUrl: string;
         };
       };
-      seasons: {
+      stats: {
         Row: {
           id: number;
           ownerId: string;
