@@ -5,7 +5,7 @@
 <div class="">
     <div class="py-8">
         <h1 class="text-4xl text-center">Boot Scoot n Juke Owners</h1>
-        {#each data.supaOwners as {id, ownerId, name, active, bio, logoUrl}}
+        {#each data.owners as {ownerId, name, active, bio, logoUrl}}
                 {#if active === true}
                     <a href="/owners/{ownerId}" class="block card card-hover m-4">
                         <header class="card-header">
