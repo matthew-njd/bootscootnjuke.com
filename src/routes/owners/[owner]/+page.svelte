@@ -4,6 +4,9 @@
 
     export let data;
 
+    console.log(data.seasonsSupa);
+    console.log(data.ownerSupa);
+
     const sourceData = data.seasons.reverse();
 
     const sumWins = data.seasons.reduce((acc: number, obj: { wins: number; }) => acc + obj.wins, 0);

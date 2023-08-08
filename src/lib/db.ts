@@ -53,3 +53,17 @@ export const getOwnersSupa = async () => {
     return owners;
   }
 };
+
+export const getSeasonsSupa = async (ownerId: string) => {
+  let { data: seasons, error } = await supabase
+    .from("seasons")
+    .select("*")
+    .eq("ownerId", `${ownerId}`)
+    .order("year", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return seasons;
+  }
+};

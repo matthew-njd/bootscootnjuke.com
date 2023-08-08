@@ -30,6 +30,19 @@ export interface Database {
           logoUrl: string;
         };
       };
+      seasons: {
+        Row: {
+          id: number;
+          ownerId: string;
+          year: number;
+          team: string;
+          wins: number;
+          loses: number;
+          ptsFor: number;
+          ptsAgst: number;
+          finalPlace: number;
+        };
+      };
     };
   };
 }
