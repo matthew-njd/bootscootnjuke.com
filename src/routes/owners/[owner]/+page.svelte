@@ -3,11 +3,13 @@
     import type { TableSource } from '@skeletonlabs/skeleton';
 
     export let data;
+    
+    console.log(data.seasons);
 
-    const sourceData = data.seasons.reverse();
+    const sourceData = data.seasons;
 
     const sumWins = data.seasons.reduce((acc: number, obj: { wins: number; }) => acc + obj.wins, 0);
-    const avgWins = Math.round(sumWins / data.seasons.length * 100) / 100;
+    const avgWins = sumWins / data.seasons.length;
 
     const sumLoses = data.seasons.reduce((acc: number, obj: { loses: number; }) => acc + obj.loses, 0);
     const avgLoses = Math.round(sumLoses / data.seasons.length * 100) / 100;
