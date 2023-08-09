@@ -13,7 +13,7 @@ export const getOwners = async () => {
   }
 };
 
-export const getSeasons = async (ownerId: string) => {
+export const getStats = async (ownerId: string) => {
   let { data: stats, error } = await supabase
     .from("stats")
     .select("*")
