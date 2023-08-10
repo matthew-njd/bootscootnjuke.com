@@ -27,3 +27,11 @@ export interface Database {
     };
   };
 }
+
+export interface Owners {
+  owners: [];
+}
+
+export interface Champs {
+  champs: [];
+}

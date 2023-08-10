@@ -1,7 +1,8 @@
 <script lang="ts">
     import { Avatar } from "@skeletonlabs/skeleton";
+    import type { Owners } from "$lib/types"
 
-    export let data;
+    export let data: Owners;
 </script>
 
 <div class="">

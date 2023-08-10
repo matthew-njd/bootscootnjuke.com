@@ -1,5 +1,6 @@
 import { supabase } from "$lib/supabase";
 
+// for owners page
 export const getOwners = async () => {
   let { data: owners, error } = await supabase
     .from("owners")
@@ -13,8 +14,9 @@ export const getOwners = async () => {
   }
 };
 
-export const getStats = async (ownerId: string) => {
-  let { data: stats, error } = await supabase
+// for owner's stat page
+export const getStatsByOwner = async (ownerId: string) => {
+  let { data: ownerStats, error } = await supabase
     .from("stats")
     .select("*")
     .eq("ownerId", `${ownerId}`)
@@ -23,6 +25,35 @@ export const getStats = async (ownerId: string) => {
   if (error) {
     console.log("error", error);
   } else {
+    return ownerStats;
+  }
+};
+
+// for leaderboard page
+export const getStats = async () => {
+  let { data: stats, error } = await supabase
+    .from("stats")
+    .select("*")
+    .order("ownerId", { ascending: true })
+    .order("year", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
     return stats;
+  }
+};
+
+export const getTeamsWithChampionships = async () => {
+  let { data: winners, error } = await supabase
+    .from("stats")
+    .select("ownerId")
+    .eq("finalPlace", 1)
+    .order("ownerId", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return winners;
   }
 };
