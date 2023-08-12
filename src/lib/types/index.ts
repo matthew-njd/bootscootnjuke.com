@@ -32,6 +32,7 @@ export interface Owners {
   owners: [];
 }
 
-export interface Champs {
+export interface Leaderboards {
   champs: [];
+  stats: [];
 }

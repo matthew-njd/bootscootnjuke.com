@@ -30,20 +30,6 @@ export const getStatsByOwner = async (ownerId: string) => {
 };
 
 // for leaderboard page
-export const getStats = async () => {
-  let { data: stats, error } = await supabase
-    .from("stats")
-    .select("*")
-    .order("ownerId", { ascending: true })
-    .order("year", { ascending: true });
-
-  if (error) {
-    console.log("error", error);
-  } else {
-    return stats;
-  }
-};
-
 export const getTeamsWithChampionships = async () => {
   let { data: winners, error } = await supabase
     .from("stats")
@@ -55,5 +41,19 @@ export const getTeamsWithChampionships = async () => {
     console.log("error", error);
   } else {
     return winners;
+  }
+};
+
+export const getAllStats = async () => {
+  let { data: stats, error } = await supabase
+    .from("stats")
+    .select("*")
+    .order("ownerId", { ascending: true })
+    .order("year", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return stats;
   }
 };

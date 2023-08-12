@@ -30,7 +30,7 @@
                 {#if active === false}
                     <a href="/owners/{id}" class="block card card-hover m-4">
                         <header class="card-header"><h2 class="text-xl">{name}</h2></header>
-	                    <section class="p-4">Bio: {bio}</section>
+	                    <section class="p-4">{bio}</section>
                         <footer class="card-footer justify-end flex items-center">
                             <h3>Stats</h3>
                             <iconify-icon icon="mdi:arrow-right" style="font-size: 1.8rem;"></iconify-icon>
