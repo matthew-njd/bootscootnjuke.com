@@ -29,10 +29,27 @@ export interface Database {
 }
 
 export interface Owners {
-  owners: [];
+  owner: {
+    id: number;
+    ownerId: string;
+    name: string;
+    active: boolean;
+    bio: string;
+    logoUrl: string;
+  }[];
 }
 
 export interface Leaderboards {
-  champs: [];
-  stats: [];
+  champs: {}[];
+  stats: {
+    id: number;
+    ownerId: string;
+    year: number;
+    team: string;
+    wins: number;
+    loses: number;
+    ptsFor: number;
+    ptsAgst: number;
+    finalPlace: number;
+  }[];
 }

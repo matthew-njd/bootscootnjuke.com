@@ -24,7 +24,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@supabase/supabase-js": "^2.31.0",
+		"@supabase/supabase-js": "^2.32.0",
 		"firebase": "^10.1.0",
 		"iconify-icon": "^1.0.8"
 	}

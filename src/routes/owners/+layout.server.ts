@@ -2,9 +2,9 @@ import { getOwners } from "$lib/db";
 
 export async function load() {
   try {
-    const owners = await getOwners();
+    const owner = await getOwners();
 
-    return { owners };
+    return { owner };
   } catch (error) {
     console.error("Error fetching data from Firebase:", error);
     throw error;
