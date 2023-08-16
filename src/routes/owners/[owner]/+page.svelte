@@ -4,6 +4,7 @@
 
     export let data;
 
+    const initials = data.owner.name;
     const logo = data.owner.logoUrl;
     const sourceData = data.team_stats;
 
@@ -32,7 +33,7 @@
 
 <div class="p-6">
     <div class="flex justify-center text-center gap-4 pb-4">
-        <Avatar src={logo} width="w-[80px]" rounded="rounded-lg" />
+        <Avatar initials={initials} src={logo} width="w-[80px]" rounded="rounded-lg" />
         <h1 class="text-6xl mb-4">{data.owner.name}</h1>
     </div>
     <Table source={teamStatsTable} />

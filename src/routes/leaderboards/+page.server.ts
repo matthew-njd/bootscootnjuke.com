@@ -1,13 +1,10 @@
-import { getOwners, getAllStats, getTeamsWithChampionships } from "$lib/db";
+import { getChampionshipWinners } from "$lib/db";
 
 export async function load() {
   try {
-    const owners = await getOwners();
-    const stats = await getAllStats();
+    const champs = await getChampionshipWinners();
 
-    const champs = await getTeamsWithChampionships();
-
-    return { stats };
+    return { champs };
   } catch (error) {
     console.error("Error fetching data from Firebase:", error);
     throw error;
