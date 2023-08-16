@@ -31,7 +31,11 @@ export const getStatsByOwner = async (ownerId: string) => {
 
 // for leaderboard page
 export const getChampionshipWinners = async () => {
-  let { data: champs, error } = await supabase.from("champs").select("*");
+  let { data: champs, error } = await supabase
+    .from("champs")
+    .select("*")
+    .order("titlewins", { ascending: false })
+    .order("name", { ascending: true });
 
   if (error) {
     console.log("error", error);
