@@ -40,7 +40,7 @@ export interface Owners {
 }
 
 export interface Leaderboards {
-  champs: { name: string; titleWins: number }[];
+  champs: { name: string; titlewins: number }[];
   stats: {
     id: number;
     ownerId: string;
