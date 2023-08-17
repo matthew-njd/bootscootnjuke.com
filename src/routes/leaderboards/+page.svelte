@@ -9,23 +9,40 @@
 
 </script>
 
-<h1 class="text-6xl text-center pt-8">Leaderboards</h1>
+<h1 class="text-6xl text-center pt-8 pb-16">Leaderboards</h1>
 
 <!-- Championship Area -->
 <Podium>
-    <h2 slot="title" class="text-3xl text-center">
+    <h2 slot="title" class="text-4xl text-center p-4">
         Z10s
     </h2>
-    <span slot="firstPlace">
-        {firstPlace.name} - {firstPlace.titlewins}
+
+    <span slot="firstPlaceName">
+        {firstPlace.name}
     </span>
-    <span slot="secondPlace">
-        {secondPlace.name} - {secondPlace.titlewins}
+    <span slot="firstPlaceStat">
+        {#each Array(firstPlace.titlewins) as _, index (index)}
+            <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+        {/each}
     </span>
-    <span slot="thirdPlace">
-        {thirdPlace.name} - {thirdPlace.titlewins}
-        <iconify-icon icon="twemoji:trophy" style="font-size: 1.1rem;"></iconify-icon> <br>
-        {fourthPlace.name} - {fourthPlace.titlewins}
+
+    <span slot="secondPlaceName">
+        {secondPlace.name}
+    </span>
+    <span slot="secondPlaceStat">
+        {#each Array(secondPlace.titlewins) as _, index (index)}
+            <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+        {/each}
+    </span>
+
+    <span slot="thirdPlaceName">
+        {thirdPlace.name} <br>
+        {fourthPlace.name}
+    </span>
+    <span slot="thirdPlaceStat">
+        {#each Array(thirdPlace.titlewins) as _, index (index)}
+            <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+        {/each}
     </span>
 </Podium>
 <!-- End Championship Area -->

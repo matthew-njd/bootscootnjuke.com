@@ -1,55 +1,51 @@
 <script lang="ts">
     import { Avatar } from "@skeletonlabs/skeleton";
 
-    const firstPlaceImage = "/images/first_medal.png"
-    const secondPlaceImage = "/images/second_medal.png"
-    const thirdPlaceImage = "/images/third_medal.png"
+    const firstPlaceImage = "/images/first_place.png"
+    const secondPlaceImage = "/images/second_place.png"
+    const thirdPlaceImage = "/images/third_place.png"
 
 </script>
 
-<div class="pt-[100px]">
-    <slot name="title">
-        <h2>Title</h2>
-    </slot>
-    <div class="flex justify-center pt-8">
-        <div class="align-baseline pr-2">
-            <div class="card card-hover w-[300px]">
-                <header class="flex justify-center card-header">
-                    <Avatar src={secondPlaceImage} width="w-20" rounded="rounded-md" background="none" />
-                </header>
-                <section class="text-2xl text-center p-4">
-                    <slot name="secondPlace">
-                        <span>Unknown</span>
-                    </slot>
-                    <iconify-icon icon="twemoji:trophy" style="font-size: 1.1rem;"></iconify-icon>
-                </section>
-            </div>
-        </div>
-        <div class="align-baseline">
-            <div class="card card-hover w-[300px]">
-                <header class="flex justify-center card-header">
-                    <Avatar src={firstPlaceImage} width="w-20" rounded="rounded-md" background="none" />
-                </header>
-                <section class="text-2xl text-center p-4">
-                    <slot name="firstPlace">
-                        <span>Unknown</span>
-                    </slot>
-                    <iconify-icon icon="twemoji:trophy" style="font-size: 1.1rem;"></iconify-icon>
-                </section>
-            </div>
-        </div>
-        <div class="align-baseline pl-2">
-            <div class="card card-hover w-[300px]">
-                <header class="flex justify-center card-header">
-                    <Avatar src={thirdPlaceImage} width="w-20" rounded="rounded-md" background="none" />
-                </header>
-                <section class="text-2xl text-center p-4">
-                    <slot name="thirdPlace">
-                        <span>Unknown</span>
-                    </slot>
-                    <iconify-icon icon="twemoji:trophy" style="font-size: 1.1rem;"></iconify-icon>
-                </section>
-            </div>
-        </div>
+<slot name="title" />
+<div class="flex justify-center items-end">
+
+    <!-- Second place -->
+    <div class="card card-hover w-[300px] mr-2 min-h-[300px]">
+        <header class="flex justify-center card-header">
+            <Avatar src={secondPlaceImage} width="w-[35%]" rounded="rounded-md" background="none" />
+        </header>
+        <section class="text-2xl text-center p-4">
+            <slot name="secondPlaceName" />
+        </section>
+        <footer class="card-footer text-center">
+            <slot name="secondPlaceStat" />
+        </footer>
+    </div>
+
+    <!-- First place -->
+    <div class="card card-hover w-[300px] min-h-[350px]">
+        <header class="flex justify-center card-header">
+            <Avatar src={firstPlaceImage} width="w-[40%]" rounded="rounded-md" background="none" />
+        </header>
+        <section class="text-3xl text-center p-4">
+            <slot name="firstPlaceName" />
+        </section>
+        <footer class="card-footer text-center">
+            <slot name="firstPlaceStat" />
+        </footer>
+    </div>
+
+    <!-- Third place -->
+    <div class="card card-hover w-[300px] ml-2 min-h-[250px]">
+        <header class="flex justify-center card-header">
+            <Avatar src={thirdPlaceImage} width="w-[30%]" rounded="rounded-md" background="none" />
+        </header>
+        <section class="text-xl text-center p-4">
+            <slot name="thirdPlaceName" />
+        </section>
+        <footer class="card-footer text-center">
+            <slot name="thirdPlaceStat" />
+        </footer>
     </div>
 </div>
