@@ -52,4 +52,11 @@ export interface Leaderboards {
     ptsAgst: number;
     finalPlace: number;
   }[];
+  highest_week_totals: {
+    year: number;
+    week: number;
+    team: string;
+    points: number;
+    owner: string;
+  }[];
 }

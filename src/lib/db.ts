@@ -29,6 +29,20 @@ export const getStatsByOwner = async (ownerId: string) => {
   }
 };
 
+export const getAllStats = async () => {
+  let { data: stats, error } = await supabase
+    .from("stats")
+    .select("*")
+    .order("ownerId", { ascending: true })
+    .order("year", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return stats;
+  }
+};
+
 // for leaderboard page
 export const getChampionshipWinners = async () => {
   let { data: champs, error } = await supabase
@@ -44,16 +58,14 @@ export const getChampionshipWinners = async () => {
   }
 };
 
-export const getAllStats = async () => {
-  let { data: stats, error } = await supabase
-    .from("stats")
-    .select("*")
-    .order("ownerId", { ascending: true })
-    .order("year", { ascending: true });
+export const getHighestWeekTotals = async () => {
+  let { data: highest_week_totals, error } = await supabase
+    .from("highest_week_totals")
+    .select("year, week, team, points, owner");
 
   if (error) {
     console.log("error", error);
   } else {
-    return stats;
+    return highest_week_totals;
   }
 };
