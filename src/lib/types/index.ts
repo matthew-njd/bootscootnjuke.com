@@ -24,6 +24,29 @@ export interface Database {
           finalPlace: number;
         };
       };
+      highest_week_totals: {
+        Row: {
+          id: number;
+          year: number;
+          week: number;
+          team: string;
+          points: number;
+          owner: string;
+          ownerId: string;
+        };
+      };
+      highest_player_totals: {
+        Row: {
+          id: number;
+          year: number;
+          week: number;
+          team: string;
+          player: string;
+          points: number;
+          owner: string;
+          ownerId: string;
+        };
+      };
     };
   };
 }
@@ -41,8 +64,8 @@ export interface Owners {
 
 export interface Leaderboards {
   champs: { name: string; titlewins: number }[];
+
   stats: {
-    id: number;
     ownerId: string;
     year: number;
     team: string;
@@ -52,10 +75,20 @@ export interface Leaderboards {
     ptsAgst: number;
     finalPlace: number;
   }[];
+
   highest_week_totals: {
     year: number;
     week: number;
     team: string;
+    points: number;
+    owner: string;
+  }[];
+
+  highest_player_totals: {
+    year: number;
+    week: number;
+    team: string;
+    player: string;
     points: number;
     owner: string;
   }[];

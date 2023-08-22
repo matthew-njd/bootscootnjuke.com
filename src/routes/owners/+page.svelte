@@ -7,7 +7,7 @@
 
 <div class="">
     <div class="py-8">
-        <h1 class="text-4xl text-center">Owners</h1>
+        <h1 class="text-6xl text-center pb-16">Owners</h1>
         {#each data.owner as {ownerId, name, active, bio, logoUrl}}
                 {#if active === true}
                     <a href="/owners/{ownerId}" class="block card card-hover m-4">

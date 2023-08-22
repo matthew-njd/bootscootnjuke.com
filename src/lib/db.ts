@@ -61,11 +61,25 @@ export const getChampionshipWinners = async () => {
 export const getHighestWeekTotals = async () => {
   let { data: highest_week_totals, error } = await supabase
     .from("highest_week_totals")
-    .select("year, week, team, points, owner");
+    .select("*")
+    .order("points", { ascending: false });
 
   if (error) {
     console.log("error", error);
   } else {
     return highest_week_totals;
+  }
+};
+
+export const getHighestPlayerTotals = async () => {
+  let { data: highest_player_totals, error } = await supabase
+    .from("highest_player_totals")
+    .select("*")
+    .order("points", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return highest_player_totals;
   }
 };

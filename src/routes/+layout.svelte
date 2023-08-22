@@ -33,5 +33,9 @@
     
 	<slot />
 
-	<svelte:fragment slot="footer">Footer</svelte:fragment>
+	<svelte:fragment slot="footer">
+        <section class="flex justify-center w-full">
+            Boot Scoot n Juke <iconify-icon icon="mdi:trademark" class=""></iconify-icon>
+        </section>
+    </svelte:fragment>
 </AppShell>
