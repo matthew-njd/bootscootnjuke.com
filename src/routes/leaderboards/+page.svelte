@@ -12,8 +12,8 @@
 
     // highest weekly points by season
     const [hwpFirstPlace, hwpSecondPlace, hwpThirdPlace] = data.highest_week_totals;
-    const sourceDataWeek = data.highest_week_totals;
 
+    const sourceDataWeek = data.highest_week_totals;
     const highestWeekTable: TableSource = {
 	head: ['Year', 'Week', 'Team', 'Owner', 'Points'],
 	body: tableMapperValues(sourceDataWeek, ['year', 'week', 'team', 'owner', 'points'])}
@@ -26,6 +26,13 @@
     head: ['Year', 'Week', 'Team', 'Owner', 'Player', 'Points'],
     body: tableMapperValues(sourceDataPlayer, ['year', 'week', 'team', 'owner', 'player', 'points'])}
 
+    // highest team total per season
+    const [hstFirstPlace, hstSecondPlace, hstThirdPlace] = data.highest_seasonal_totals;
+    const sourceDataSeason = data.highest_seasonal_totals;
+
+    const highestSeasonTable: TableSource = {
+    head: ['Year', 'Team', 'Owner', 'Points'],
+    body: tableMapperValues(sourceDataSeason, ['year', 'team', 'owner', 'points'])}
 </script>
 
 <h1 class="text-6xl text-center pt-8 pb-16">Leaderboards</h1>
@@ -98,7 +105,10 @@
         <span slot="thirdPlaceStat">
             {hwpThirdPlace.team} ({hwpThirdPlace.owner})
         </span>
+
+        <a slot="seeMoreBtn" href="/leaderboards/{hwpFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
     </Podium>
+
     <div class="p-6">
         <Table source={highestWeekTable} />
     </div>
@@ -134,8 +144,49 @@
         <span slot="thirdPlaceStat">
             {hppThirdPlace.team} ({hppThirdPlace.owner})
         </span>
+
+        <a slot="seeMoreBtn" href="/leaderboards/{hppFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
     </Podium>
     <div class="p-6">
         <Table source={highestPlayerTable} />
+    </div>
+</section>
+
+<!--Highest points by Team Per Seaon-->
+<section class="pt-10">
+    <Podium>
+        <h2 slot="title" class="text-4xl text-center p-4">
+            Highest Seasonal Total
+        </h2>
+    
+        <!--First Place-->
+        <span slot="firstPlaceName">
+            {hstFirstPlace.points}
+        </span>
+        <span slot="firstPlaceStat">
+            {hstFirstPlace.team} ({hstFirstPlace.owner})
+        </span>
+    
+        <!--Second Place-->
+        <span slot="secondPlaceName">
+            {hstSecondPlace.points}
+        </span>
+        <span slot="secondPlaceStat">
+            {hstSecondPlace.team} ({hstSecondPlace.owner})
+        </span>
+    
+        <!--Third Place-->
+        <span slot="thirdPlaceName">
+            {hstThirdPlace.points}
+        </span>
+        <span slot="thirdPlaceStat">
+            {hstThirdPlace.team} ({hstThirdPlace.owner})
+        </span>
+
+        <a slot="seeMoreBtn" href="/leaderboards/{hstFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
+    </Podium>
+
+    <div class="p-6">
+        <Table source={highestSeasonTable} />
     </div>
 </section>

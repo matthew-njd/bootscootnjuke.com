@@ -44,6 +44,19 @@ export const getAllStats = async () => {
 };
 
 // for leaderboard page
+export const getLeaderborders = async () => {
+  let { data: leaderboards, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .order("id", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return leaderboards;
+  }
+};
+
 export const getChampionshipWinners = async () => {
   let { data: champs, error } = await supabase
     .from("champs")
@@ -60,8 +73,9 @@ export const getChampionshipWinners = async () => {
 
 export const getHighestWeekTotals = async () => {
   let { data: highest_week_totals, error } = await supabase
-    .from("highest_week_totals")
+    .from("leaderboards")
     .select("*")
+    .eq("leaderboardId", "highest_week_totals")
     .order("points", { ascending: false });
 
   if (error) {
@@ -73,13 +87,43 @@ export const getHighestWeekTotals = async () => {
 
 export const getHighestPlayerTotals = async () => {
   let { data: highest_player_totals, error } = await supabase
-    .from("highest_player_totals")
+    .from("leaderboards")
     .select("*")
+    .eq("leaderboardId", "highest_player_totals")
     .order("points", { ascending: false });
 
   if (error) {
     console.log("error", error);
   } else {
     return highest_player_totals;
+  }
+};
+
+export const getHighestSeasonTotals = async () => {
+  let { data: highest_seasonal_totals, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .eq("leaderboardId", "highest_season_totals")
+    .order("points", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return highest_seasonal_totals;
+  }
+};
+
+// for individual leadboard page
+export const getLeaderBoardById = async (leaderboardId: string) => {
+  let { data: leaderboard, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .eq("leaderboardId", `${leaderboardId}`)
+    .order("points", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return leaderboard;
   }
 };

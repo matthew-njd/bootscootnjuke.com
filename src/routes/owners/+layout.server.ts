@@ -6,7 +6,7 @@ export async function load() {
 
     return { owner };
   } catch (error) {
-    console.error("Error fetching data from Firebase:", error);
+    console.error("Error:", error);
     throw error;
   }
 }

@@ -3,48 +3,25 @@ export interface Database {
     Tables: {
       owners: {
         Row: {
-          id: number;
+          active: boolean | null;
+          bio: string | null;
+          id: number | null;
+          logoUrl: string | null;
+          name: string | null;
           ownerId: string;
-          name: string;
-          active: boolean;
-          bio: string;
-          logoUrl: string;
         };
       };
       stats: {
         Row: {
           id: number;
-          ownerId: string;
-          year: number;
-          team: string;
-          wins: number;
-          loses: number;
-          ptsFor: number;
-          ptsAgst: number;
-          finalPlace: number;
-        };
-      };
-      highest_week_totals: {
-        Row: {
-          id: number;
-          year: number;
-          week: number;
-          team: string;
-          points: number;
-          owner: string;
-          ownerId: string;
-        };
-      };
-      highest_player_totals: {
-        Row: {
-          id: number;
-          year: number;
-          week: number;
-          team: string;
-          player: string;
-          points: number;
-          owner: string;
-          ownerId: string;
+          loses: number | null;
+          ownerId: string | null;
+          ptsAgst: number | null;
+          ptsFor: number | null;
+          team: string | null;
+          wins: number | null;
+          year: number | null;
+          finalPlace: number | null;
         };
       };
     };
@@ -53,43 +30,46 @@ export interface Database {
 
 export interface Owners {
   owner: {
-    id: number;
-    ownerId: string;
-    name: string;
-    active: boolean;
-    bio: string;
-    logoUrl: string;
+    id: number | null;
+    ownerId: string | null;
+    name: string | null;
+    active: boolean | null;
+    bio: string | null;
+    logoUrl: string | null;
   }[];
 }
 
 export interface Leaderboards {
-  champs: { name: string; titlewins: number }[];
-
-  stats: {
-    ownerId: string;
-    year: number;
-    team: string;
-    wins: number;
-    loses: number;
-    ptsFor: number;
-    ptsAgst: number;
-    finalPlace: number;
+  champs: {
+    name: string | null;
+    ownerId: string | null;
+    titlewins: number | null;
   }[];
 
   highest_week_totals: {
-    year: number;
-    week: number;
-    team: string;
-    points: number;
-    owner: string;
+    year: number | null;
+    week: number | null;
+    team: string | null;
+    points: number | null;
+    owner: string | null;
+    leaderboardId: string | null;
   }[];
 
   highest_player_totals: {
-    year: number;
-    week: number;
-    team: string;
-    player: string;
-    points: number;
-    owner: string;
+    year: number | null;
+    week: number | null;
+    team: string | null;
+    player: string | null;
+    points: number | null;
+    owner: string | null;
+    leaderboardId: string | null;
+  }[];
+
+  highest_seasonal_totals: {
+    year: number | null;
+    team: string | null;
+    points: number | null;
+    owner: string | null;
+    leaderboardId: string | null;
   }[];
 }

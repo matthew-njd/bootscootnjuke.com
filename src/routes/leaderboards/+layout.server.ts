@@ -1,7 +1,9 @@
 import {
   getChampionshipWinners,
   getHighestPlayerTotals,
+  getHighestSeasonTotals,
   getHighestWeekTotals,
+  getLeaderBoardById,
 } from "$lib/db";
 
 export async function load() {
@@ -12,9 +14,16 @@ export async function load() {
 
     const highest_player_totals = await getHighestPlayerTotals();
 
-    return { champs, highest_week_totals, highest_player_totals };
+    const highest_seasonal_totals = await getHighestSeasonTotals();
+
+    return {
+      champs,
+      highest_week_totals,
+      highest_player_totals,
+      highest_seasonal_totals,
+    };
   } catch (error) {
-    console.error("Error fetching data from Firebase:", error);
+    console.error("Error fetching data:", error);
     throw error;
   }
 }
