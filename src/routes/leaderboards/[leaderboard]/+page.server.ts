@@ -11,8 +11,6 @@ export async function load({ params }) {
   if (!leaderboard) throw error(404);
   if (!leadboard_category) throw error(404);
 
-  console.log(params.leaderboard);
-
   return {
     leadboard_category,
   };

@@ -3,7 +3,6 @@ import {
   getHighestPlayerTotals,
   getHighestSeasonTotals,
   getHighestWeekTotals,
-  getLeaderBoardById,
 } from "$lib/db";
 
 export async function load() {

@@ -3,4 +3,5 @@
     import type { TableSource } from '@skeletonlabs/skeleton';
 
     export let data
+    console.log(data);
 </script>
