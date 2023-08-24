@@ -15,7 +15,7 @@
 
 <AppShell>
 	<svelte:fragment slot="sidebarLeft">       
-        <AppRail border="border-solid border-r-2 bg-primary">
+        <AppRail border="border-solid border-r-2">
             <svelte:fragment slot="lead">
                 <AppRailAnchor href="/">(Boot Scoot n Juke)</AppRailAnchor>
             </svelte:fragment>
@@ -34,8 +34,8 @@
 	<slot />
 
 	<svelte:fragment slot="footer">
-        <section class="flex justify-center w-full">
-            Boot Scoot n Juke <iconify-icon icon="mdi:trademark" class=""></iconify-icon>
+        <section class="grid place-content-center h-20">
+            <h2>Boot Scoot n Juke<iconify-icon icon="mdi:trademark" class=""></iconify-icon></h2>
         </section>
     </svelte:fragment>
 </AppShell>
