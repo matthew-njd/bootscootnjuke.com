@@ -13,26 +13,11 @@
     // highest weekly points by season
     const [hwpFirstPlace, hwpSecondPlace, hwpThirdPlace] = data.highest_week_totals;
 
-    const sourceDataWeek = data.highest_week_totals;
-    const highestWeekTable: TableSource = {
-	head: ['Year', 'Week', 'Team', 'Owner', 'Points'],
-	body: tableMapperValues(sourceDataWeek, ['year', 'week', 'team', 'owner', 'points'])}
-
     // highest weekly points by season
     const [hppFirstPlace, hppSecondPlace, hppThirdPlace] = data.highest_player_totals;
-    const sourceDataPlayer = data.highest_player_totals;
-
-    const highestPlayerTable: TableSource = {
-    head: ['Year', 'Week', 'Team', 'Owner', 'Player', 'Points'],
-    body: tableMapperValues(sourceDataPlayer, ['year', 'week', 'team', 'owner', 'player', 'points'])}
 
     // highest team total per season
     const [hstFirstPlace, hstSecondPlace, hstThirdPlace] = data.highest_seasonal_totals;
-    const sourceDataSeason = data.highest_seasonal_totals;
-
-    const highestSeasonTable: TableSource = {
-    head: ['Year', 'Team', 'Owner', 'Points'],
-    body: tableMapperValues(sourceDataSeason, ['year', 'team', 'owner', 'points'])}
 </script>
 
 <h1 class="text-6xl text-center pt-8 pb-16">Leaderboards</h1>
@@ -108,10 +93,6 @@
 
         <a slot="seeMoreBtn" href="/leaderboards/{hwpFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
     </Podium>
-
-    <div class="p-6">
-        <Table source={highestWeekTable} />
-    </div>
 </section>
 
 <!--Highest points by Player Per Seaon-->
@@ -147,9 +128,6 @@
 
         <a slot="seeMoreBtn" href="/leaderboards/{hppFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
     </Podium>
-    <div class="p-6">
-        <Table source={highestPlayerTable} />
-    </div>
 </section>
 
 <!--Highest points by Team Per Seaon-->
@@ -185,8 +163,4 @@
 
         <a slot="seeMoreBtn" href="/leaderboards/{hstFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
     </Podium>
-
-    <div class="p-6">
-        <Table source={highestSeasonTable} />
-    </div>
 </section>
