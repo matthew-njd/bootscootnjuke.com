@@ -8,6 +8,8 @@
     import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
 
     import { page } from '$app/stores';
+
+    const logo = "/images/league_logo.png"
     
     import 'iconify-icon'
 </script>
@@ -17,7 +19,9 @@
 	<svelte:fragment slot="sidebarLeft">       
         <AppRail border="border-solid border-r-2">
             <svelte:fragment slot="lead">
-                <AppRailAnchor href="/">(Boot Scoot n Juke)</AppRailAnchor>
+                <AppRailAnchor href="/">
+                    <img src={logo} alt="Fantasy Logo"/>
+                </AppRailAnchor>
             </svelte:fragment>
             <AppRailAnchor href="/" selected={$page.url.pathname === '/'}>
                 <iconify-icon icon="mdi:home" style="font-size: 2rem;" title="Home"></iconify-icon>
@@ -33,7 +37,7 @@
     
 	<slot />
 
-	<svelte:fragment slot="footer">
+	<svelte:fragment slot="pageFooter">
         <section class="grid place-content-center h-20">
             <h2>Boot Scoot n Juke<iconify-icon icon="mdi:trademark" class=""></iconify-icon></h2>
         </section>

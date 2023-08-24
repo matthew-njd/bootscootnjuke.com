@@ -119,7 +119,7 @@ export const getLeaderBoardById = async (leaderboardId: string) => {
     .from("leaderboards")
     .select("*")
     .eq("leaderboardId", `${leaderboardId}`)
-    .order("points", { ascending: false });
+    .order("year", { ascending: false });
 
   if (error) {
     console.log("error", error);

@@ -24,12 +24,12 @@
 <div class="p-6">
     {#if category.leaderboardId === "highest_week_totals"}
         <h1 class="text-6xl text-center mb-4">Highest Weekly Score per Season</h1>
-        <Table source={highestWeekTable} />
+        <Table source={highestWeekTable} class="table-hover" />
     {:else if category.leaderboardId === "highest_player_totals"}
         <h1 class="text-6xl text-center mb-4">Highest Single Game Score by a Player per Season</h1>
-        <Table source={highestPlayerTable} />
+        <Table source={highestPlayerTable} class="table-hover" />
     {:else if category.leaderboardId === "highest_season_totals"}
         <h1 class="text-6xl text-center mb-4">Highest Seasonal Total</h1>
-        <Table source={highestSeasonTable} />
+        <Table source={highestSeasonTable} class="table-hover" />
     {/if}
 </div>

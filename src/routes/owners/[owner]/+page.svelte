@@ -36,5 +36,5 @@
         <Avatar initials={initials} src={logo} width="w-[80px]" rounded="rounded-lg" />
         <h1 class="text-6xl mb-4">{data.owner.name}</h1>
     </div>
-    <Table source={teamStatsTable} />
+    <Table source={teamStatsTable} class="table-hover" />
 </div>
