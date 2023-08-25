@@ -1,7 +1,7 @@
 <script lang="ts">
     import "../app.css";
     
-    import '@skeletonlabs/skeleton/themes/theme-vintage.css';
+    import '@skeletonlabs/skeleton/themes/theme-crimson.css';
     import '@skeletonlabs/skeleton/styles/skeleton.css';
 
     import { AppShell } from '@skeletonlabs/skeleton';
