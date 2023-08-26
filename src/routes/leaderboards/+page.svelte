@@ -23,45 +23,47 @@
 <h1 class="text-6xl text-center pt-8 pb-16">Leaderboards</h1>
 
 <!-- Championship Winners -->
-<Podium>
-    <h2 slot="title" class="text-4xl text-center p-4">
-        Z10s
-    </h2>
-
-    <!--First Place-->
-    <span slot="firstPlaceName">
-        {champFirstPlace.name}
-    </span>
-    <span slot="firstPlaceStat">
-        {#each Array(champFirstPlace.titlewins) as _, index (index)}
-            <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
-        {/each}
-    </span>
-
-    <!--Second Place-->
-    <span slot="secondPlaceName">
-        {champSecondPlace.name}
-    </span>
-    <span slot="secondPlaceStat">
-        {#each Array(champSecondPlace.titlewins) as _, index (index)}
-            <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
-        {/each}
-    </span>
-
-    <!--Third Place-->
-    <span slot="thirdPlaceName">
-        {champThirdPlace.name} <br>
-        {champFourthPlace.name}
-    </span>
-    <span slot="thirdPlaceStat">
-        {#each Array(champThirdPlace.titlewins) as _, index (index)}
-            <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
-        {/each}
-    </span>
-</Podium>
+<section class="min-h-screen">
+    <Podium>
+        <h2 slot="title" class="text-4xl text-center p-4">
+            Z10s
+        </h2>
+    
+        <!--First Place-->
+        <span slot="firstPlaceName">
+            {champFirstPlace.name}
+        </span>
+        <span slot="firstPlaceStat">
+            {#each Array(champFirstPlace.titlewins) as _, index (index)}
+                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+            {/each}
+        </span>
+    
+        <!--Second Place-->
+        <span slot="secondPlaceName">
+            {champSecondPlace.name}
+        </span>
+        <span slot="secondPlaceStat">
+            {#each Array(champSecondPlace.titlewins) as _, index (index)}
+                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+            {/each}
+        </span>
+    
+        <!--Third Place-->
+        <span slot="thirdPlaceName">
+            {champThirdPlace.name} <br>
+            {champFourthPlace.name}
+        </span>
+        <span slot="thirdPlaceStat">
+            {#each Array(champThirdPlace.titlewins) as _, index (index)}
+                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+            {/each}
+        </span>
+    </Podium>
+</section>
 
 <!--Highest points by Week Per Seaon-->
-<section class="pt-10">
+<section class="min-h-screen">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
             Highest Weekly Score per Season
@@ -96,7 +98,7 @@
 </section>
 
 <!--Highest points by Player Per Seaon-->
-<section class="pt-10">
+<section class="min-h-screen">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
             Highest Single Game Score by a Player per Season
@@ -131,7 +133,7 @@
 </section>
 
 <!--Highest points by Team Per Seaon-->
-<section class="pt-10">
+<section class="min-h-screen">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
             Highest Seasonal Total
