@@ -7,7 +7,11 @@
 
 <div class="">
     <div class="py-8">
-        <h1 class="text-6xl text-center pb-16">Owners</h1>
+        <h1 class="flex justify-center align-baseline text-6xl pb-16 gap-3">
+            Owners
+            <iconify-icon icon="mdi:account-group" style="font-size: 3rem;" title="Team owners" />
+        </h1>
+
         {#each data.owner as {ownerId, name, active, bio, logoUrl}}
                 {#if active === true}
                     <a href="/owners/{ownerId}" class="block card card-hover m-4">

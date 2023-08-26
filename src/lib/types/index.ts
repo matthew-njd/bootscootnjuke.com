@@ -32,10 +32,10 @@ export interface Owners {
   owner: {
     id: number | null;
     ownerId: string | null;
-    name: string | null;
+    name: string | undefined;
     active: boolean | null;
     bio: string | null;
-    logoUrl: string | null;
+    logoUrl: string | undefined;
   }[];
 }
 

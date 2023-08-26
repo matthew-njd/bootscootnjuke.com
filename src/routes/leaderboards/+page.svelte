@@ -20,7 +20,10 @@
     const [hstFirstPlace, hstSecondPlace, hstThirdPlace] = data.highest_seasonal_totals;
 </script>
 
-<h1 class="text-6xl text-center pt-8 pb-16">Leaderboards</h1>
+<h1 class="flex justify-center align-baseline text-6xl pt-8 pb-16 gap-3">
+    Leaderboards
+    <iconify-icon icon="ion:ios-podium" style="font-size: 4rem;" title="Leaderboards" />
+</h1>
 
 <!-- Championship Winners -->
 <section class="min-h-screen">
@@ -35,7 +38,7 @@
         </span>
         <span slot="firstPlaceStat">
             {#each Array(champFirstPlace.titlewins) as _, index (index)}
-                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl" />
             {/each}
         </span>
     
@@ -45,18 +48,17 @@
         </span>
         <span slot="secondPlaceStat">
             {#each Array(champSecondPlace.titlewins) as _, index (index)}
-                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl" />
             {/each}
         </span>
     
         <!--Third Place-->
         <span slot="thirdPlaceName">
-            {champThirdPlace.name} <br>
-            {champFourthPlace.name}
+            {champThirdPlace.name}, {champFourthPlace.name}
         </span>
         <span slot="thirdPlaceStat">
             {#each Array(champThirdPlace.titlewins) as _, index (index)}
-                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl"></iconify-icon>
+                <iconify-icon icon="twemoji:trophy" class="p-1 text-3xl" />
             {/each}
         </span>
     </Podium>
@@ -74,7 +76,12 @@
             {hwpFirstPlace.points}
         </span>
         <span slot="firstPlaceStat">
-            {hwpFirstPlace.team} ({hwpFirstPlace.owner})
+            <div class="text-gray-400">
+                Team: {hwpFirstPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hwpFirstPlace.owner}
+            </div>
         </span>
         
         <!--Second Place-->
@@ -82,22 +89,32 @@
             {hwpSecondPlace.points}
         </span>
         <span slot="secondPlaceStat">
-            {hwpSecondPlace.team} ({hwpSecondPlace.owner})
+            <div class="text-gray-400">
+                Team: {hwpSecondPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hwpSecondPlace.owner}
+            </div>
         </span>
     
         <!--Third Place-->
         <span slot="thirdPlaceName">
-            {hwpThirdPlace.points} 
+            {hwpThirdPlace.points}
         </span>
         <span slot="thirdPlaceStat">
-            {hwpThirdPlace.team} ({hwpThirdPlace.owner})
+            <div class="text-gray-400">
+                Team: {hwpThirdPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hwpThirdPlace.owner}
+            </div>
         </span>
 
         <a slot="seeMoreBtn" href="/leaderboards/{hwpFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
     </Podium>
 </section>
 
-<!--Highest points by Player Per Seaon-->
+<!--Highest points by Player Per Season-->
 <section class="min-h-screen">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
@@ -106,26 +123,44 @@
     
         <!--First Place-->
         <span slot="firstPlaceName">
-            {hppFirstPlace.points} by {hppFirstPlace.player}
+            {hppFirstPlace.points} <br>
+            {hppFirstPlace.player}
         </span>
         <span slot="firstPlaceStat">
-            {hppFirstPlace.team} ({hppFirstPlace.owner})
+            <div class="text-gray-400">
+                Team: {hppFirstPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hppFirstPlace.owner}
+            </div>
         </span>
     
         <!--Second Place-->
         <span slot="secondPlaceName">
-            {hppSecondPlace.points} by {hppSecondPlace.player}
+            {hppSecondPlace.points} <br>
+            {hppSecondPlace.player}
         </span>
         <span slot="secondPlaceStat">
-            {hppSecondPlace.team} by {hppSecondPlace.owner}
+            <div class="text-gray-400">
+                Team: {hppSecondPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hppSecondPlace.owner}
+            </div>
         </span>
     
         <!--Third Place-->
         <span slot="thirdPlaceName">
-            {hppThirdPlace.points} by {hppThirdPlace.player}
+            {hppThirdPlace.points} <br>
+            {hppThirdPlace.player}
         </span>
         <span slot="thirdPlaceStat">
-            {hppThirdPlace.team} ({hppThirdPlace.owner})
+            <div class="text-gray-400">
+                Team: {hppThirdPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hppThirdPlace.owner}
+            </div>
         </span>
 
         <a slot="seeMoreBtn" href="/leaderboards/{hppFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
@@ -144,7 +179,12 @@
             {hstFirstPlace.points}
         </span>
         <span slot="firstPlaceStat">
-            {hstFirstPlace.team} ({hstFirstPlace.owner})
+            <div class="text-gray-400">
+                Team: {hstFirstPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hstFirstPlace.owner}
+            </div>
         </span>
     
         <!--Second Place-->
@@ -152,7 +192,12 @@
             {hstSecondPlace.points}
         </span>
         <span slot="secondPlaceStat">
-            {hstSecondPlace.team} ({hstSecondPlace.owner})
+            <div class="text-gray-400">
+                Team: {hstSecondPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hstSecondPlace.owner}
+            </div>
         </span>
     
         <!--Third Place-->
@@ -160,7 +205,12 @@
             {hstThirdPlace.points}
         </span>
         <span slot="thirdPlaceStat">
-            {hstThirdPlace.team} ({hstThirdPlace.owner})
+            <div class="text-gray-400">
+                Team: {hstThirdPlace.team}
+            </div>
+            <div class="text-gray-400">
+                Owner: {hstThirdPlace.owner}
+            </div>
         </span>
 
         <a slot="seeMoreBtn" href="/leaderboards/{hstFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>

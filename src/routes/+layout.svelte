@@ -24,13 +24,13 @@
                 </AppRailAnchor>
             </svelte:fragment>
             <AppRailAnchor href="/" selected={$page.url.pathname === '/'}>
-                <iconify-icon icon="mdi:home" style="font-size: 2rem;" title="Home"></iconify-icon>
+                <iconify-icon icon="mdi:home" style="font-size: 3rem;" title="Home" />
             </AppRailAnchor>
 	        <AppRailAnchor href="/owners" selected={$page.url.pathname === '/owners'}>
-                <iconify-icon icon="mdi:account-group" style="font-size: 2rem;" title="Team Owners"></iconify-icon>
+                <iconify-icon icon="mdi:account-group" style="font-size: 3rem;" title="Team owners" />
             </AppRailAnchor>
 	        <AppRailAnchor href="/leaderboards" selected={$page.url.pathname === '/leaderboards'}>
-                <iconify-icon icon="mdi:trophy" style="font-size: 2rem;" title="Leaderboards"></iconify-icon>
+                <iconify-icon icon="ion:ios-podium" style="font-size: 3.5rem;" title="Leaderboards" />
             </AppRailAnchor>
         </AppRail>
     </svelte:fragment>
@@ -39,7 +39,7 @@
 
 	<svelte:fragment slot="pageFooter">
         <section class="grid place-content-center h-20">
-            <h2>Boot Scoot n Juke<iconify-icon icon="mdi:trademark" class=""></iconify-icon></h2>
+            <h2>Boot Scoot n Juke<iconify-icon icon="mdi:trademark" class="" /></h2>
         </section>
     </svelte:fragment>
 </AppShell>
