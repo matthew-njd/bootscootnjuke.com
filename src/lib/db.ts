@@ -127,3 +127,17 @@ export const getLeaderBoardById = async (leaderboardId: string) => {
     return leaderboard;
   }
 };
+
+// for drafts page
+export const getDraftHistory = async () => {
+  let { data: drafts, error } = await supabase
+    .from("drafts")
+    .select("*")
+    .order("id", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return drafts;
+  }
+};

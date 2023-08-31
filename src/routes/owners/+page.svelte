@@ -9,7 +9,7 @@
     <div class="py-8">
         <h1 class="flex justify-center align-baseline text-6xl pb-16 gap-3">
             Owners
-            <iconify-icon icon="mdi:account-group" style="font-size: 3rem;" title="Team owners" />
+            <iconify-icon icon="mdi:account-group" style="font-size: 4rem;" title="Team owners" />
         </h1>
 
         {#each data.owner as {ownerId, name, active, bio, logoUrl}}

@@ -32,6 +32,9 @@
 	        <AppRailAnchor href="/leaderboards" selected={$page.url.pathname === '/leaderboards'}>
                 <iconify-icon icon="ion:ios-podium" style="font-size: 3.5rem;" title="Leaderboards" />
             </AppRailAnchor>
+            <AppRailAnchor href="/drafts" selected={$page.url.pathname === '/drafts'}>
+                <iconify-icon icon="ri:draft-fill" style="font-size: 3.5rem;" title="Drafts" />
+            </AppRailAnchor>
         </AppRail>
     </svelte:fragment>
     

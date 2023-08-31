@@ -1,7 +1,4 @@
 <script lang="ts">
-    import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
-    import type { TableSource } from '@skeletonlabs/skeleton';
-
     import type { Leaderboards } from '$lib/types';
     import Podium from '$lib/components/Podium.svelte';
     
