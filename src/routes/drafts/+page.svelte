@@ -12,6 +12,9 @@ import type { Drafts } from "$lib/types"
     <iconify-icon icon="ri:draft-fill" style="font-size: 4rem;" title="Drafts" />
 </h1>
 
+<h2 class="text-4xl text-center p-4">
+    Round 1
+</h2>
 <div class="flex">
     {#each firstRound as { player, playerHeadshotUrl, team }}
         <DraftCard>
