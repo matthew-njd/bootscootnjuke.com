@@ -44,13 +44,16 @@
                 Round 1
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each firstRound as { player, playerHeadshotUrl, team }}
+                {#each firstRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
                             <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -63,13 +66,16 @@
                 Round 2
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each secondRound as { player, playerHeadshotUrl, team }}
+                {#each secondRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -82,13 +88,16 @@
                 Round 3
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each thirdRound as { player, playerHeadshotUrl, team }}
+                {#each thirdRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -101,13 +110,16 @@
                 Round 4
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each fourthRound as { player, playerHeadshotUrl, team }}
+                {#each fourthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -120,13 +132,16 @@
                 Round 5
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each fifthRound as { player, playerHeadshotUrl, team }}
+                {#each fifthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -139,13 +154,16 @@
                 Round 6
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each sixthRound as { player, playerHeadshotUrl, team }}
+                {#each sixthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -158,13 +176,16 @@
                 Round 7
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each seventhRound as { player, playerHeadshotUrl, team }}
+                {#each seventhRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -177,13 +198,16 @@
                 Round 8
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each eigthRound as { player, playerHeadshotUrl, team }}
+                {#each eigthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -196,13 +220,16 @@
                 Round 9
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each ninthRound as { player, playerHeadshotUrl, team }}
+                {#each ninthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -215,13 +242,16 @@
                 Round 10
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each tenthRound as { player, playerHeadshotUrl, team }}
+                {#each tenthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -234,13 +264,16 @@
                 Round 11
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each eleventhRound as { player, playerHeadshotUrl, team }}
+                {#each eleventhRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -253,13 +286,16 @@
                 Round 12
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each twelfthRound as { player, playerHeadshotUrl, team }}
+                {#each twelfthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -272,13 +308,16 @@
                 Round 13
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each thirteenthRound as { player, playerHeadshotUrl, team }}
+                {#each thirteenthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -291,13 +330,16 @@
                 Round 14
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each fourteenthRound as { player, playerHeadshotUrl, team }}
+                {#each fourteenthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>
@@ -310,13 +352,16 @@
                 Round 15
             </h2>
             <div class="flex justify-center flex-wrap">
-                {#each fifteenthRound as { player, playerHeadshotUrl, team }}
+                {#each fifteenthRound as { player, playerHeadshotUrl, team, pick }}
                     <DraftCard>
-                        <span slot="player">
-                            <img src={playerHeadshotUrl} alt="Player Headshot" class="object-cover rounded-full"/>
+                        <span slot="header">
+                            {pick?.toFixed(2)}
+                        </span>
+                        <span slot="section">
+                            <img src={playerHeadshotUrl} alt="Player Headshot" class="rounded-full"/>
                             {player}
                         </span>
-                        <span slot="team">
+                        <span slot="footer">
                             {team}
                         </span>
                     </DraftCard>

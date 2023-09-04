@@ -30,9 +30,9 @@
     </div>
     <div class="py-8">
         <h1 class="text-3xl text-center">Retired Owners</h1>
-        {#each data.owner as {id, name, active, bio}}
+        {#each data.owner as {ownerId, name, active, bio}}
                 {#if active === false}
-                    <a href="/owners/{id}" class="block card card-hover m-4">
+                    <a href="/owners/{ownerId}" class="block card card-hover m-4">
                         <header class="card-header"><h2 class="text-xl">{name}</h2></header>
 	                    <section class="p-4">{bio}</section>
                         <footer class="card-footer justify-end flex items-center">
