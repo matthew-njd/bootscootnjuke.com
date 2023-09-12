@@ -1,28 +1,33 @@
 <script lang="ts">
     import "../app.css";
-    
-    import '@skeletonlabs/skeleton/themes/theme-crimson.css';
+    import 'iconify-icon'
+
+    import '@skeletonlabs/skeleton/themes/theme-vintage.css';
     import '@skeletonlabs/skeleton/styles/skeleton.css';
+    
+    import type { ComponentEvents } from 'svelte';
 
     import { AppShell } from '@skeletonlabs/skeleton';
     import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
-
     import { page } from '$app/stores';
 
-    const logo = "/images/league_logo.png"
-    
-    import 'iconify-icon'
+    function scrollHandler(event: ComponentEvents<AppShell>['scroll']) {
+        console.log(event.currentTarget.scrollTop);
+    }
 </script>
 
 
-<AppShell>
+<AppShell on:scroll={scrollHandler}>
+    <!-- slotSidebarLeft="w-0 lg:w-auto"
+    <svelte:fragment slot="header">
+        <div class="flex items-center">
+            <button class="lg:hidden btn btn-sm mr-4">
+                <iconify-icon icon="quill:hamburger-sidebar" style="font-size: 2rem;" title="Menu" />
+            </button>
+        </div>
+    </svelte:fragment> -->
 	<svelte:fragment slot="sidebarLeft">       
-        <AppRail border="border-solid border-r-2">
-            <svelte:fragment slot="lead">
-                <AppRailAnchor href="/">
-                    <img src={logo} alt="Fantasy Logo"/>
-                </AppRailAnchor>
-            </svelte:fragment>
+        <AppRail>
             <AppRailAnchor href="/" selected={$page.url.pathname === '/'}>
                 <iconify-icon icon="mdi:home" style="font-size: 3rem;" title="Home" />
             </AppRailAnchor>
