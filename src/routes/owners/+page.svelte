@@ -21,8 +21,8 @@
                         </header>
 	                    <section class="p-4">{bio}</section>
                         <footer class="card-footer justify-end flex items-center">
-                            <h3 class="text-red-800">Stats</h3>
-                            <iconify-icon icon="mdi:arrow-right" style="font-size: 1.8rem; color:rgb(153 27 27)"></iconify-icon>
+                            <h3 class="text-lg text-[#EA861A]">Stats</h3>
+                            <iconify-icon icon="mdi:arrow-right" style="font-size: 1.8rem; color:rgb(234 134 26)"></iconify-icon>
                         </footer>
                     </a>
                 {/if}
@@ -36,8 +36,8 @@
                         <header class="card-header"><h2 class="text-xl">{name}</h2></header>
 	                    <section class="p-4">{bio}</section>
                         <footer class="card-footer justify-end flex items-center">
-                            <h3 class="text-red-800">Stats</h3>
-                            <iconify-icon icon="mdi:arrow-right" style="font-size: 1.8rem; color:rgb(153 27 27)"></iconify-icon>
+                            <h3 class="text-lg text-[#EA861A]">Stats</h3>
+                            <iconify-icon icon="mdi:arrow-right" style="font-size: 1.8rem; color:rgb(234 134 26)"></iconify-icon>
                         </footer>
                     </a>
                 {/if}

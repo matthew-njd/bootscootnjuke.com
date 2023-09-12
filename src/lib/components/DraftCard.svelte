@@ -5,7 +5,7 @@
     <section class="text-lg text-center ">
         <slot name="section" />
     </section>
-    <footer class="card-footer text-center text-gray-400">
+    <footer class="card-footer text-center text-[#EA861A]">
         <slot name="footer" />
     </footer>
 </div>
