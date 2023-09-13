@@ -11,13 +11,10 @@
     import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
     import { page } from '$app/stores';
 
-    function scrollHandler(event: ComponentEvents<AppShell>['scroll']) {
-        console.log(event.currentTarget.scrollTop);
-    }
 </script>
 
 
-<AppShell on:scroll={scrollHandler}>
+<AppShell>
     <!-- slotSidebarLeft="w-0 lg:w-auto"
     <svelte:fragment slot="header">
         <div class="flex items-center">
