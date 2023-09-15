@@ -1,7 +1,9 @@
 <script lang="ts">
     import DraftCard from "$lib/components/DraftCard.svelte";
-    import type { Drafts } from "$lib/types"
     import { Tab, TabGroup } from "@skeletonlabs/skeleton";
+    import type { Drafts } from "$lib/types"
+
+    import DraftTabStore from "../../store";
 
     export let data:Drafts;
 
@@ -22,6 +24,11 @@
     const fifteenthRound = data.draft.slice(140,150);
 
     let tabSet: number = 0;
+
+    //function to set the store value of the clicked tab (draftId) 
+    function draftTab(draftId:string) {
+        DraftTabStore.set(draftId)
+    }
 </script>
 
 <h1 class="flex justify-center align-baseline text-6xl pt-8 pb-16 gap-3">
@@ -30,10 +37,10 @@
 </h1>
 
 <TabGroup justify="justify-center">
-    <Tab bind:group={tabSet} name="tab1" value={0}>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2023")} name="tab1" value={0}>
 		2023 Draft
 	</Tab>
-	<Tab bind:group={tabSet} name="tab2" value={1}>
+	<Tab bind:group={tabSet} on:click={() => draftTab("draft_2022")} name="tab2" value={1}>
         2022 Draft
     </Tab>
 	<!-- Tab Panels --->
@@ -367,9 +374,7 @@
                     </DraftCard>
                 {/each}
             </div>
-        </section>
-		{/if}
-        
+        </section>        
+        {/if}
 	</svelte:fragment>
 </TabGroup>
-
