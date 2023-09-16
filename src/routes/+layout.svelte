@@ -4,25 +4,26 @@
 
     import '@skeletonlabs/skeleton/themes/theme-vintage.css';
     import '@skeletonlabs/skeleton/styles/skeleton.css';
-    
-    import type { ComponentEvents } from 'svelte';
 
     import { AppShell } from '@skeletonlabs/skeleton';
     import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
+    
     import { page } from '$app/stores';
+    import { afterNavigate } from "$app/navigation";
+
+    //scroll to top when route changes
+    afterNavigate((params: any) => {
+        const isNewPage: boolean = params.from && params.to && params.from.route.id !== params.to.route.id;
+        const elemPage = document.querySelector('#page');
+        if (isNewPage && elemPage !== null) {
+            elemPage.scrollTop = 0;
+        }
+    });
 
 </script>
 
 
-<AppShell>
-    <!-- slotSidebarLeft="w-0 lg:w-auto"
-    <svelte:fragment slot="header">
-        <div class="flex items-center">
-            <button class="lg:hidden btn btn-sm mr-4">
-                <iconify-icon icon="quill:hamburger-sidebar" style="font-size: 2rem;" title="Menu" />
-            </button>
-        </div>
-    </svelte:fragment> -->
+<AppShell scrollGutter="auto">
 	<svelte:fragment slot="sidebarLeft">       
         <AppRail>
             <AppRailAnchor href="/" selected={$page.url.pathname === '/'}>
