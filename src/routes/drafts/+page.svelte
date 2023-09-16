@@ -29,6 +29,10 @@
     function draftTab(draftId:string) {
         DraftTabStore.set(draftId)
     }
+
+    DraftTabStore.subscribe((data) => {
+        console.log(data);
+    })
 </script>
 
 <h1 class="flex justify-center align-baseline text-6xl pt-8 pb-16 gap-3">
@@ -42,6 +46,33 @@
 	</Tab>
 	<Tab bind:group={tabSet} on:click={() => draftTab("draft_2022")} name="tab2" value={1}>
         2022 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2021")} name="tab2" value={2}>
+        2021 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2020")} name="tab2" value={3}>
+        2020 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2019")} name="tab2" value={4}>
+        2019 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2018")} name="tab2" value={5}>
+        2018 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2017")} name="tab2" value={6}>
+        2017 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2016")} name="tab2" value={7}>
+        2016 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2015")} name="tab2" value={8}>
+        2015 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2014")} name="tab2" value={9}>
+        2014 Draft
+    </Tab>
+    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2013")} name="tab2" value={10}>
+        2013 Draft
     </Tab>
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">

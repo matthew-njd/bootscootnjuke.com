@@ -5,7 +5,7 @@ import DraftTabStore from "../../store";
 //TODO reload page after data from store changes.
 let draftId: string;
 DraftTabStore.subscribe((data) => {
-  console.log(data);
+  draftId = data;
 });
 
 export async function load() {
