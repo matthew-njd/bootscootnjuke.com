@@ -47,7 +47,7 @@
 	<Tab bind:group={tabSet} on:click={() => draftTab("draft_2022")} name="tab2" value={1}>
         2022 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2021")} name="tab2" value={2}>
+    <!-- <Tab bind:group={tabSet} on:click={() => draftTab("draft_2021")} name="tab2" value={2}>
         2021 Draft
     </Tab>
     <Tab bind:group={tabSet} on:click={() => draftTab("draft_2020")} name="tab2" value={3}>
@@ -73,7 +73,7 @@
     </Tab>
     <Tab bind:group={tabSet} on:click={() => draftTab("draft_2013")} name="tab2" value={10}>
         2013 Draft
-    </Tab>
+    </Tab> -->
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">
         {#if tabSet === 0}
