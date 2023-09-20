@@ -3,8 +3,6 @@
     import { Tab, TabGroup } from "@skeletonlabs/skeleton";
     import type { Drafts } from "$lib/types"
 
-    import DraftTabStore from "../../store";
-
     export let data:Drafts;
 
     const firstRound = data.draft.slice(0,10);
@@ -25,14 +23,13 @@
 
     let tabSet: number = 0;
 
-    //function to set the store value of the clicked tab (draftId) 
-    function draftTab(draftId:string) {
-        DraftTabStore.set(draftId)
+    function filterDraftData(draftId: string) {
+        const drafts = data.draft;
+        let draftData = drafts.filter(draftYear => draftYear.draftId === draftId);
+
+        console.log(draftData);
     }
 
-    DraftTabStore.subscribe((data) => {
-        console.log(data);
-    })
 </script>
 
 <h1 class="flex justify-center align-baseline text-6xl pt-8 pb-16 gap-3">
@@ -41,39 +38,40 @@
 </h1>
 
 <TabGroup justify="justify-center">
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2023")} name="tab1" value={0}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2023")} name="tab2023" value={0}>
 		2023 Draft
 	</Tab>
-	<Tab bind:group={tabSet} on:click={() => draftTab("draft_2022")} name="tab2" value={1}>
+	<Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2022")} name="tab2022" value={1}>
         2022 Draft
     </Tab>
-    <!-- <Tab bind:group={tabSet} on:click={() => draftTab("draft_2021")} name="tab2" value={2}>
+    <!-- <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2021")} name="tab2021" value={2}>
         2021 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2020")} name="tab2" value={3}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2020")} name="tab2020" value={3}>
         2020 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2019")} name="tab2" value={4}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2019")} name="tab2019" value={4}>
         2019 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2018")} name="tab2" value={5}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2018")} name="tab2018" value={5}>
         2018 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2017")} name="tab2" value={6}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2017")} name="tab2017" value={6}>
         2017 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2016")} name="tab2" value={7}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2016")} name="tab2016" value={7}>
         2016 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2015")} name="tab2" value={8}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2015")} name="tab2015" value={8}>
         2015 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2014")} name="tab2" value={9}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2014")} name="tab2014" value={9}>
         2014 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => draftTab("draft_2013")} name="tab2" value={10}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2013")} name="tab2013" value={10}>
         2013 Draft
     </Tab> -->
+    
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">
         {#if tabSet === 0}

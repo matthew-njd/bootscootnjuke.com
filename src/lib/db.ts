@@ -129,11 +129,10 @@ export const getLeaderBoardById = async (leaderboardId: string) => {
 };
 
 // for drafts page
-export const getDraftHistory = async (draftId: string) => {
+export const getDraftHistory = async () => {
   let { data: drafts, error } = await supabase
     .from("drafts")
     .select("*")
-    .eq("draftId", `${draftId}`)
     .order("id", { ascending: true });
 
   if (error) {

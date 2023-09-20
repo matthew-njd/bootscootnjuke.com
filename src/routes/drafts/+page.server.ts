@@ -1,16 +1,8 @@
 import { getDraftHistory } from "$lib/db";
 
-import DraftTabStore from "../../store";
-
-//TODO reload page after data from store changes.
-let draftId: string;
-DraftTabStore.subscribe((data) => {
-  draftId = data;
-});
-
 export async function load() {
   try {
-    const draft = await getDraftHistory("draft_2023");
+    const draft = await getDraftHistory();
 
     return { draft };
   } catch (error) {

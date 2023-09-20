@@ -108,5 +108,6 @@ export interface Drafts {
     playerHeadshotUrl: string | null;
     team: string | null;
     owner: string | null;
+    draftId: string | null;
   }[];
 }
