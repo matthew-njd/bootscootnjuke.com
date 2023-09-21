@@ -58,13 +58,13 @@
 	<Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2022")} name="tab2022" value={1}>
         2022 Draft
     </Tab>
-    <!-- <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2021")} name="tab2021" value={2}>
+    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2021")} name="tab2021" value={2}>
         2021 Draft
     </Tab>
     <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2020")} name="tab2020" value={3}>
         2020 Draft
     </Tab>
-    <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2019")} name="tab2019" value={4}>
+    <!-- <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2019")} name="tab2019" value={4}>
         2019 Draft
     </Tab>
     <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2018")} name="tab2018" value={5}>

@@ -10,7 +10,6 @@ export interface Database {
           playerHeadshotUrl: string | null;
           team: string | null;
           owner: string | null;
-          ownerId: string | null;
           draftId: string | null;
         };
       };
