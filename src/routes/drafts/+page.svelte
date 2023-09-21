@@ -8,41 +8,41 @@
     let tabSet: number = 0;
 
     //This is the default draft data. Set to the most recent draft year
-    let firstRound = data.draft.filter(picks => picks.pick >= 1.01 && picks.pick <= 1.10 && picks.year === 2023);
-    let secondRound = data.draft.filter(picks => picks.pick >= 2.01 && picks.pick <= 2.10 && picks.year === 2023);
-    let thirdRound = data.draft.filter(picks => picks.pick >= 3.01 && picks.pick <= 3.10 && picks.year === 2023);
-    let fourthRound = data.draft.filter(picks => picks.pick >= 4.01 && picks.pick <= 4.10 && picks.year === 2023);
-    let fifthRound = data.draft.filter(picks => picks.pick >= 5.01 && picks.pick <= 5.10 && picks.year === 2023);
-    let sixthRound = data.draft.filter(picks => picks.pick >= 6.01 && picks.pick <= 6.10 && picks.year === 2023);
-    let seventhRound = data.draft.filter(picks => picks.pick >= 7.01 && picks.pick <= 7.10 && picks.year === 2023);
-    let eigthRound = data.draft.filter(picks => picks.pick >= 8.01 && picks.pick <= 8.10 && picks.year === 2023);
-    let ninthRound = data.draft.filter(picks => picks.pick >= 9.01 && picks.pick <= 9.10 && picks.year === 2023);
-    let tenthRound = data.draft.filter(picks => picks.pick >= 10.01 && picks.pick <= 10.10 && picks.year === 2023);
-    let eleventhRound = data.draft.filter(picks => picks.pick >= 11.01 && picks.pick <= 11.10 && picks.year === 2023);
-    let twelfthRound = data.draft.filter(picks => picks.pick >= 12.01 && picks.pick <= 12.10 && picks.year === 2023);
-    let thirteenthRound = data.draft.filter(picks => picks.pick >= 13.01 && picks.pick <= 13.10 && picks.year === 2023);
-    let fourteenthRound = data.draft.filter(picks => picks.pick >= 14.01 && picks.pick <= 14.10 && picks.year === 2023);
-    let fifteenthRound = data.draft.filter(picks => picks.pick >= 15.01 && picks.pick <= 15.10 && picks.year === 2023);
+    let firstRound = data.draft.filter(round => round.pick >= 1.01 && round.pick <= 1.10 && round.year === 2023);
+    let secondRound = data.draft.filter(round => round.pick >= 2.01 && round.pick <= 2.10 && round.year === 2023);
+    let thirdRound = data.draft.filter(round => round.pick >= 3.01 && round.pick <= 3.10 && round.year === 2023);
+    let fourthRound = data.draft.filter(round => round.pick >= 4.01 && round.pick <= 4.10 && round.year === 2023);
+    let fifthRound = data.draft.filter(round => round.pick >= 5.01 && round.pick <= 5.10 && round.year === 2023);
+    let sixthRound = data.draft.filter(round => round.pick >= 6.01 && round.pick <= 6.10 && round.year === 2023);
+    let seventhRound = data.draft.filter(round => round.pick >= 7.01 && round.pick <= 7.10 && round.year === 2023);
+    let eigthRound = data.draft.filter(round => round.pick >= 8.01 && round.pick <= 8.10 && round.year === 2023);
+    let ninthRound = data.draft.filter(round => round.pick >= 9.01 && round.pick <= 9.10 && round.year === 2023);
+    let tenthRound = data.draft.filter(round => round.pick >= 10.01 && round.pick <= 10.10 && round.year === 2023);
+    let eleventhRound = data.draft.filter(round => round.pick >= 11.01 && round.pick <= 11.10 && round.year === 2023);
+    let twelfthRound = data.draft.filter(round => round.pick >= 12.01 && round.pick <= 12.10 && round.year === 2023);
+    let thirteenthRound = data.draft.filter(round => round.pick >= 13.01 && round.pick <= 13.10 && round.year === 2023);
+    let fourteenthRound = data.draft.filter(round => round.pick >= 14.01 && round.pick <= 14.10 && round.year === 2023);
+    let fifteenthRound = data.draft.filter(round => round.pick >= 15.01 && round.pick <= 15.10 && round.year === 2023);
 
     //function for reactive assignments
     function filterDraftData(draftId: string) {
         const draftData = data.draft.filter(draftYear => draftYear.draftId === draftId);
 
-        firstRound = draftData.filter(picks => picks.pick >= 1.01 && picks.pick <= 1.10);
-        secondRound = draftData.filter(picks => picks.pick >= 2.01 && picks.pick <= 2.10);
-        thirdRound = draftData.filter(picks => picks.pick >= 3.01 && picks.pick <= 3.10);
-        fourthRound = draftData.filter(picks => picks.pick >= 4.01 && picks.pick <= 4.10);
-        fifthRound = draftData.filter(picks => picks.pick >= 5.01 && picks.pick <= 5.10);
-        sixthRound = draftData.filter(picks => picks.pick >= 6.01 && picks.pick <= 6.10);
-        seventhRound = draftData.filter(picks => picks.pick >= 7.01 && picks.pick <= 7.10);
-        eigthRound = draftData.filter(picks => picks.pick >= 8.01 && picks.pick <= 8.10);
-        ninthRound = draftData.filter(picks => picks.pick >= 9.01 && picks.pick <= 9.10);
-        tenthRound = draftData.filter(picks => picks.pick >= 10.01 && picks.pick <= 10.10);
-        eleventhRound = draftData.filter(picks => picks.pick >= 11.01 && picks.pick <= 11.10);
-        twelfthRound = draftData.filter(picks => picks.pick >= 12.01 && picks.pick <= 12.10);
-        thirteenthRound = draftData.filter(picks => picks.pick >= 13.01 && picks.pick <= 13.10);
-        fourteenthRound = draftData.filter(picks => picks.pick >= 14.01 && picks.pick <= 14.10);
-        fifteenthRound = draftData.filter(picks => picks.pick >= 15.01 && picks.pick <= 15.10);
+        firstRound = draftData.filter(round => round.pick >= 1.01 && round.pick <= 1.10);
+        secondRound = draftData.filter(round => round.pick >= 2.01 && round.pick <= 2.10);
+        thirdRound = draftData.filter(round => round.pick >= 3.01 && round.pick <= 3.10);
+        fourthRound = draftData.filter(round => round.pick >= 4.01 && round.pick <= 4.10);
+        fifthRound = draftData.filter(round => round.pick >= 5.01 && round.pick <= 5.10);
+        sixthRound = draftData.filter(round => round.pick >= 6.01 && round.pick <= 6.10);
+        seventhRound = draftData.filter(round => round.pick >= 7.01 && round.pick <= 7.10);
+        eigthRound = draftData.filter(round => round.pick >= 8.01 && round.pick <= 8.10);
+        ninthRound = draftData.filter(round => round.pick >= 9.01 && round.pick <= 9.10);
+        tenthRound = draftData.filter(round => round.pick >= 10.01 && round.pick <= 10.10);
+        eleventhRound = draftData.filter(round => round.pick >= 11.01 && round.pick <= 11.10);
+        twelfthRound = draftData.filter(round => round.pick >= 12.01 && round.pick <= 12.10);
+        thirteenthRound = draftData.filter(round => round.pick >= 13.01 && round.pick <= 13.10);
+        fourteenthRound = draftData.filter(round => round.pick >= 14.01 && round.pick <= 14.10);
+        fifteenthRound = draftData.filter(round => round.pick >= 15.01 && round.pick <= 15.10);
     }
 </script>
 
@@ -51,7 +51,7 @@
     <iconify-icon icon="ri:draft-fill" style="font-size: 4rem;" title="Drafts" />
 </h1>
 
-<TabGroup justify="justify-center">
+<TabGroup justify="justify-center" hover="hover:text-[#EA861A]">
     <Tab bind:group={tabSet} on:click={() => filterDraftData("draft_2023")} name="tab2023" value={0}>
 		2023 Draft
 	</Tab>
