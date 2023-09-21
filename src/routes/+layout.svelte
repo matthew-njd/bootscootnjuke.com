@@ -5,11 +5,13 @@
     import '@skeletonlabs/skeleton/themes/theme-vintage.css';
     import '@skeletonlabs/skeleton/styles/skeleton.css';
 
-    import { AppShell } from '@skeletonlabs/skeleton';
+    import { AppShell, Drawer } from '@skeletonlabs/skeleton';
     import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
     
     import { page } from '$app/stores';
     import { afterNavigate } from "$app/navigation";
+
+    import DrawerNav from "$lib/components/DrawerNav.svelte"
 
     //scroll to top when route changes
     afterNavigate((params: any) => {
@@ -20,10 +22,24 @@
         }
     });
 
+    //open nav drawer
+    function drawerOpen(): void {
+	    //drawerStore.open({});
+    }
 </script>
 
+<Drawer>
+    <DrawerNav />
+</Drawer>
 
-<AppShell scrollGutter="auto">
+<AppShell scrollGutter="auto" slotSidebarLeft="w-0 lg:w-auto">
+    <svelte:fragment slot="header">
+        <div class="flex items-center">
+            <button class="lg:hidden m-3" on:click={drawerOpen}>
+                <iconify-icon icon="pajamas:hamburger" style="font-size: 2rem;" title="Menu" />
+            </button>
+        </div>
+    </svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">       
         <AppRail>
             <AppRailAnchor href="/" selected={$page.url.pathname === '/'}>
