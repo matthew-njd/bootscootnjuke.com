@@ -29,9 +29,9 @@ export interface Database {
       };
       owners: {
         Row: {
+          id: number;
           active: boolean | null;
           bio: string | null;
-          id: number | null;
           logoUrl: string | null;
           name: string | null;
           ownerId: string;
@@ -56,58 +56,58 @@ export interface Database {
 
 export interface Owners {
   owner: {
-    id: number | null;
-    ownerId: string | null;
+    id: number;
+    ownerId: string;
     name: string | undefined;
-    active: boolean | null;
-    bio: string | null;
+    active: boolean;
+    bio: string;
     logoUrl: string | undefined;
   }[];
 }
 
 export interface Leaderboards {
   champs: {
-    name: string | null;
-    ownerId: string | null;
-    titlewins: number | null;
+    name: string;
+    ownerId: string;
+    titlewins: number;
   }[];
 
   highest_week_totals: {
-    year: number | null;
-    week: number | null;
-    team: string | null;
-    points: number | null;
-    owner: string | null;
-    leaderboardId: string | null;
+    year: number;
+    week: number;
+    team: string;
+    points: number;
+    owner: string;
+    leaderboardId: string;
   }[];
 
   highest_player_totals: {
-    year: number | null;
-    week: number | null;
-    team: string | null;
-    player: string | null;
-    points: number | null;
-    owner: string | null;
-    leaderboardId: string | null;
+    year: number;
+    week: number;
+    team: string;
+    player: string;
+    points: number;
+    owner: string;
+    leaderboardId: string;
   }[];
 
   highest_seasonal_totals: {
-    year: number | null;
-    team: string | null;
-    points: number | null;
-    owner: string | null;
-    leaderboardId: string | null;
+    year: number;
+    team: string;
+    points: number;
+    owner: string;
+    leaderboardId: string;
   }[];
 }
 
 export interface Drafts {
   draft: {
-    year: number | null;
-    pick: number | null;
-    player: string | null;
-    playerHeadshotUrl: string | null;
-    team: string | null;
-    owner: string | null;
-    draftId: string | null;
+    year: number;
+    pick: number;
+    player: string;
+    playerHeadshotUrl: string;
+    team: string;
+    owner: string;
+    draftId: string;
   }[];
 }
