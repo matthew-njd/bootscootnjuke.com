@@ -5,8 +5,8 @@
     import '@skeletonlabs/skeleton/themes/theme-vintage.css';
     import '@skeletonlabs/skeleton/styles/skeleton.css';
 
-    import { AppShell, Drawer } from '@skeletonlabs/skeleton';
-    import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
+    import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
+    import { Drawer, drawerStore } from '@skeletonlabs/skeleton';
     
     import { page } from '$app/stores';
     import { afterNavigate } from "$app/navigation";
@@ -24,20 +24,21 @@
 
     //open nav drawer
     function drawerOpen(): void {
-	    //drawerStore.open({});
-    }
+		drawerStore.open({});
+	}
 </script>
 
-<Drawer>
+<Drawer width="w-auto">
     <DrawerNav />
 </Drawer>
 
 <AppShell scrollGutter="auto" slotSidebarLeft="w-0 lg:w-auto">
     <svelte:fragment slot="header">
-        <div class="flex items-center">
-            <button class="lg:hidden m-3" on:click={drawerOpen}>
-                <iconify-icon icon="pajamas:hamburger" style="font-size: 2rem;" title="Menu" />
+        <div class="flex justify-between m-3">
+            <button class="lg:hidden" on:click={drawerOpen}>
+                <iconify-icon icon="noto:hamburger" style="font-size: 2rem;" title="Navigation" />
             </button>
+            <strong>BSnJ<iconify-icon icon="mdi:trademark" /></strong>
         </div>
     </svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">       
