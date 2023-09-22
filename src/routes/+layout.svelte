@@ -5,13 +5,13 @@
     import '@skeletonlabs/skeleton/themes/theme-vintage.css';
     import '@skeletonlabs/skeleton/styles/skeleton.css';
 
-    import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
+    import { AppShell } from '@skeletonlabs/skeleton';
     import { Drawer, drawerStore } from '@skeletonlabs/skeleton';
     
     import { page } from '$app/stores';
     import { afterNavigate } from "$app/navigation";
 
-    import DrawerNav from "$lib/components/DrawerNav.svelte"
+    import Navigation from "$lib/components/Navigation.svelte"
 
     //scroll to top when route changes
     afterNavigate((params: any) => {
@@ -29,33 +29,21 @@
 </script>
 
 <Drawer width="w-auto">
-    <DrawerNav />
+    <Navigation />
 </Drawer>
 
 <AppShell scrollGutter="auto" slotSidebarLeft="w-0 lg:w-auto">
     <svelte:fragment slot="header">
-        <div class="flex justify-between m-3">
-            <button class="lg:hidden" on:click={drawerOpen}>
-                <iconify-icon icon="noto:hamburger" style="font-size: 2rem;" title="Navigation" />
+        <div class="flex justify-between lg:hidden m-3">
+            <button class="h-auto" on:click={drawerOpen}>
+                <iconify-icon icon="pajamas:hamburger" style="font-size: 2rem;" title="Navigation" />
             </button>
-            <strong>BSnJ<iconify-icon icon="mdi:trademark" /></strong>
+            <strong class="text-[1.5rem]">BSnJ</strong>
         </div>
     </svelte:fragment>
-	<svelte:fragment slot="sidebarLeft">       
-        <AppRail>
-            <AppRailAnchor href="/" selected={$page.url.pathname === '/'}>
-                <iconify-icon icon="mdi:home" style="font-size: 3rem;" title="Home" />
-            </AppRailAnchor>
-	        <AppRailAnchor href="/owners" selected={$page.url.pathname === '/owners'}>
-                <iconify-icon icon="mdi:account-group" style="font-size: 3rem;" title="Team owners" />
-            </AppRailAnchor>
-	        <AppRailAnchor href="/leaderboards" selected={$page.url.pathname === '/leaderboards'}>
-                <iconify-icon icon="ion:ios-podium" style="font-size: 3.5rem;" title="Leaderboards" />
-            </AppRailAnchor>
-            <AppRailAnchor href="/drafts" selected={$page.url.pathname === '/drafts'}>
-                <iconify-icon icon="ri:draft-fill" style="font-size: 3.5rem;" title="Drafts" />
-            </AppRailAnchor>
-        </AppRail>
+
+	<svelte:fragment slot="sidebarLeft">
+        <Navigation />
     </svelte:fragment>
     
 	<slot />
