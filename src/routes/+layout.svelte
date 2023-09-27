@@ -37,7 +37,7 @@
             <button class="h-auto" on:click={drawerOpen}>
                 <iconify-icon icon="pajamas:hamburger" style="font-size: 2rem;" title="Navigation" />
             </button>
-            <strong>BSnJ<iconify-icon icon="mdi:trademark" /></strong>
+            <a href="/" class="font-bold text-[1.5rem]">🥾🛴n'🏈</a>
         </div>
     </svelte:fragment>
 
