@@ -8,7 +8,6 @@
     import { AppShell } from '@skeletonlabs/skeleton';
     import { Drawer, drawerStore } from '@skeletonlabs/skeleton';
     
-    import { page } from '$app/stores';
     import { afterNavigate } from "$app/navigation";
 
     import Navigation from "$lib/components/Navigation.svelte"
@@ -38,7 +37,7 @@
             <button class="h-auto" on:click={drawerOpen}>
                 <iconify-icon icon="pajamas:hamburger" style="font-size: 2rem;" title="Navigation" />
             </button>
-            <a href="/" class="font-bold text-[1.5rem]">🥾🛴n'🏈</a>
+            <strong>BSnJ<iconify-icon icon="mdi:trademark" /></strong>
         </div>
     </svelte:fragment>
 
