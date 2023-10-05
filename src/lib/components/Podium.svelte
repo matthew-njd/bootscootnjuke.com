@@ -7,8 +7,10 @@
 
 </script>
 
-<div class="grid place-content-center">
+<div class="flex flex-col md:flex-wrap justify-center lg:grid">
+
     <slot name="title" />
+    
     <div class="flex justify-center items-end">
     
         <!-- Second place -->

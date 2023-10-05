@@ -23,7 +23,7 @@
 </h1>
 
 <!-- Championship Winners -->
-<section class="min-h-screen">
+<section class="pb-[4rem]">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
             Z10s
@@ -62,7 +62,7 @@
 </section>
 
 <!--Highest points by Week Per Seaon-->
-<section class="min-h-screen">
+<section class="pb-[4rem]">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
             Highest Weekly Score per Season
@@ -107,12 +107,14 @@
             </div>
         </span>
 
-        <a slot="seeMoreBtn" href="/leaderboards/{hwpFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
+        <a slot="seeMoreBtn" href="/leaderboards/{hwpFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">
+            See more
+        </a>
     </Podium>
 </section>
 
 <!--Highest points by Player Per Season-->
-<section class="min-h-screen">
+<section class="pb-[4rem]">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
             Highest Single Game Score by a Player per Season
@@ -160,12 +162,14 @@
             </div>
         </span>
 
-        <a slot="seeMoreBtn" href="/leaderboards/{hppFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
+        <a slot="seeMoreBtn" href="/leaderboards/{hppFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">
+            See more
+        </a>
     </Podium>
 </section>
 
 <!--Highest points by Team Per Seaon-->
-<section class="min-h-screen">
+<section class="pb-[4rem]">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
             Highest Seasonal Total
@@ -210,6 +214,8 @@
             </div>
         </span>
 
-        <a slot="seeMoreBtn" href="/leaderboards/{hstFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">See more</a>
+        <a slot="seeMoreBtn" href="/leaderboards/{hstFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">
+            See more
+        </a>
     </Podium>
 </section>
