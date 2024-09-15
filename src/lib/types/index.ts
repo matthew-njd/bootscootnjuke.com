@@ -110,3 +110,10 @@ export interface Drafts {
     draftId: string;
   }[];
 }
+
+export interface Matchups {
+  matchup: {
+    points: number;
+    players_points: number[];
+  }[];
+}

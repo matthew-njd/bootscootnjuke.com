@@ -34,10 +34,6 @@
 
 <AppShell scrollGutter="auto" slotSidebarLeft="w-0 lg:w-auto">
     <svelte:fragment slot="header">
-        <div class="text-center">
-            <h1 class="text-2xl"><b>🎉BREAKING NEWS🎉</b></h1>
-            <h1 class="text-xl">Club D'Agostino is your 2023 fantasy football champion🏆</h1>
-        </div>
         <div class="flex justify-between lg:hidden m-3">
             <button class="h-auto" on:click={drawerOpen}>
                 <iconify-icon icon="pajamas:hamburger" style="font-size: 2rem;" title="Navigation" />
