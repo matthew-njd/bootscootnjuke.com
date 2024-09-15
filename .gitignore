@@ -8,6 +8,3 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-src/routes/matchups/+page.server.ts
-src/routes/matchups/+page.svelte
-src/lib/components/Navigation.svelte
