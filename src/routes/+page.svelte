@@ -27,7 +27,7 @@
             <div class="text-center">
                 <h2 class="text-3xl mt-8 mb-4">Your 2024 Champion is...</h2>
                 <h1 class="text-5xl mb-2">Patriots of Pigskin</h1>
-                <img src="https://kfgycginbwcwzvruujeh.supabase.co/storage/v1/object/public/logos/troy_mccusker_logo.png" alt="Patriots of Pigskin Logo" class="w-[8rem] m-auto" />
+                <img src="https://kfgycginbwcwzvruujeh.supabase.co/storage/v1/object/public/logos/troy_mccusker_logo.png" alt="Patriots of Pigskin Logo" class="w-[8rem] m-auto rounded-full" />
             </div>
 
             <div class="mt-4">
