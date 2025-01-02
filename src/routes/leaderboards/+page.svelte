@@ -4,8 +4,8 @@
     
     export let data:Leaderboards;
 
-    // championship winners
-    const [champFirstPlace, champSecondPlace, champThirdPlace, champFourthPlace, champFifthPlace] = data.champs
+    // championship winners - champFourthPlace, champFifthPlace
+    const [champFirstPlace, champSecondPlace, champThirdPlace] = data.champs
 
     // highest weekly points by season
     const [hwpFirstPlace, hwpSecondPlace, hwpThirdPlace] = data.highest_week_totals;
@@ -51,7 +51,7 @@
     
         <!--Third Place-->
         <span slot="thirdPlaceName">
-            {champThirdPlace.name}, {champFourthPlace.name}, {champFifthPlace.name}
+            {champThirdPlace.name}
         </span>
         <span slot="thirdPlaceStat">
             {#each Array(champThirdPlace.titlewins) as _, index (index)}
