@@ -32,7 +32,7 @@
 
             <div class="mt-4">
                 <p>
-                    Congradualtions to Troy McCusker for winning the 2024 Boot Scoot N' Juke Championship and securing his second Z10! The Patriots of Pigskin had a stellar season, finishing with a 12-2 record and defeating the 2nd place team, Mr. Unlimited, in a very tough fought championship battle.
+                    Congratulations to Troy McCusker for his extraordinary victory in the 2024 Boot Scoot N' Juke Championship, clinching his second Z10 in spectacular fashion! The Patriots of Pigskin delivered an unforgettable season, boasting an impressive 12-2 record. Their relentless determination and skill culminated in a thrilling championship showdown, where they triumphed over the formidable Mr. Unlimited in a fiercely contested battle.
                 </p>
             </div>
         </section>
