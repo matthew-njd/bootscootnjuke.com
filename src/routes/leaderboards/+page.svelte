@@ -61,7 +61,7 @@
     </Podium>
 </section>
 
-<!--Highest points by Week Per Seaon-->
+<!--Highest points by Week Per Season-->
 <section class="pb-[4rem]">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
@@ -79,6 +79,9 @@
             <div class="text-gray-400">
                 Owner: {hwpFirstPlace.owner}
             </div>
+            <div class="text-gray-400">
+                Year: {hwpFirstPlace.year}
+            </div>
         </span>
         
         <!--Second Place-->
@@ -92,6 +95,9 @@
             <div class="text-gray-400">
                 Owner: {hwpSecondPlace.owner}
             </div>
+            <div class="text-gray-400">
+                Year: {hwpSecondPlace.year}
+            </div>
         </span>
     
         <!--Third Place-->
@@ -104,6 +110,9 @@
             </div>
             <div class="text-gray-400">
                 Owner: {hwpThirdPlace.owner}
+            </div>
+            <div class="text-gray-400">
+                Year: {hwpThirdPlace.year}
             </div>
         </span>
 
@@ -132,6 +141,9 @@
             <div class="text-gray-400">
                 Owner: {hppFirstPlace.owner}
             </div>
+            <div class="text-gray-400">
+                Year: {hppFirstPlace.year}
+            </div>
         </span>
     
         <!--Second Place-->
@@ -145,6 +157,9 @@
             </div>
             <div class="text-gray-400">
                 Owner: {hppSecondPlace.owner}
+            </div>
+            <div class="text-gray-400">
+                Year: {hppSecondPlace.year}
             </div>
         </span>
     
@@ -160,6 +175,9 @@
             <div class="text-gray-400">
                 Owner: {hppThirdPlace.owner}
             </div>
+            <div class="text-gray-400">
+                Year: {hppThirdPlace.year}
+            </div>
         </span>
 
         <a slot="seeMoreBtn" href="/leaderboards/{hppFirstPlace.leaderboardId}" class="btn variant-ghost-primary mt-2" data-sveltekit-preload-data="hover">
@@ -172,7 +190,7 @@
 <section class="pb-[4rem]">
     <Podium>
         <h2 slot="title" class="text-4xl text-center p-4">
-            Highest Seasonal Total
+            Highest Seasonal Points For
         </h2>
     
         <!--First Place-->
@@ -185,6 +203,9 @@
             </div>
             <div class="text-gray-400">
                 Owner: {hstFirstPlace.owner}
+            </div>
+            <div class="text-gray-400">
+                Year: {hstFirstPlace.year}
             </div>
         </span>
     
@@ -199,6 +220,9 @@
             <div class="text-gray-400">
                 Owner: {hstSecondPlace.owner}
             </div>
+            <div class="text-gray-400">
+                Year: {hstSecondPlace.year}
+            </div>
         </span>
     
         <!--Third Place-->
@@ -210,7 +234,7 @@
                 Team: {hstThirdPlace.team}
             </div>
             <div class="text-gray-400">
-                Owner: {hstThirdPlace.owner}
+                Year: {hstThirdPlace.year}
             </div>
         </span>
 
