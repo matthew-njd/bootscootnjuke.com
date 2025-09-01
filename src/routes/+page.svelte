@@ -14,7 +14,7 @@
     </h2>
 
     
-    <!--Weekly update section-->
+    <!--Announcement section-->
     <div class="card p-2 mt-10">
         <header class="card-header flex justify-center items-center gap-2">
             <img src={loudspeaker} alt="Loudspeaker Logo" class="w-[3rem] scale-x-[-1]" />
@@ -25,17 +25,15 @@
         </header>
         <section class="p-4">
             <div class="text-center">
-                <h2 class="text-3xl mt-8 mb-4">Your 2024 Champion is...</h2>
-                <h1 class="text-5xl mb-2">Patriots of Pigskin</h1>
-                <img src="https://kfgycginbwcwzvruujeh.supabase.co/storage/v1/object/public/logos/troy_mccusker_logo.png" alt="Patriots of Pigskin Logo" class="w-[8rem] m-auto rounded-full" />
+                <h1 class="text-3xl mt-8 mb-4">The Road to Fantasy Glory: Season 2025 is just around the corner...</h1>
             </div>
 
             <div class="mt-4">
                 <p>
-                    Congratulations to Troy McCusker for his extraordinary victory in the 2024 Boot Scoot N' Juke Championship, clinching his second Z10 in spectacular fashion! The Patriots of Pigskin delivered an unforgettable season, boasting an impressive 12-2 record. Their relentless determination and skill culminated in a thrilling championship showdown, where they triumphed over the formidable Mr. Unlimited in a fiercely contested battle.
+                    In the quiet before kickoff, anticipation hangs heavy in the air. Lineups are locked, but destiny remains unwritten. Heroes will rise from the shadows, legends will be born in the clutch, and heartbreak will strike when victory feels certain. Every yard, every point, every moment carries the weight of glory or defeat. This is more than a game... this is the season where champions are forged. Welcome to THE fantasy football league where every week is a battle, and only one can stand at the summit.
                 </p>
             </div>
         </section>
-        <footer class="card-footer text-xs text-[#EA861A]"><i>Updated January 2, 2025 by your site admin</i></footer>
+        <footer class="card-footer text-xs text-[#EA861A]"><i>Updated September 1st, 2025 by your site admin</i></footer>
     </div>
 </div>
