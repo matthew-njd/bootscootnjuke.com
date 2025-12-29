@@ -1,6 +1,37 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: coffee --default;
+@plugin "daisyui/theme" {
+  name: "bsnj";
+  default: true;
+  prefersdark: true;
+  color-scheme: "dark";
+  --color-base-100: oklch(14% 0 0);
+  --color-base-200: oklch(20% 0 0);
+  --color-base-300: oklch(26% 0 0);
+  --color-base-content: oklch(97% 0 0);
+  --color-primary: oklch(90% 0.182 98.111);
+  --color-primary-content: oklch(28% 0.066 53.813);
+  --color-secondary: oklch(86% 0.022 252.894);
+  --color-secondary-content: oklch(12% 0.042 264.695);
+  --color-accent: oklch(87% 0.006 286.286);
+  --color-accent-content: oklch(14% 0.005 285.823);
+  --color-neutral: oklch(26% 0 0);
+  --color-neutral-content: oklch(98% 0 0);
+  --color-info: oklch(74% 0.16 232.661);
+  --color-info-content: oklch(29% 0.066 243.157);
+  --color-success: oklch(84% 0.238 128.85);
+  --color-success-content: oklch(27% 0.072 132.109);
+  --color-warning: oklch(75% 0.183 55.934);
+  --color-warning-content: oklch(26% 0.079 36.259);
+  --color-error: oklch(71% 0.194 13.428);
+  --color-error-content: oklch(27% 0.105 12.094);
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 1;
 }
 
 #root {
