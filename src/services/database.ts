@@ -1,0 +1,143 @@
+import { supabase } from "../lib/supabase";
+
+// for owners page
+export const getOwners = async () => {
+  const { data: owners, error } = await supabase
+    .from("owners")
+    .select("*")
+    .order("ownerId", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return owners;
+  }
+};
+
+// for owner's stat page
+export const getStatsByOwner = async (ownerId: string) => {
+  const { data: ownerStats, error } = await supabase
+    .from("stats")
+    .select("*")
+    .eq("ownerId", `${ownerId}`)
+    .order("year", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return ownerStats;
+  }
+};
+
+export const getAllStats = async () => {
+  const { data: stats, error } = await supabase
+    .from("stats")
+    .select("*")
+    .order("ownerId", { ascending: true })
+    .order("year", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return stats;
+  }
+};
+
+// for leaderboard page
+export const getLeaderborders = async () => {
+  const { data: leaderboards, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .order("id", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return leaderboards;
+  }
+};
+
+export const getChampionshipWinners = async () => {
+  const { data: champs, error } = await supabase
+    .from("champs")
+    .select("*")
+    .order("titlewins", { ascending: false })
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return champs;
+  }
+};
+
+export const getHighestWeekTotals = async () => {
+  const { data: highest_week_totals, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .eq("leaderboardId", "highest_week_totals")
+    .order("points", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return highest_week_totals;
+  }
+};
+
+export const getHighestPlayerTotals = async () => {
+  const { data: highest_player_totals, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .eq("leaderboardId", "highest_player_totals")
+    .order("points", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return highest_player_totals;
+  }
+};
+
+export const getHighestSeasonTotals = async () => {
+  const { data: highest_seasonal_totals, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .eq("leaderboardId", "highest_season_totals")
+    .order("points", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return highest_seasonal_totals;
+  }
+};
+
+// for individual leadboard page
+export const getLeaderBoardById = async (leaderboardId: string) => {
+  const { data: leaderboard, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .eq("leaderboardId", `${leaderboardId}`)
+    .order("year", { ascending: false });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return leaderboard;
+  }
+};
+
+// for drafts page
+export const getDraftHistory = async () => {
+  const { data: drafts, error } = await supabase
+    .from("drafts")
+    .select("*")
+    .order("id", { ascending: true });
+
+  if (error) {
+    console.log("error", error);
+  } else {
+    return drafts;
+  }
+};
