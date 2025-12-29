@@ -1,24 +1,20 @@
 function Nav() {
   return (
-    <div className="navbar mb-8">
-      <div>
+    <div className="navbar justify-between mb-12 text-primary">
+      <div className="w-32">
         <a href="/" className="hover:scale-110 transition-transform">
-          <img
-            src="src/assets/images/league_logo.png"
-            className="w-32"
-            alt="League Logo"
-          />
+          <img src="src/assets/images/league_logo.png" alt="League Logo" />
         </a>
       </div>
-      <div className="flex grow justify-end gap-6">
+      <div className="flex gap-6">
         <a
           href="/owners"
           className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="2em"
-            height="2em"
+            width="2.5em"
+            height="2.5em"
             viewBox="0 0 24 24"
           >
             <path
@@ -35,8 +31,8 @@ function Nav() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="2em"
-            height="2em"
+            width="2.5em"
+            height="2.5em"
             viewBox="0 0 24 24"
           >
             <path
@@ -53,8 +49,8 @@ function Nav() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="2em"
-            height="2em"
+            width="2.5em"
+            height="2.5em"
             viewBox="0 0 24 24"
           >
             <path
@@ -71,8 +67,8 @@ function Nav() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="2em"
-            height="2em"
+            width="2.5em"
+            height="2.5em"
             viewBox="0 0 24 24"
           >
             <path
