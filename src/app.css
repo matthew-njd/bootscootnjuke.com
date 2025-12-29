@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: luxury --default;
+}
 
 #root {
   max-width: 1280px;
