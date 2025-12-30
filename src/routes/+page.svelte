@@ -25,15 +25,9 @@
         </header>
         <section class="p-4">
             <div class="text-center">
-                <h1 class="text-3xl mt-8 mb-4">The Road to Fantasy Glory: Season 2025 is just around the corner...</h1>
-            </div>
-
-            <div class="mt-4">
-                <p>
-                    In the quiet before kickoff, anticipation hangs heavy in the air. Lineups are locked, but destiny remains unwritten. Heroes will rise from the shadows, legends will be born in the clutch, and heartbreak will strike when victory feels certain. Every yard, every point, every moment carries the weight of glory or defeat. This is more than a game... this is the season where champions are forged. Welcome to THE fantasy football league where every week is a battle, and only one can stand at the summit.
-                </p>
+                <h1 class="text-3xl mt-8 mb-4">Congratulations to Rudy D'Agostino and his team, I'm in the Bills Mafia 🤌 for winning the 2025 Z10 championship🏆!!</h1>
             </div>
         </section>
-        <footer class="card-footer text-xs text-[#EA861A]"><i>Updated September 1st, 2025 by your site admin</i></footer>
+        <footer class="card-footer text-xs text-[#EA861A]"><i>Updated Decemeber 30th, 2025 by your site admin</i></footer>
     </div>
 </div>
