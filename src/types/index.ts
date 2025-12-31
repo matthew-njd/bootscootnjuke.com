@@ -114,14 +114,13 @@ export interface Drafts {
 export interface Sleeper {
   User: {
     user_id: number;
-    username: string;
     display_name: string;
-    avatar: number;
+    is_owner: boolean;
     metadata: {
       team_name: string;
+      avatar: string;
     };
-    is_owner: boolean;
-  }[];
+  };
 
   Matchup: {
     starters: string[];
@@ -130,5 +129,5 @@ export interface Sleeper {
     matchup_id: number;
     points: number;
     custom_points: number | null;
-  }[];
+  };
 }
