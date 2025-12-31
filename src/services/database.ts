@@ -8,7 +8,8 @@ export const getOwners = async () => {
     .order("ownerId", { ascending: true });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return owners;
   }
@@ -23,7 +24,8 @@ export const getStatsByOwner = async (ownerId: string) => {
     .order("year", { ascending: false });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return ownerStats;
   }
@@ -37,7 +39,8 @@ export const getAllStats = async () => {
     .order("year", { ascending: true });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return stats;
   }
@@ -51,7 +54,8 @@ export const getLeaderborders = async () => {
     .order("id", { ascending: false });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return leaderboards;
   }
@@ -65,7 +69,8 @@ export const getChampionshipWinners = async () => {
     .order("name", { ascending: true });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return champs;
   }
@@ -79,7 +84,8 @@ export const getHighestWeekTotals = async () => {
     .order("points", { ascending: false });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return highest_week_totals;
   }
@@ -93,7 +99,8 @@ export const getHighestPlayerTotals = async () => {
     .order("points", { ascending: false });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return highest_player_totals;
   }
@@ -107,7 +114,8 @@ export const getHighestSeasonTotals = async () => {
     .order("points", { ascending: false });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return highest_seasonal_totals;
   }
@@ -122,7 +130,8 @@ export const getLeaderBoardById = async (leaderboardId: string) => {
     .order("year", { ascending: false });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return leaderboard;
   }
@@ -136,7 +145,8 @@ export const getDraftHistory = async () => {
     .order("id", { ascending: true });
 
   if (error) {
-    console.log("error", error);
+    console.log("error", error.message);
+    throw new Error(error.message);
   } else {
     return drafts;
   }

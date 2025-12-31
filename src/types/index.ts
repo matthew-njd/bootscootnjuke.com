@@ -111,9 +111,24 @@ export interface Drafts {
   }[];
 }
 
-export interface Matchups {
-  matchup: {
+export interface Sleeper {
+  User: {
+    user_id: number;
+    username: string;
+    display_name: string;
+    avatar: number;
+    metadata: {
+      team_name: string;
+    };
+    is_owner: boolean;
+  }[];
+
+  Matchup: {
+    starters: string[];
+    roster_id: number;
+    players: string[];
+    matchup_id: number;
     points: number;
-    players_points: number[];
+    custom_points: number | null;
   }[];
 }
