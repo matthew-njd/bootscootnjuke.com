@@ -5,7 +5,7 @@ import Owners from "./pages/Owners";
 import Matchups from "./pages/Matchups";
 import Leaderboards from "./pages/Leaderboards";
 import Drafts from "./pages/Drafts";
-import "./App.css";
+import "./app.css";
 
 function App() {
   return (

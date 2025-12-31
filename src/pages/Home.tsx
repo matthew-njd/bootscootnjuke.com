@@ -1,3 +1,4 @@
+import Card from "../components/common/Card";
 import Loudspeaker from "../assets/images/loudspeaker.png";
 
 function Home() {
@@ -13,29 +14,30 @@ function Home() {
         leaderboards, and get set for a heart-pounding journey through the draft
         history!
       </h2>
-      <div className="card p-2 mt-10">
-        <header className="card-header flex justify-center items-center gap-2">
-          <img
-            src={Loudspeaker}
-            alt="Loudspeaker Logo"
-            className="w-12 scale-x-[-1]"
-          />
-          <h1 className="text-2xl text-center text-error">
-            Boot Scoot N' Juke Announcement
-          </h1>
-          <img src={Loudspeaker} alt="Loudspeaker Logo" className="w-12" />
-        </header>
-        <section className="p-4">
-          <div className="text-center">
-            <h1 className="text-3xl mt-8 mb-4">
-              Your 2025 Z10 winner is...{" "}
-              <span className="underline font-bold">TBD</span>
-            </h1>
-          </div>
-        </section>
-        <div className="card-footer text-xs text-primary">
-          <i>Updated December 30th, 2025 by your site admin</i>
-        </div>
+
+      <Card
+        title={
+          <>
+            <img
+              src={Loudspeaker}
+              alt="Loudspeaker Logo"
+              className="w-12 scale-x-[-1]"
+            />
+            Boot Scoot N' Juke Announcement{" "}
+            <img src={Loudspeaker} alt="Loudspeaker Logo" className="w-12" />
+          </>
+        }
+        body={
+          <>
+            Your 2025 Z10 winner is Rudy D'Agostino and his team,{" "}
+            <span className="font-bold">I'm in the Bills Mafia 🤌</span>
+          </>
+        }
+        className="card bg-primary text-primary-content w-full"
+      />
+
+      <div className="card-footer text-xs text-primary">
+        <i>Updated December 30th, 2025 by your site admin</i>
       </div>
     </div>
   );

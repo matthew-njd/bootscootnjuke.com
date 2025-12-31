@@ -2,7 +2,7 @@ function Nav() {
   return (
     <div className="navbar justify-between mb-12 text-primary">
       <div className="w-32">
-        <a href="/" className="hover:scale-110 transition-transform">
+        <a href="/" className="hover:scale-110">
           <img src="src/assets/images/league_logo.png" alt="League Logo" />
         </a>
       </div>
