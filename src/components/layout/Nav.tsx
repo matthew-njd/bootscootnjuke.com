@@ -11,7 +11,7 @@ function Nav() {
       <div className="flex gap-6">
         <Link
           to="/owners"
-          className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
+          className="flex flex-col items-center gap-1 hover:opacity-70"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@ function Nav() {
 
         <Link
           to="/leaderboards"
-          className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
+          className="flex flex-col items-center gap-1 hover:opacity-70"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ function Nav() {
 
         <Link
           to="/matchups"
-          className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
+          className="flex flex-col items-center gap-1 hover:opacity-70"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +65,7 @@ function Nav() {
 
         <Link
           to="/drafts"
-          className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
+          className="flex flex-col items-center gap-1 hover:opacity-70"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
