@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getOwners } from "../services/database";
 import type { Database } from "../types";
 import Card from "../components/common/Card";
+import defaultAvatar from "../assets/images/default_avatar.png";
 
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
 
 export default function Owners() {
+  const navigate = useNavigate();
   const [owners, setOwners] = useState<Owner[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,20 +64,22 @@ export default function Owners() {
               key={owner.ownerId}
               title={
                 <>
-                  {owner.logoUrl && (
-                    <img
-                      src={owner.logoUrl}
-                      alt={owner.name || "Owner"}
-                      className="w-12 h-12 rounded"
-                    />
-                  )}
+                  <img
+                    src={owner.logoUrl || defaultAvatar}
+                    alt={owner.name || "Owner"}
+                    className="w-12 h-12 rounded"
+                  />
                   {owner.name}
                 </>
               }
               body={owner.bio || "No bio available"}
               footer={
                 <>
-                  <button type="button" className="btn btn-accent">
+                  <button
+                    type="button"
+                    className="btn btn-accent"
+                    onClick={() => navigate(`/owners/${owner.ownerId}/stats`)}
+                  >
                     Stats
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
