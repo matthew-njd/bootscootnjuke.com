@@ -4,9 +4,9 @@ function Nav() {
   return (
     <div className="navbar justify-between mb-12 text-primary">
       <div className="w-32">
-        <a href="/" className="hover:scale-110">
+        <Link to="/" className="hover:scale-110">
           <img src="src/assets/images/league_logo.png" alt="League Logo" />
-        </a>
+        </Link>
       </div>
       <div className="flex gap-6">
         <Link
@@ -26,23 +26,7 @@ function Nav() {
           </svg>
           <span className="text-sm">Owners</span>
         </Link>
-        <Link
-          to="/matchups"
-          className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="2.5em"
-            height="2.5em"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="m19.05 21.6l-2.925-2.9l-1.5 1.5q-.275.275-.7.275t-.7-.275q-.575-.575-.575-1.425t.575-1.425l4.225-4.225q.575-.575 1.425-.575t1.425.575q.275.275.275.7t-.275.7l-1.5 1.5l2.9 2.925q.3.3.3.7t-.3.7l-1.25 1.25q-.3.3-.7.3t-.7-.3M21.7 6.2L10.65 17.25l.125.1q.575.575.575 1.425t-.575 1.425q-.275.275-.7.275t-.7-.275l-1.5-1.5l-2.925 2.9q-.3.3-.7.3t-.7-.3L2.3 20.35q-.3-.3-.3-.7t.3-.7l2.9-2.925l-1.5-1.5q-.275-.275-.275-.7t.275-.7q.575-.575 1.425-.575t1.425.575l.1.125L17.425 2.475q.275-.275.638-.425t.762-.15H21q.425 0 .713.288T22 2.9v2.575q0 .2-.075.388T21.7 6.2M6.225 10.125l-3.65-3.65Q2.3 6.2 2.15 5.838T2 5.075V2.9q0-.425.288-.712T3 1.9h2.175q.4 0 .763.15t.637.425l3.65 3.65q.3.3.3.713t-.3.712L7.65 10.125q-.3.3-.712.3t-.713-.3"
-            />
-          </svg>
-          <span className="text-sm">Matchups</span>
-        </Link>
+
         <Link
           to="/leaderboards"
           className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
@@ -60,6 +44,25 @@ function Nav() {
           </svg>
           <span className="text-sm">Leaderboards</span>
         </Link>
+
+        <Link
+          to="/matchups"
+          className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="2.5em"
+            height="2.5em"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="m19.05 21.6l-2.925-2.9l-1.5 1.5q-.275.275-.7.275t-.7-.275q-.575-.575-.575-1.425t.575-1.425l4.225-4.225q.575-.575 1.425-.575t1.425.575q.275.275.275.7t-.275.7l-1.5 1.5l2.9 2.925q.3.3.3.7t-.3.7l-1.25 1.25q-.3.3-.7.3t-.7-.3M21.7 6.2L10.65 17.25l.125.1q.575.575.575 1.425t-.575 1.425q-.275.275-.7.275t-.7-.275l-1.5-1.5l-2.925 2.9q-.3.3-.7.3t-.7-.3L2.3 20.35q-.3-.3-.3-.7t.3-.7l2.9-2.925l-1.5-1.5q-.275-.275-.275-.7t.275-.7q.575-.575 1.425-.575t1.425.575l.1.125L17.425 2.475q.275-.275.638-.425t.762-.15H21q.425 0 .713.288T22 2.9v2.575q0 .2-.075.388T21.7 6.2M6.225 10.125l-3.65-3.65Q2.3 6.2 2.15 5.838T2 5.075V2.9q0-.425.288-.712T3 1.9h2.175q.4 0 .763.15t.637.425l3.65 3.65q.3.3.3.713t-.3.712L7.65 10.125q-.3.3-.712.3t-.713-.3"
+            />
+          </svg>
+          <span className="text-sm">Matchups</span>
+        </Link>
+
         <Link
           to="/drafts"
           className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
