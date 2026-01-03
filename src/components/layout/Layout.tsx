@@ -1,4 +1,3 @@
-// src/components/layout/Layout.tsx
 import type { ReactNode } from "react";
 import Nav from "./Nav";
 
