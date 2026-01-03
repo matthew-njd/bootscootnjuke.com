@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Nav from "./Nav";
+import Footer from "./Footer";
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ function Layout({ children }: LayoutProps) {
     <div className="min-h-screen flex flex-col">
       <Nav />
       <main className="grow">{children}</main>
+      <Footer />
     </div>
   );
 }
