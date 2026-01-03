@@ -26,7 +26,7 @@ export default function Owners() {
     };
 
     fetchOwners();
-  }, []); // Empty dependency array means this runs once when component mounts
+  }, []);
 
   if (loading) {
     return <div>Loading owners...</div>;

@@ -123,11 +123,11 @@ export interface Sleeper {
   };
 
   Matchup: {
-    starters: string[];
-    roster_id: number;
-    players: string[];
-    matchup_id: number;
     points: number;
+    roster_id: number;
+    matchup_id: number;
+    starters: string[];
+    players: string[];
     custom_points: number | null;
   };
 }

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Nav() {
   return (
     <div className="navbar justify-between mb-12 text-primary">
@@ -7,8 +9,8 @@ function Nav() {
         </a>
       </div>
       <div className="flex gap-6">
-        <a
-          href="/owners"
+        <Link
+          to="/owners"
           className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
         >
           <svg
@@ -23,10 +25,9 @@ function Nav() {
             ></path>
           </svg>
           <span className="text-sm">Owners</span>
-        </a>
-
-        <a
-          href="/matchups"
+        </Link>
+        <Link
+          to="/matchups"
           className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
         >
           <svg
@@ -41,10 +42,9 @@ function Nav() {
             />
           </svg>
           <span className="text-sm">Matchups</span>
-        </a>
-
-        <a
-          href="/leaderboards"
+        </Link>
+        <Link
+          to="/leaderboards"
           className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
         >
           <svg
@@ -59,10 +59,9 @@ function Nav() {
             />
           </svg>
           <span className="text-sm">Leaderboards</span>
-        </a>
-
-        <a
-          href="/drafts"
+        </Link>
+        <Link
+          to="/drafts"
           className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity"
         >
           <svg
@@ -77,7 +76,7 @@ function Nav() {
             />
           </svg>
           <span className="text-sm">Drafts</span>
-        </a>
+        </Link>
       </div>
     </div>
   );
