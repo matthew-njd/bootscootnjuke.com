@@ -34,6 +34,9 @@ function Home() {
           </>
         }
         className="card bg-primary text-primary-content w-full"
+        cardBodyClassName="card-body items-center text-center"
+        titleClassName="card-title text-3xl font-bold"
+        bodyClassName="text-2xl"
       />
 
       <div className="card-footer text-xs text-primary">

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getOwners } from "../services/database";
 import type { Database } from "../types";
+import Card from "../components/common/Card";
 
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
 
@@ -38,22 +39,32 @@ export default function Owners() {
 
   return (
     <div>
-      <h1>Owners</h1>
-      <ul>
+      <h1 className="text-4xl mb-6">Owners</h1>
+      <div className="flex flex-col gap-4">
         {owners
           .filter((owner) => owner.active)
           .map((owner) => (
-            <li key={owner.ownerId}>
-              <div>
-                {owner.logoUrl && (
-                  <img src={owner.logoUrl} alt={owner.name || "Owner"} />
-                )}
-                <h2>{owner.name}</h2>
-                {owner.bio && <p>{owner.bio}</p>}
-              </div>
-            </li>
+            <Card
+              key={owner.ownerId}
+              title={
+                <>
+                  {owner.logoUrl && (
+                    <img
+                      src={owner.logoUrl}
+                      alt={owner.name || "Owner"}
+                      className="w-12 h-12 rounded"
+                    />
+                  )}
+                  {owner.name}
+                </>
+              }
+              body={owner.bio || "No bio available"}
+              className="card bg-primary text-primary-content w-full"
+              titleClassName="card-title text-xl font-bold"
+              bodyClassName="text-left text-lg"
+            />
           ))}
-      </ul>
+      </div>
     </div>
   );
 }

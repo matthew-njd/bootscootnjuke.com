@@ -2,14 +2,24 @@ interface CardProps {
   title: React.ReactNode;
   body: React.ReactNode;
   className?: string;
+  cardBodyClassName?: string;
+  titleClassName?: string;
+  bodyClassName?: string;
 }
 
-export default function Card({ title, body, className = "" }: CardProps) {
+export default function Card({
+  title,
+  body,
+  className = "",
+  cardBodyClassName = "card-body",
+  titleClassName = "card-title",
+  bodyClassName = "",
+}: CardProps) {
   return (
     <div className={className}>
-      <div className="card-body items-center text-center">
-        <h2 className="card-title text-3xl">{title}</h2>
-        <p className="text-2xl">{body}</p>
+      <div className={cardBodyClassName}>
+        <h2 className={titleClassName}>{title}</h2>
+        <p className={bodyClassName}>{body}</p>
       </div>
     </div>
   );
