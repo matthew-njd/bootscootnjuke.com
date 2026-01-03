@@ -77,7 +77,7 @@ export default function Owners() {
                 <>
                   <button
                     type="button"
-                    className="btn btn-accent"
+                    className="btn btn-soft btn-accent"
                     onClick={() => navigate(`/owners/${owner.ownerId}/stats`)}
                   >
                     Stats

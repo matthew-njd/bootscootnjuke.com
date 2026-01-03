@@ -150,7 +150,7 @@ export default function OwnerStats() {
     <div className="flex flex-col items-center p-8">
       <button
         onClick={() => navigate("/owners")}
-        className="btn btn-primary mb-4 self-start"
+        className="btn btn-soft btn-primary mb-4 self-start"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
