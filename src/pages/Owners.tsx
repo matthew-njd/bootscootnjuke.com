@@ -67,7 +67,7 @@ export default function Owners() {
                   <img
                     src={owner.logoUrl || defaultAvatar}
                     alt={owner.name || "Owner"}
-                    className="w-12 h-12 rounded"
+                    className="w-24 h-24 rounded"
                   />
                   {owner.name}
                 </>
@@ -96,7 +96,7 @@ export default function Owners() {
                 </>
               }
               className="card bg-primary text-primary-content w-full"
-              titleClassName="card-title text-xl font-bold"
+              titleClassName="card-title text-3xl font-bold"
               bodyClassName="text-left text-lg"
             />
           ))}
