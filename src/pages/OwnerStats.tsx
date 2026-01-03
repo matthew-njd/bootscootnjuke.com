@@ -146,9 +146,11 @@ export default function OwnerStats() {
 
       <div className="flex items-center gap-4 mb-6">
         <img
-          src={owner?.logoUrl ?? defaultAvatar}
+          src={owner?.logoUrl || defaultAvatar}
           alt={owner?.name || "Owner"}
-          className="w-24 h-24 rounded"
+          className={`w-24 h-24 rounded ${
+            !owner?.logoUrl ? "bg-accent p-2" : ""
+          }`}
         />
         <h1 className="text-4xl">Stats for {owner?.name}</h1>
       </div>
