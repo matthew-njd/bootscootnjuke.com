@@ -33,15 +33,17 @@ function Home() {
             <span className="font-bold">I'm in the Bills Mafia 🤌</span>
           </>
         }
+        footer={
+          <>
+            <p>Updated December 30th, 2025 by your site admin</p>
+          </>
+        }
         className="card bg-primary text-primary-content w-full"
         cardBodyClassName="card-body items-center text-center"
         titleClassName="card-title text-3xl font-bold"
-        bodyClassName="text-2xl"
+        bodyClassName="text-2xl m-4"
+        footerClassName="card-footer text-xs italic"
       />
-
-      <div className="card-footer text-xs text-primary">
-        <i>Updated December 30th, 2025 by your site admin</i>
-      </div>
     </div>
   );
 }
