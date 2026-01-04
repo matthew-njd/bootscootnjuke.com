@@ -1,7 +1,9 @@
 import Card from "../components/common/Card";
 import Loudspeaker from "../assets/images/loudspeaker.png";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
   return (
     <div className="grid place-items-center m-auto p-6 gap-8">
       <h1 className="text-center text-6xl font-bold">
@@ -23,14 +25,19 @@ function Home() {
               alt="Loudspeaker Logo"
               className="w-12 scale-x-[-1]"
             />
-            Boot Scoot N' Juke Announcement{" "}
+            Boot Scoot n' Juke Announcement{" "}
             <img src={Loudspeaker} alt="Loudspeaker Logo" className="w-12" />
           </>
         }
         body={
           <>
             Your 2025 Z10 winner is Rudy D'Agostino and his team,{" "}
-            <span className="font-bold">I'm in the Bills Mafia 🤌</span>
+            <span
+              className="font-bold hover:underline cursor-pointer"
+              onClick={() => navigate(`/owners/rudy_dagostino/stats`)}
+            >
+              I'm in the Bills Mafia 🤌
+            </span>
           </>
         }
         footer={
