@@ -23,7 +23,7 @@ export default function Card({
     <div className={className}>
       <div className={cardBodyClassName}>
         <h2 className={titleClassName}>{title}</h2>
-        <p className={bodyClassName}>{body}</p>
+        <div className={bodyClassName}>{body}</div>
         {footer && <div className={footerClassName}>{footer}</div>}
       </div>
     </div>
