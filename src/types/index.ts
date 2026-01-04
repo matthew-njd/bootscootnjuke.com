@@ -53,17 +53,6 @@ export interface Database {
   };
 }
 
-export interface Owners {
-  owner: {
-    id: number;
-    ownerId: string;
-    name: string | undefined;
-    active: boolean;
-    bio: string;
-    logoUrl: string | undefined;
-  }[];
-}
-
 export interface Leaderboards {
   champs: {
     name: string;
