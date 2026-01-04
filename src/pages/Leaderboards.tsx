@@ -1,3 +1,5 @@
+import Podium from "../components/common/Podium";
+
 function Leaderboards() {
   return (
     <div className="flex flex-col items-center">
@@ -15,6 +17,39 @@ function Leaderboards() {
           />
         </svg>
       </div>
+
+      <Podium
+        title={<h1>Most Z10s</h1>}
+        firstPlace={{
+          name: "Alice",
+          stat: "1000 points",
+        }}
+        secondPlace={{
+          name: "Bob",
+          stat: "850 points",
+        }}
+        thirdPlace={{
+          name: "Charlie",
+          stat: "700 points",
+        }}
+      />
+
+      <Podium
+        title={<h1>Most PointsFor</h1>}
+        firstPlace={{
+          name: "Alice",
+          stat: "1000 points",
+        }}
+        secondPlace={{
+          name: "Bob",
+          stat: "850 points",
+        }}
+        thirdPlace={{
+          name: "Charlie",
+          stat: "700 points",
+        }}
+        seeMoreButton={<button>See More</button>}
+      />
     </div>
   );
 }
