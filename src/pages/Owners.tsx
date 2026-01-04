@@ -83,8 +83,8 @@ export default function Owners() {
                     Stats
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
+                      width="24"
+                      height="24"
                       viewBox="0 0 24 24"
                     >
                       <path
@@ -98,6 +98,53 @@ export default function Owners() {
               className="card bg-primary text-primary-content w-full"
               titleClassName="card-title text-3xl font-bold"
               bodyClassName="text-left text-lg"
+            />
+          ))}
+      </div>
+
+      <h1 className="text-4xl mt-24 mb-6">Retired Owners</h1>
+      <div className="flex flex-col gap-4">
+        {owners
+          .filter((owner) => !owner.active)
+          .map((owner) => (
+            <Card
+              key={owner.ownerId}
+              title={
+                <>
+                  <img
+                    src={owner.logoUrl || defaultAvatar}
+                    alt={owner.name || "Owner"}
+                    className="w-16 h-16 rounded"
+                  />
+                  {owner.name}
+                </>
+              }
+              body={owner.bio || "No bio available"}
+              footer={
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-soft btn-accent"
+                    onClick={() => navigate(`/owners/${owner.ownerId}/stats`)}
+                  >
+                    Stats
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="m14 18l-1.4-1.45L16.15 13H4v-2h12.15L12.6 7.45L14 6l6 6z"
+                      />
+                    </svg>
+                  </button>
+                </>
+              }
+              className="card bg-primary text-primary-content w-full"
+              titleClassName="card-title text-xl font-bold"
+              bodyClassName="text-left text-md"
             />
           ))}
       </div>
