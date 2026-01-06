@@ -53,51 +53,58 @@ export interface Database {
   };
 }
 
+export interface Champion {
+  name: string;
+  ownerId: string;
+  titlewins: number;
+}
+
+export interface HighestWeekTotal {
+  year: number;
+  week: number;
+  team: string;
+  points: number;
+  owner: string;
+  leaderboardId: string;
+}
+
+export interface HighestPlayerTotal {
+  year: number;
+  week: number;
+  team: string;
+  player: string;
+  points: number;
+  owner: string;
+  leaderboardId: string;
+}
+
+export interface HighestSeasonalTotal {
+  year: number;
+  team: string;
+  points: number;
+  owner: string;
+  leaderboardId: string;
+}
+
 export interface Leaderboards {
-  champs: {
-    name: string;
-    ownerId: string;
-    titlewins: number;
-  }[];
+  champs: Champion[];
+  highest_week_totals: HighestWeekTotal[];
+  highest_player_totals: HighestPlayerTotal[];
+  highest_seasonal_totals: HighestSeasonalTotal[];
+}
 
-  highest_week_totals: {
-    year: number;
-    week: number;
-    team: string;
-    points: number;
-    owner: string;
-    leaderboardId: string;
-  }[];
-
-  highest_player_totals: {
-    year: number;
-    week: number;
-    team: string;
-    player: string;
-    points: number;
-    owner: string;
-    leaderboardId: string;
-  }[];
-
-  highest_seasonal_totals: {
-    year: number;
-    team: string;
-    points: number;
-    owner: string;
-    leaderboardId: string;
-  }[];
+export interface Draft {
+  year: number;
+  pick: number;
+  player: string;
+  playerHeadshotUrl: string;
+  team: string;
+  owner: string;
+  draftId: string;
 }
 
 export interface Drafts {
-  draft: {
-    year: number;
-    pick: number;
-    player: string;
-    playerHeadshotUrl: string;
-    team: string;
-    owner: string;
-    draftId: string;
-  }[];
+  draft: Draft[];
 }
 
 export interface Sleeper {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import type { Leaderboards } from "../types";
 import { getChampionshipWinners } from "../services/database";
 import Podium from "../components/common/Podium";
+import type { Leaderboards } from "../types";
 
 type Champs = Leaderboards["champs"];
 
@@ -57,22 +57,6 @@ export default function Leaderboards() {
 
       <Podium
         title={<h1>Most Z10s</h1>}
-        firstPlace={{
-          name: "Alice",
-          stat: "1000 points",
-        }}
-        secondPlace={{
-          name: "Bob",
-          stat: "850 points",
-        }}
-        thirdPlace={{
-          name: "Charlie",
-          stat: "700 points",
-        }}
-      />
-
-      <Podium
-        title={<h1>Most PointsFor</h1>}
         firstPlace={{
           name: "Alice",
           stat: "1000 points",
