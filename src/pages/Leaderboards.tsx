@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { getChampionshipWinners } from "../services/database";
 import Podium from "../components/common/Podium";
 import type { Leaderboards } from "../types";
-
-type Champs = Leaderboards["champs"];
+import type { Champion } from '../types';
 
 export default function Leaderboards() {
-  const [champs, setChamps] = useState<Champs[]>([]);
+  const [champs, setChamps] = useState<Champion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
