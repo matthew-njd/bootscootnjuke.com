@@ -57,16 +57,16 @@ export default function Leaderboards() {
       <Podium
         title={<h1>Most Z10s</h1>}
         firstPlace={{
-          name: "Alice",
-          stat: "1000 points",
+          name: champs[0]?.name || "TBD",
+          stat: `${champs[0]?.titlewins || 0} titles`,
         }}
         secondPlace={{
-          name: "Bob",
-          stat: "850 points",
+          name: champs[1]?.name || "TBD",
+          stat: `${champs[1]?.titlewins || 0} titles`,
         }}
         thirdPlace={{
-          name: "Charlie",
-          stat: "700 points",
+          name: champs[2]?.name || "TBD",
+          stat: `${champs[2]?.titlewins || 0} titles`,
         }}
         seeMoreButton={<button>See More</button>}
       />
