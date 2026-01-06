@@ -1,32 +1,41 @@
 import { useState, useEffect } from "react";
-import { getChampionshipWinners } from "../services/database";
+import { getChampionshipWinners, getHighestWeekTotals } from "../services/database";
 import Podium from "../components/common/Podium";
-import type { Leaderboards } from "../types";
-import type { Champion } from '../types';
+import type { Champion, HighestWeekTotal } from '../types';
 
 export default function Leaderboards() {
   const [champs, setChamps] = useState<Champion[]>([]);
+  const [highestWeekTotal, setHighestWeekTotal] = useState<HighestWeekTotal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchChamps = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await getChampionshipWinners();
-        if (data) {
-          setChamps(data);
-          console.log("Champions fetched:", data);
+
+        const [champsData, hwtData] = (await Promise.all([
+          getChampionshipWinners(),
+          getHighestWeekTotals(),
+        ])) as [Champion[], HighestWeekTotal[]];
+
+        if (champsData) {
+          setChamps(champsData);
         }
-      } catch (error) {
-        setError("Failed to fetch champions");
-        console.error("Error fetching champions:", error);
+
+        if (hwtData) {
+          setHighestWeekTotal(hwtData);
+        }
+
+      } catch (err) {
+        setError("Failed to fetch data");
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    fetchChamps();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -70,6 +79,25 @@ export default function Leaderboards() {
         }}
         seeMoreButton={<button>See More</button>}
       />
+
+      <Podium
+        title={<h1>Highest Weekly Total</h1>}
+        firstPlace={{
+          name: highestWeekTotal[0].points || 0,
+          stat: `Team: ${highestWeekTotal[0].team || "TBD"}, Owner: ${highestWeekTotal[0].owner || "TBD"}, Year: ${highestWeekTotal[0].year || 0}, Week: ${highestWeekTotal[0].week || 0}`,
+        }}
+        secondPlace={{
+          name: highestWeekTotal[1].points || 0,
+          stat: `Team: ${highestWeekTotal[1].team || "TBD"}, Owner: ${highestWeekTotal[1].owner || "TBD"}, Year: ${highestWeekTotal[1].year || 0}, Week: ${highestWeekTotal[1].week || 0}`,
+        }}
+        thirdPlace={{
+          name: highestWeekTotal[2].points || 0,
+          stat: `Team: ${highestWeekTotal[2].team || "TBD"}, Owner: ${highestWeekTotal[2].owner || "TBD"}, Year: ${highestWeekTotal[2].year || 0}, Week: ${highestWeekTotal[2].week || 0}`,
+        }}
+        seeMoreButton={<button>See More</button>}
+      />
     </div>
+
+    
   );
 }

@@ -1,5 +1,7 @@
 import { supabase } from "../lib/supabase";
 
+import type { HighestWeekTotal } from "../types";
+
 // for owners page
 export const getOwners = async () => {
   const { data: owners, error } = await supabase
@@ -76,8 +78,8 @@ export const getChampionshipWinners = async () => {
   }
 };
 
-export const getHighestWeekTotals = async () => {
-  const { data: highest_week_totals, error } = await supabase
+export const getHighestWeekTotals = async (): Promise<HighestWeekTotal[]> => {
+  const { data, error } = await supabase
     .from("leaderboards")
     .select("*")
     .eq("leaderboardId", "highest_week_totals")
@@ -86,9 +88,9 @@ export const getHighestWeekTotals = async () => {
   if (error) {
     console.log("error", error.message);
     throw new Error(error.message);
-  } else {
-    return highest_week_totals;
   }
+
+  return (data ?? []) as HighestWeekTotal[];
 };
 
 export const getHighestPlayerTotals = async () => {
