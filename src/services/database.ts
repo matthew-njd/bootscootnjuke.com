@@ -2,6 +2,7 @@ import { supabase } from "../lib/supabase";
 
 import type { HighestWeekTotal } from "../types";
 import type { HighestPlayerTotal } from "../types";
+import type { HighestSeasonalTotal } from "../types";
 
 // for owners page
 export const getOwners = async () => {
@@ -110,8 +111,10 @@ export const getHighestPlayerTotals = async (): Promise<
   return (data ?? []) as HighestPlayerTotal[];
 };
 
-export const getHighestSeasonTotals = async () => {
-  const { data: highest_seasonal_totals, error } = await supabase
+export const getHighestSeasonTotals = async (): Promise<
+  HighestSeasonalTotal[]
+> => {
+  const { data, error } = await supabase
     .from("leaderboards")
     .select("*")
     .eq("leaderboardId", "highest_season_totals")
@@ -120,9 +123,8 @@ export const getHighestSeasonTotals = async () => {
   if (error) {
     console.log("error", error.message);
     throw new Error(error.message);
-  } else {
-    return highest_seasonal_totals;
   }
+  return (data ?? []) as HighestSeasonalTotal[];
 };
 
 // for individual leadboard page

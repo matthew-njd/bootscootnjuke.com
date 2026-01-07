@@ -3,9 +3,15 @@ import {
   getChampionshipWinners,
   getHighestWeekTotals,
   getHighestPlayerTotals,
+  getHighestSeasonTotals,
 } from "../services/database";
 import Podium from "../components/common/Podium";
-import type { Champion, HighestWeekTotal, HighestPlayerTotal } from "../types";
+import type {
+  Champion,
+  HighestWeekTotal,
+  HighestPlayerTotal,
+  HighestSeasonalTotal,
+} from "../types";
 
 export default function Leaderboards() {
   const [champs, setChamps] = useState<Champion[]>([]);
@@ -15,6 +21,9 @@ export default function Leaderboards() {
   const [highestPlayerTotal, setHighestPlayerTotal] = useState<
     HighestPlayerTotal[]
   >([]);
+  const [highestSeasonTotal, setHighestSeasonTotal] = useState<
+    HighestSeasonalTotal[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,11 +32,17 @@ export default function Leaderboards() {
       try {
         setLoading(true);
 
-        const [champsData, hwtData, hptData] = (await Promise.all([
+        const [champsData, hwtData, hptData, hstData] = (await Promise.all([
           getChampionshipWinners(),
           getHighestWeekTotals(),
           getHighestPlayerTotals(),
-        ])) as [Champion[], HighestWeekTotal[], HighestPlayerTotal[]];
+          getHighestSeasonTotals(),
+        ])) as [
+          Champion[],
+          HighestWeekTotal[],
+          HighestPlayerTotal[],
+          HighestSeasonalTotal[],
+        ];
 
         if (champsData) {
           setChamps(champsData);
@@ -39,6 +54,10 @@ export default function Leaderboards() {
 
         if (hptData) {
           setHighestPlayerTotal(hptData);
+        }
+
+        if (hstData) {
+          setHighestSeasonTotal(hstData);
         }
       } catch (err) {
         setError("Failed to fetch data");
@@ -128,6 +147,25 @@ export default function Leaderboards() {
           thirdPlace={{
             name: `${highestPlayerTotal[2].points || 0}, ${highestPlayerTotal[2].player || "TBD"}`,
             stat: `Team: ${highestPlayerTotal[2].team || "TBD"}, Owner: ${highestPlayerTotal[2].owner || "TBD"}, Year: ${highestPlayerTotal[2].year || 0}`,
+          }}
+          seeMoreButton={<button>See More</button>}
+        />
+      </div>
+
+      <div className="mt-24">
+        <Podium
+          title={<h1>Highest Season Total</h1>}
+          firstPlace={{
+            name: `${highestSeasonTotal[0].points || 0}`,
+            stat: `Team: ${highestSeasonTotal[0].team || "TBD"}, Owner: ${highestSeasonTotal[0].owner || "TBD"}, Year: ${highestSeasonTotal[0].year || 0}`,
+          }}
+          secondPlace={{
+            name: `${highestSeasonTotal[1].points || 0}`,
+            stat: `Team: ${highestSeasonTotal[1].team || "TBD"}, Owner: ${highestSeasonTotal[1].owner || "TBD"}, Year: ${highestSeasonTotal[1].year || 0}`,
+          }}
+          thirdPlace={{
+            name: `${highestSeasonTotal[2].points || 0}`,
+            stat: `Team: ${highestSeasonTotal[2].team || "TBD"}, Owner: ${highestSeasonTotal[2].owner || "TBD"}, Year: ${highestSeasonTotal[2].year || 0}`,
           }}
           seeMoreButton={<button>See More</button>}
         />
