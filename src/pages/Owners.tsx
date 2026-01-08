@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getOwners } from "../services/database";
 import type { Database } from "../types";
 import Card from "../components/common/Card";
@@ -8,7 +8,6 @@ import defaultAvatar from "../assets/images/default_avatar.png";
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
 
 export default function Owners() {
-  const navigate = useNavigate();
   const [owners, setOwners] = useState<Owner[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,10 +74,9 @@ export default function Owners() {
               body={owner.bio || "No bio available"}
               footer={
                 <>
-                  <button
-                    type="button"
+                  <Link
+                    to={`/owners/${owner.ownerId}/stats`}
                     className="btn btn-soft btn-accent"
-                    onClick={() => navigate(`/owners/${owner.ownerId}/stats`)}
                   >
                     Stats
                     <svg
@@ -92,7 +90,7 @@ export default function Owners() {
                         d="m14 18l-1.4-1.45L16.15 13H4v-2h12.15L12.6 7.45L14 6l6 6z"
                       />
                     </svg>
-                  </button>
+                  </Link>
                 </>
               }
               className="card bg-primary text-primary-content w-full"
@@ -122,10 +120,9 @@ export default function Owners() {
               body={owner.bio || "No bio available"}
               footer={
                 <>
-                  <button
-                    type="button"
+                  <Link
+                    to={`/owners/${owner.ownerId}/stats`}
                     className="btn btn-soft btn-accent"
-                    onClick={() => navigate(`/owners/${owner.ownerId}/stats`)}
                   >
                     Stats
                     <svg
@@ -139,7 +136,7 @@ export default function Owners() {
                         d="m14 18l-1.4-1.45L16.15 13H4v-2h12.15L12.6 7.45L14 6l6 6z"
                       />
                     </svg>
-                  </button>
+                  </Link>
                 </>
               }
               className="card bg-primary text-primary-content w-full"
