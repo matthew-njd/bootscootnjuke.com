@@ -3,7 +3,7 @@ import { getLeagueMatchups } from "../services/sleeper";
 
 const week: number = 1;
 
-function Matchups() {
+export default function Matchups() {
   useEffect(() => {
     getLeagueMatchups(week)
       .then((data) => {
@@ -33,5 +33,3 @@ function Matchups() {
     </div>
   );
 }
-
-export default Matchups;

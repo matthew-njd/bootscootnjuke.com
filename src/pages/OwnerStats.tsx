@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOwners, getStatsByOwner } from "../services/database";
 import type { Database } from "../types";
@@ -9,7 +9,6 @@ type Stats = Database["public"]["Tables"]["stats"]["Row"];
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
 
 export default function OwnerStats() {
-  const navigate = useNavigate();
   const { ownerId } = useParams<{ ownerId: string }>();
   const [owner, setOwner] = useState<Owner | null>(null);
   const [stats, setStats] = useState<Stats[]>([]);
@@ -124,10 +123,7 @@ export default function OwnerStats() {
   if (error) {
     return (
       <div className="flex flex-col items-center p-8">
-        <button
-          onClick={() => navigate("/owners")}
-          className="btn btn-ghost mb-4"
-        >
+        <Link to={"/owners"} className="btn btn-ghost mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -140,7 +136,7 @@ export default function OwnerStats() {
             />
           </svg>
           Back to Owners
-        </button>
+        </Link>
         <div className="text-error">Error: {error}</div>
       </div>
     );
@@ -148,10 +144,7 @@ export default function OwnerStats() {
 
   return (
     <div className="flex flex-col items-center p-8">
-      <button
-        onClick={() => navigate("/owners")}
-        className="btn btn-soft btn-primary mb-4 self-start"
-      >
+      <Link to={"/owners"} className="btn btn-ghost mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -164,7 +157,7 @@ export default function OwnerStats() {
           />
         </svg>
         Back to Owners
-      </button>
+      </Link>
 
       <div className="flex items-center gap-4 mb-6">
         <img

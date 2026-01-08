@@ -1,4 +1,4 @@
-function Footer() {
+export default function Footer() {
   return (
     <div className="flex justify-center mt-12">
       <span className="text-2xl">Boot Scoot n' Juke</span>{" "}
@@ -16,5 +16,3 @@ function Footer() {
     </div>
   );
 }
-
-export default Footer;

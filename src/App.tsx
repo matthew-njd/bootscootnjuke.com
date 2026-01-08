@@ -5,10 +5,11 @@ import Owners from "./pages/Owners";
 import OwnerStats from "./pages/OwnerStats";
 import Matchups from "./pages/Matchups";
 import Leaderboards from "./pages/Leaderboards";
+import LeaderboardDetails from "./pages/LeaderboardDetails";
 import Drafts from "./pages/Drafts";
 import "./app.css";
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Layout>
@@ -18,11 +19,13 @@ function App() {
           <Route path="/owners/:ownerId/stats" element={<OwnerStats />} />
           <Route path="/matchups" element={<Matchups />} />
           <Route path="/leaderboards" element={<Leaderboards />} />
+          <Route
+            path="/leaderboards/:leaderboardId/details"
+            element={<LeaderboardDetails />}
+          />
           <Route path="/drafts" element={<Drafts />} />
         </Routes>
       </Layout>
     </BrowserRouter>
   );
 }
-
-export default App;

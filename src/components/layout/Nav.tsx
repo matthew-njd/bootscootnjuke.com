@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Nav() {
+export default function Nav() {
   return (
     <div className="navbar justify-between mb-12 text-primary">
       <div className="w-32">
@@ -88,5 +88,3 @@ function Nav() {
     </div>
   );
 }
-
-export default Nav;

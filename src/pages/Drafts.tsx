@@ -1,4 +1,4 @@
-function Drafts() {
+export default function Drafts() {
   return (
     <div className="flex flex-col items-center">
       <div className="flex gap-2">
@@ -18,5 +18,3 @@ function Drafts() {
     </div>
   );
 }
-
-export default Drafts;
