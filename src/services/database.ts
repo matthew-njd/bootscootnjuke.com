@@ -1,5 +1,8 @@
 import { supabase } from "../lib/supabase";
 
+import type { Database } from "../types";
+type Leaderboard = Database["public"]["Tables"]["leaderboards"]["Row"];
+
 import type { HighestWeekTotal } from "../types";
 import type { HighestPlayerTotal } from "../types";
 import type { HighestSeasonalTotal } from "../types";
@@ -63,6 +66,23 @@ export const getLeaderborders = async () => {
   } else {
     return leaderboards;
   }
+};
+
+export const getLeaderboardById = async (
+  leaderboardId: string,
+): Promise<Leaderboard | null> => {
+  const { data, error } = await supabase
+    .from("leaderboards")
+    .select("*")
+    .eq("id", leaderboardId)
+    .single();
+
+  if (error) {
+    console.log("error", error.message);
+    throw new Error(error.message);
+  }
+
+  return data as Leaderboard | null;
 };
 
 export const getChampionshipWinners = async () => {

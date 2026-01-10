@@ -1,11 +1,43 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getLeaderborderById } from "../services/database";
+import type { Database } from "../types";
 import Table from "../components/common/Table";
+
+type Leaderboard = Database["public"]["Tables"]["leaderboards"]["Row"];
 
 export default function LeaderboardDetails() {
   const { leaderboardId } = useParams<{ leaderboardId: string }>();
+  const [leaderboard, setLeaderboard] = useState<Leaderboard | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      if (!leaderboardId) {
+        setError("Leaderboard ID not found");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const data = await getLeaderborderById(leaderboardId);
+        if (data) {
+          setLeaderboard(data[0]);
+        } else {
+          setError("Leaderboard not found");
+        }
+      } catch (err) {
+        setError("Failed to fetch leaderboard");
+        console.error("Error fetching leaderboard:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard(); // This should be OUTSIDE the async function
+  }, [leaderboardId]);
 
   return (
     <div className="flex flex-col items-center">
