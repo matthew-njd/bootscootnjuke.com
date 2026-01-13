@@ -1,14 +1,22 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getLeaderborderById } from "../services/database";
-import type { Database } from "../types";
+import {
+  getChampionshipWinners,
+  getHighestWeekTotals,
+  getHighestPlayerTotals,
+  getHighestSeasonTotals,
+} from "../services/database";
 import Table from "../components/common/Table";
 
-type Leaderboard = Database["public"]["Tables"]["leaderboards"]["Row"];
+type LeaderboardData =
+  | Awaited<ReturnType<typeof getChampionshipWinners>>
+  | Awaited<ReturnType<typeof getHighestWeekTotals>>
+  | Awaited<ReturnType<typeof getHighestPlayerTotals>>
+  | Awaited<ReturnType<typeof getHighestSeasonTotals>>;
 
 export default function LeaderboardDetails() {
   const { leaderboardId } = useParams<{ leaderboardId: string }>();
-  const [leaderboard, setLeaderboard] = useState<Leaderboard | null>(null);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardData>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,9 +30,26 @@ export default function LeaderboardDetails() {
 
       try {
         setLoading(true);
-        const data = await getLeaderborderById(leaderboardId);
+        let data: LeaderboardData | undefined;
+
+        switch (leaderboardId) {
+          case "champs":
+            data = await getChampionshipWinners();
+            break;
+          case "highest_week_totals":
+            data = await getHighestWeekTotals();
+            break;
+          case "highest_player_totals":
+            data = await getHighestPlayerTotals();
+            break;
+          case "highest_season_totals":
+            data = await getHighestSeasonTotals();
+            break;
+        }
+
         if (data) {
-          setLeaderboard(data[0]);
+          console.log(data);
+          setLeaderboard(data);
         } else {
           setError("Leaderboard not found");
         }
@@ -36,7 +61,7 @@ export default function LeaderboardDetails() {
       }
     };
 
-    fetchLeaderboard(); // This should be OUTSIDE the async function
+    fetchLeaderboard();
   }, [leaderboardId]);
 
   return (

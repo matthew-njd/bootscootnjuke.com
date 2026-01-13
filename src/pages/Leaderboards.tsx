@@ -206,11 +206,7 @@ export default function Leaderboards() {
             ),
           }}
           seeMoreButton={
-            <Link
-              to={`/leaderboards/${highestWeekTotal[0].leaderboardId}/details`}
-            >
-              See More
-            </Link>
+            <Link to="/leaderboards/highest_week_totals/details">See More</Link>
           }
         />
       </div>
@@ -261,9 +257,7 @@ export default function Leaderboards() {
             ),
           }}
           seeMoreButton={
-            <Link
-              to={`/leaderboards/${highestPlayerTotal[0].leaderboardId}/details`}
-            >
+            <Link to="/leaderboards/highest_player_totals/details">
               See More
             </Link>
           }
@@ -310,9 +304,7 @@ export default function Leaderboards() {
             ),
           }}
           seeMoreButton={
-            <Link
-              to={`/leaderboards/${highestSeasonTotal[0].leaderboardId}/details`}
-            >
+            <Link to="/leaderboards/highest_season_totals/details">
               See More
             </Link>
           }
