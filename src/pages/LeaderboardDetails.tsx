@@ -31,6 +31,7 @@ export default function LeaderboardDetails() {
       try {
         setLoading(true);
         let data: LeaderboardData | undefined;
+        let columns: LeaderboardData = [];
 
         switch (leaderboardId) {
           case "champs":

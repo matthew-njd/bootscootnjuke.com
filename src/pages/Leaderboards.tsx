@@ -156,7 +156,14 @@ export default function Leaderboards() {
             ),
             details: champs[2]?.name || "TBD",
           }}
-          seeMoreButton={<button>See More</button>}
+          seeMoreButton={
+            <Link
+              to="/leaderboards/champs/details"
+              className="btn btn-soft btn-primary w-full"
+            >
+              See More
+            </Link>
+          }
         />
       </div>
 
@@ -206,7 +213,12 @@ export default function Leaderboards() {
             ),
           }}
           seeMoreButton={
-            <Link to="/leaderboards/highest_week_totals/details">See More</Link>
+            <Link
+              to="/leaderboards/highest_week_totals/details"
+              className="btn btn-soft btn-primary w-full"
+            >
+              See More
+            </Link>
           }
         />
       </div>
@@ -257,7 +269,10 @@ export default function Leaderboards() {
             ),
           }}
           seeMoreButton={
-            <Link to="/leaderboards/highest_player_totals/details">
+            <Link
+              to="/leaderboards/highest_player_totals/details"
+              className="btn btn-soft btn-primary w-full"
+            >
               See More
             </Link>
           }
@@ -304,7 +319,10 @@ export default function Leaderboards() {
             ),
           }}
           seeMoreButton={
-            <Link to="/leaderboards/highest_season_totals/details">
+            <Link
+              to="/leaderboards/highest_season_totals/details"
+              className="btn btn-soft btn-primary w-full"
+            >
               See More
             </Link>
           }
