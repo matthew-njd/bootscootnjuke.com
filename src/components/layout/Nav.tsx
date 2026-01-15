@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Nav() {
+  const location = useLocation();
+
+  const isActive = (path: string): boolean => location.pathname === path;
+
   return (
     <div className="navbar justify-between mb-12 text-primary">
       <div className="w-32">
@@ -15,7 +19,9 @@ export default function Nav() {
       <div className="flex gap-4">
         <Link
           to="/owners"
-          className="flex flex-col items-center gap-1 hover:opacity-70 hover:underline"
+          className={`flex flex-col items-center gap-1 hover:text-accent ${
+            isActive("/owners") ? "text-accent font-bold" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -30,10 +36,11 @@ export default function Nav() {
           </svg>
           <span className="text-md">Owners</span>
         </Link>
-
         <Link
           to="/leaderboards"
-          className="flex flex-col items-center gap-1 hover:opacity-70 hover:underline"
+          className={`flex flex-col items-center gap-1 hover:text-accent ${
+            isActive("/leaderboards") ? "text-accent font-bold" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -48,10 +55,11 @@ export default function Nav() {
           </svg>
           <span className="text-md">Leaderboards</span>
         </Link>
-
         <Link
           to="/matchups"
-          className="flex flex-col items-center gap-1 hover:opacity-70 hover:underline"
+          className={`flex flex-col items-center gap-1 hover:text-accent ${
+            isActive("/matchups") ? "text-accent font-bold" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -66,10 +74,11 @@ export default function Nav() {
           </svg>
           <span className="text-md">Matchups</span>
         </Link>
-
         <Link
           to="/drafts"
-          className="flex flex-col items-center gap-1 hover:opacity-70 hover:underline"
+          className={`flex flex-col items-center gap-1 hover:text-accent ${
+            isActive("/drafts") ? "text-accent font-bold" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
