@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getChampionshipWinners,
@@ -45,7 +45,7 @@ export default function LeaderboardDetails() {
           case "champs": {
             const data = await getChampionshipWinners();
             setConfig({
-              title: "Championship Winners",
+              title: "Z10 Winners",
               data: data || [],
               columns: [
                 { header: "Owner", accessor: "name" as keyof Champion },
@@ -163,38 +163,59 @@ export default function LeaderboardDetails() {
   if (error || !config) {
     return (
       <div className="flex flex-col items-center p-8">
+        <Link to={"/leaderboards"} className="btn btn-outline mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="m10 18l-6-6l6-6l1.4 1.45L7.85 11H20v2H7.85l3.55 3.55z"
+            />
+          </svg>
+          Back to Leaderboards
+        </Link>
         <div className="text-error">Error: {error || "Unknown error"}</div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center p-8">
-      <div className="flex gap-2 mb-6">
-        <h1 className="text-6xl">{config.title}</h1>
+    <div className="flex flex-col">
+      <Link
+        to={"/leaderboards"}
+        className="btn btn-outline mb-4 ml-8 self-start"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="4em"
-          height="4em"
+          width="32"
+          height="32"
           viewBox="0 0 24 24"
         >
           <path
             fill="currentColor"
-            d="M2 21V9h5.5v12zm7.25 0V3h5.5v18zm7.25 0V11H22v10z"
+            d="m10 18l-6-6l6-6l1.4 1.45L7.85 11H20v2H7.85l3.55 3.55z"
           />
         </svg>
+        Back to Leaderboards
+      </Link>
+      <div className="flex flex-col items-center p-8">
+        <div className="flex gap-2 mb-6">
+          <h1 className="text-4xl">{config.title}</h1>
+        </div>
+        {config.data.length === 0 ? (
+          <p>No data available for this leaderboard.</p>
+        ) : (
+          <Table
+            data={config.data}
+            columns={config.columns}
+            showIndex={false}
+            className="w-full max-w-6xl"
+          />
+        )}
       </div>
-
-      {config.data.length === 0 ? (
-        <p>No data available for this leaderboard.</p>
-      ) : (
-        <Table
-          data={config.data}
-          columns={config.columns}
-          showIndex={false}
-          className="w-full max-w-6xl"
-        />
-      )}
     </div>
   );
 }

@@ -37,7 +37,7 @@ export default function OwnerStats() {
 
         if (ownersData) {
           const currentOwner = ownersData.find(
-            (o: Owner) => o.ownerId === ownerId
+            (o: Owner) => o.ownerId === ownerId,
           );
           setOwner(currentOwner || null);
         }
@@ -82,7 +82,7 @@ export default function OwnerStats() {
         ptsAgst: acc.ptsAgst + (stat.ptsAgst ?? 0),
         finalPlace: acc.finalPlace + (stat.finalPlace ?? 0),
       }),
-      { wins: 0, loses: 0, ptsFor: 0, ptsAgst: 0, finalPlace: 0 }
+      { wins: 0, loses: 0, ptsFor: 0, ptsAgst: 0, finalPlace: 0 },
     );
 
     const count = stats.length;
@@ -143,8 +143,8 @@ export default function OwnerStats() {
   }
 
   return (
-    <div className="flex flex-col items-center p-8">
-      <Link to={"/owners"} className="btn btn-ghost mb-4">
+    <div className="flex flex-col">
+      <Link to={"/owners"} className="btn btn-outline mb-4 ml-8 self-start">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -158,29 +158,30 @@ export default function OwnerStats() {
         </svg>
         Back to Owners
       </Link>
+      <div className="flex flex-col items-center p-8">
+        <div className="flex items-center gap-4 mb-6">
+          <img
+            src={owner?.logoUrl || defaultAvatar}
+            alt={owner?.name || "Owner"}
+            className={`w-24 h-24 rounded ${
+              !owner?.logoUrl ? "bg-accent p-2" : ""
+            }`}
+          />
+          <h1 className="text-4xl">Stats for {owner?.name}</h1>
+        </div>
 
-      <div className="flex items-center gap-4 mb-6">
-        <img
-          src={owner?.logoUrl || defaultAvatar}
-          alt={owner?.name || "Owner"}
-          className={`w-24 h-24 rounded ${
-            !owner?.logoUrl ? "bg-accent p-2" : ""
-          }`}
-        />
-        <h1 className="text-4xl">Stats for {owner?.name}</h1>
+        {stats.length === 0 ? (
+          <p>No stats available for this owner.</p>
+        ) : (
+          <Table
+            data={stats}
+            columns={columns}
+            showIndex={false}
+            className="w-full max-w-6xl"
+            footer={calculateAverages()}
+          />
+        )}
       </div>
-
-      {stats.length === 0 ? (
-        <p>No stats available for this owner.</p>
-      ) : (
-        <Table
-          data={stats}
-          columns={columns}
-          showIndex={false}
-          className="w-full max-w-6xl"
-          footer={calculateAverages()}
-        />
-      )}
     </div>
   );
 }
