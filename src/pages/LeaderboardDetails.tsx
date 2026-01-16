@@ -14,19 +14,15 @@ import type {
   HighestSeasonalTotal,
 } from "../types";
 
-type LeaderboardConfig = {
+type LeaderboardConfig<T> = {
   title: string;
-  data:
-    | Champion[]
-    | HighestWeekTotal[]
-    | HighestPlayerTotal[]
-    | HighestSeasonalTotal[];
+  data: T[];
   columns: any[];
 };
 
 export default function LeaderboardDetails() {
   const { leaderboardId } = useParams<{ leaderboardId: string }>();
-  const [config, setConfig] = useState<LeaderboardConfig | null>(null);
+  const [config, setConfig] = useState<LeaderboardConfig<any> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
