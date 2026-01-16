@@ -55,7 +55,7 @@ export default function Owners() {
           ></path>
         </svg>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 mt-24">
         {owners
           .filter((owner) => owner.active)
           .map((owner) => (
