@@ -118,6 +118,11 @@ export interface Sleeper {
     };
   };
 
+  Roster: {
+    owner_id: number;
+    roster_id: number;
+  };
+
   Matchup: {
     points: number;
     roster_id: number;

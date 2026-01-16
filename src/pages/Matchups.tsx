@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { getLeagueMatchups } from "../services/sleeper";
+import { getMappedMatchups } from "../services/sleeper";
 
 const week: number = 1;
 
 export default function Matchups() {
   useEffect(() => {
-    getLeagueMatchups(week)
+    getMappedMatchups(week)
       .then((data) => {
         console.log("League matchups:", data);
       })
