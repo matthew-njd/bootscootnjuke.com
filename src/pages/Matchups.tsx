@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMappedMatchups, type MappedMatchup } from "../services/sleeper";
 import Card from "../components/common/Card";
+import defaultAvatar from "../assets/images/default_avatar.png";
 
 type GroupedMatchup = {
   matchup_id: number;
@@ -25,7 +26,7 @@ export default function Matchups() {
             acc[matchupId].push(team);
             return acc;
           },
-          {} as Record<number, MappedMatchup[]>
+          {} as Record<number, MappedMatchup[]>,
         );
 
         const matchupPairs: GroupedMatchup[] = Object.entries(grouped)
@@ -93,16 +94,14 @@ export default function Matchups() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
             >
-              <polyline points="15 18 9 12 15 6"></polyline>
+              <path
+                fill="currentColor"
+                d="m7.825 13l5.6 5.6L12 20l-8-8l8-8l1.425 1.4l-5.6 5.6H20v2z"
+              />
             </svg>
           </button>
 
@@ -118,16 +117,14 @@ export default function Matchups() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
             >
-              <polyline points="9 18 15 12 9 6"></polyline>
+              <path
+                fill="currentColor"
+                d="M16.175 13H4v-2h12.175l-5.6-5.6L12 4l8 8l-8 8l-1.425-1.4z"
+              />
             </svg>
           </button>
         </div>
@@ -138,7 +135,16 @@ export default function Matchups() {
             className="flex items-center justify-center gap-4"
           >
             <Card
-              title={matchup.teams[0].team_name || "Team"}
+              title={
+                <div className="flex items-center gap-3">
+                  <img
+                    src={matchup.teams[0].avatar || defaultAvatar}
+                    alt={`${matchup.teams[0].team_name} avatar`}
+                    className="w-14 h-14 rounded border object-cover"
+                  />
+                  <span>{matchup.teams[0].team_name || "Team"}</span>
+                </div>
+              }
               body={
                 <div className="text-center">
                   <p className="text-4xl font-bold">
@@ -170,7 +176,16 @@ export default function Matchups() {
             </div>
 
             <Card
-              title={matchup.teams[1].team_name || "Team"}
+              title={
+                <div className="flex items-center gap-3">
+                  <img
+                    src={matchup.teams[1].avatar || defaultAvatar}
+                    alt={`${matchup.teams[1].team_name} avatar`}
+                    className="w-14 h-14 rounded border object-cover"
+                  />
+                  <span>{matchup.teams[1].team_name || "Team"}</span>
+                </div>
+              }
               body={
                 <div className="text-center">
                   <p className="text-4xl font-bold">

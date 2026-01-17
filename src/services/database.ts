@@ -1,11 +1,12 @@
 import { supabase } from "../lib/supabase";
-import type { HighestWeekTotal } from "../types";
+import type { Database, HighestWeekTotal } from "../types";
 import type { HighestPlayerTotal } from "../types";
 import type { HighestSeasonalTotal } from "../types";
+type Owner = Database["public"]["Tables"]["owners"]["Row"];
 
 // for owners page
-export const getOwners = async () => {
-  const { data: owners, error } = await supabase
+export const getOwners = async (): Promise<Owner[]> => {
+  const { data, error } = await supabase
     .from("owners")
     .select("*")
     .order("ownerId", { ascending: true });
@@ -14,7 +15,7 @@ export const getOwners = async () => {
     console.log("error", error.message);
     throw new Error(error.message);
   } else {
-    return owners;
+    return data;
   }
 };
 

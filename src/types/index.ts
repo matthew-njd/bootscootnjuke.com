@@ -34,6 +34,7 @@ export interface Database {
           logoUrl: string | null;
           name: string | null;
           ownerId: string;
+          sleeperId: string;
         };
       };
       stats: {

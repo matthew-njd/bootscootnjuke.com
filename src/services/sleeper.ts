@@ -1,4 +1,5 @@
 import type { Sleeper } from "../types";
+import { getOwners } from "./database";
 
 type User = Sleeper["User"];
 type Roster = Sleeper["Roster"];
@@ -13,7 +14,7 @@ const leagueId = import.meta.env.VITE_LEAGUE_ID;
 
 export async function getLeagueUsers(): Promise<User[]> {
   const response = await fetch(
-    `https://api.sleeper.app/v1/league/${leagueId}/users`
+    `https://api.sleeper.app/v1/league/${leagueId}/users`,
   );
 
   if (!response.ok) {
@@ -25,7 +26,7 @@ export async function getLeagueUsers(): Promise<User[]> {
 
 export async function getLeagueRosters(): Promise<Roster[]> {
   const response = await fetch(
-    `https://api.sleeper.app/v1/league/${leagueId}/rosters`
+    `https://api.sleeper.app/v1/league/${leagueId}/rosters`,
   );
 
   if (!response.ok) {
@@ -37,7 +38,7 @@ export async function getLeagueRosters(): Promise<Roster[]> {
 
 export async function getLeagueMatchups(week: number): Promise<Matchup[]> {
   const response = await fetch(
-    `https://api.sleeper.app/v1/league/${leagueId}/matchups/${week}`
+    `https://api.sleeper.app/v1/league/${leagueId}/matchups/${week}`,
   );
 
   if (!response.ok) {
@@ -48,15 +49,17 @@ export async function getLeagueMatchups(week: number): Promise<Matchup[]> {
 }
 
 export async function getMappedMatchups(
-  week: number
+  week: number,
 ): Promise<MappedMatchup[]> {
-  const [users, rosters, matchups] = await Promise.all([
+  const [users, rosters, matchups, owners] = await Promise.all([
     getLeagueUsers(),
     getLeagueRosters(),
     getLeagueMatchups(week),
+    getOwners(),
   ]);
 
   const userMap = new Map(users.map((u) => [u.user_id, u]));
+  const ownerMap = new Map(owners.map((o) => [o.sleeperId, o]));
 
   const rosterToUserMap = new Map();
   rosters.forEach((roster) => {
@@ -68,10 +71,11 @@ export async function getMappedMatchups(
 
   return matchups.map((matchup) => {
     const user = rosterToUserMap.get(matchup.roster_id);
+    const owner = user ? ownerMap.get(user.user_id) : null;
 
     return {
       ...matchup,
-      avatar: user?.avatar || null,
+      avatar: owner?.logoUrl || null,
       team_name: user?.metadata?.team_name || user?.display_name || "Team",
     };
   });
