@@ -55,7 +55,7 @@ export default function Owners() {
           ></path>
         </svg>
       </div>
-      <div className="flex flex-col gap-4 mt-24">
+      <div className="flex flex-col gap-4 mt-12">
         {owners
           .filter((owner) => owner.active)
           .map((owner) => (
@@ -66,7 +66,7 @@ export default function Owners() {
                   <img
                     src={owner.logoUrl || defaultAvatar}
                     alt={owner.name || "Owner"}
-                    className="w-24 h-24 rounded"
+                    className="w-24 h-24 rounded border"
                   />
                   {owner.name}
                 </>
@@ -112,7 +112,7 @@ export default function Owners() {
                   <img
                     src={owner.logoUrl || defaultAvatar}
                     alt={owner.name || "Owner"}
-                    className="w-16 h-16 rounded"
+                    className="w-16 h-16 rounded border"
                   />
                   {owner.name}
                 </>
