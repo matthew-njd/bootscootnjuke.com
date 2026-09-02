@@ -159,7 +159,7 @@ export default function LeaderboardDetails() {
   if (error || !config) {
     return (
       <div className="flex flex-col items-center p-8">
-        <Link to={"/leaderboards"} className="btn btn-outline mb-4">
+        <Link to={"/leaderboards"} className="btn btn-outline btn-primary mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -182,7 +182,7 @@ export default function LeaderboardDetails() {
     <div className="flex flex-col">
       <Link
         to={"/leaderboards"}
-        className="btn btn-outline mb-4 ml-8 self-start"
+        className="btn btn-outline btn-primary mb-4 ml-8 self-start"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

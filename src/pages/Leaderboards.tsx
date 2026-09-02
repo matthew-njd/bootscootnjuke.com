@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 export default function Leaderboards() {
   const [champs, setChamps] = useState<Champion[]>([]);
   const [highestWeekTotal, setHighestWeekTotal] = useState<HighestWeekTotal[]>(
-    []
+    [],
   );
   const [highestPlayerTotal, setHighestPlayerTotal] = useState<
     HighestPlayerTotal[]
@@ -42,7 +42,7 @@ export default function Leaderboards() {
           Champion[],
           HighestWeekTotal[],
           HighestPlayerTotal[],
-          HighestSeasonalTotal[]
+          HighestSeasonalTotal[],
         ];
 
         if (champsData) {
@@ -96,7 +96,7 @@ export default function Leaderboards() {
         </svg>
       </div>
 
-      <div className="mt-24">
+      <div className="mt-12">
         <Podium
           title={<h1>Most Z10s</h1>}
           firstPlace={{
@@ -159,7 +159,7 @@ export default function Leaderboards() {
           seeMoreButton={
             <Link
               to="/leaderboards/champs/details"
-              className="btn btn-soft btn-primary w-full"
+              className="btn btn-outline btn-primary w-full"
             >
               See More
             </Link>
@@ -215,7 +215,7 @@ export default function Leaderboards() {
           seeMoreButton={
             <Link
               to="/leaderboards/highest_week_totals/details"
-              className="btn btn-soft btn-primary w-full"
+              className="btn btn-outline btn-primary w-full"
             >
               See More
             </Link>
@@ -271,7 +271,7 @@ export default function Leaderboards() {
           seeMoreButton={
             <Link
               to="/leaderboards/highest_player_totals/details"
-              className="btn btn-soft btn-primary w-full"
+              className="btn btn-outline btn-primary w-full"
             >
               See More
             </Link>
@@ -321,7 +321,7 @@ export default function Leaderboards() {
           seeMoreButton={
             <Link
               to="/leaderboards/highest_season_totals/details"
-              className="btn btn-soft btn-primary w-full"
+              className="btn btn-outline btn-primary w-full"
             >
               See More
             </Link>
