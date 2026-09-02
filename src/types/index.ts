@@ -37,6 +37,15 @@ export interface Database {
           sleeperId: string;
         };
       };
+      recaps: {
+        Row: {
+          id: number;
+          year: number;
+          week: number;
+          body: string;
+          created_at: string;
+        };
+      };
       stats: {
         Row: {
           id: number;

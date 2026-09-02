@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import leagueLogo from "../../assets/images/league_logo.png";
 
 export default function Nav() {
   const location = useLocation();
@@ -10,7 +11,7 @@ export default function Nav() {
       <div className="w-32">
         <Link to="/">
           <img
-            src="src/assets/images/league_logo.png"
+            src={leagueLogo}
             alt="League Logo"
             className="hover:scale-110"
           />

@@ -1,4 +1,5 @@
 import Card from "../components/common/Card";
+import Recap from "../components/common/Recap";
 import Loudspeaker from "../assets/images/loudspeaker.png";
 import { Link } from "react-router-dom";
 
@@ -50,6 +51,8 @@ export default function Home() {
         bodyClassName="text-2xl m-4"
         footerClassName="card-footer text-xs italic"
       />
+
+      <Recap />
     </div>
   );
 }

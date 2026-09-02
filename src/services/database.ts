@@ -3,6 +3,7 @@ import type { Database, HighestWeekTotal } from "../types";
 import type { HighestPlayerTotal } from "../types";
 import type { HighestSeasonalTotal } from "../types";
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
+type Recap = Database["public"]["Tables"]["recaps"]["Row"];
 
 // for owners page
 export const getOwners = async (): Promise<Owner[]> => {
@@ -125,6 +126,39 @@ export const getHighestSeasonTotals = async (): Promise<
     throw new Error(error.message);
   }
   return (data ?? []) as HighestSeasonalTotal[];
+};
+
+// for recaps
+export const getLatestRecap = async (): Promise<Recap | null> => {
+  const { data, error } = await supabase
+    .from("recaps")
+    .select("*")
+    .order("year", { ascending: false })
+    .order("week", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.log("error", error.message);
+    throw new Error(error.message);
+  }
+  return data;
+};
+
+export const getRecapByWeek = async (week: number): Promise<Recap | null> => {
+  const { data, error } = await supabase
+    .from("recaps")
+    .select("*")
+    .eq("week", week)
+    .order("year", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.log("error", error.message);
+    throw new Error(error.message);
+  }
+  return data;
 };
 
 // for drafts page
