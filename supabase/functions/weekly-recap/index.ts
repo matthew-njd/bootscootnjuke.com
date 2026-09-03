@@ -21,7 +21,11 @@ type SleeperUser = {
   display_name: string;
   metadata?: { team_name?: string };
 };
-type SleeperRoster = { owner_id: string; roster_id: number };
+type SleeperRoster = {
+  owner_id: string;
+  roster_id: number;
+  settings?: { wins?: number; losses?: number };
+};
 type SleeperMatchup = {
   matchup_id: number;
   roster_id: number;
@@ -53,15 +57,15 @@ async function getMatchups(week: number) {
   const ownerBySleeperId = new Map(
     ((owners ?? []) as OwnerName[]).map((o) => [o.sleeperId, o]),
   );
-  const userByRoster = new Map(
-    rosters.map((r) => [r.roster_id, userById.get(r.owner_id)]),
-  );
+  const rosterById = new Map(rosters.map((r) => [r.roster_id, r]));
 
   const named = matchups.map((m) => {
-    const user = userByRoster.get(m.roster_id);
+    const roster = rosterById.get(m.roster_id);
+    const user = userById.get(roster?.owner_id ?? "");
     return {
       matchup_id: m.matchup_id,
       points: m.points ?? 0,
+      record: `${roster?.settings?.wins ?? 0}-${roster?.settings?.losses ?? 0}`,
       team: user?.metadata?.team_name ?? user?.display_name ?? "Unknown Team",
       owner:
         ownerBySleeperId.get(user?.user_id ?? "")?.name ??
@@ -77,7 +81,31 @@ async function getMatchups(week: number) {
     byMatchup.set(team.matchup_id, group);
   }
 
-  return [...byMatchup.values()].filter((teams) => teams.length === 2);
+  const pairs = [...byMatchup.values()].filter((teams) => teams.length === 2);
+
+  const scores = named.map((t) => t.points).sort((a, b) => a - b);
+  const median = scores[Math.floor(scores.length / 2)] ?? 0;
+
+  return pairs.map((teams) => {
+    const [winner, loser] = [...teams].sort((a, b) => b.points - a.points);
+    return {
+      winner,
+      loser,
+      margin: Number((winner.points - loser.points).toFixed(2)),
+      loserOutscoredLeagueMedian: loser.points > median,
+    };
+  });
+}
+
+async function getRecentRecaps(year: number, week: number) {
+  const { data } = await supabase
+    .from("recaps")
+    .select("week, body")
+    .eq("year", year)
+    .lt("week", week)
+    .order("week", { ascending: false })
+    .limit(2);
+  return data ?? [];
 }
 
 async function getLeagueContext() {
@@ -98,9 +126,11 @@ Never do these:
 - Generic sportswriter filler ("came out swinging", "left it all on the field", "statement win")
 - Praising everyone. Somebody played badly. Say so.
 - Inventing stats, players, or history. You only know what is in the data given to you.
+- Reusing a joke, insult, or framing from the previous recaps you are shown. Callbacks are good; repeats are not.
 
 Format, exactly:
 - One paragraph per matchup, 2-4 sentences. Lead with who won and the score.
+- Work each team's record in where it lands naturally. A margin over 40 is a blowout and worth saying so; a loser who outscored the league median got robbed and deserves sympathy instead of abuse.
 - Then a final line starting "Biggest Loser: " naming the lowest scorer with one sentence of abuse.
 - Plain text only. No markdown, no headers, no bullet points. Separate paragraphs with a blank line.`;
 
@@ -135,12 +165,15 @@ Deno.serve(async (req) => {
     let week = Number(weekParam ?? state.week);
     let games = await getMatchups(week);
 
-    if (!weekParam && week > 1 && games.every((g) => g[0].points === 0)) {
+    const scoreless = (g: (typeof games)[number]) =>
+      g.winner.points === 0 && g.loser.points === 0;
+
+    if (!weekParam && week > 1 && games.every(scoreless)) {
       week -= 1;
       games = await getMatchups(week);
     }
 
-    const unplayed = games.every((g) => g[0].points === 0 && g[1].points === 0);
+    const unplayed = games.every(scoreless);
     if (!games.length || unplayed) {
       return Response.json({
         skipped: `no completed matchups for week ${week}`,
@@ -163,7 +196,13 @@ Deno.serve(async (req) => {
       model: MODEL,
       contents: `Week ${week} of the ${year} season is final. Write the recap.\n\n${JSON.stringify(games)}`,
       config: {
-        systemInstruction: `${VOICE}\n\nLeague history:\n${await getLeagueContext()}`,
+        systemInstruction: [
+          VOICE,
+          `League history:\n${await getLeagueContext()}`,
+          `Your previous recaps this season, so you do not repeat yourself:\n${JSON.stringify(
+            await getRecentRecaps(year, week),
+          )}`,
+        ].join("\n\n"),
         safetySettings: SAFETY,
         temperature: 1.0,
       },
