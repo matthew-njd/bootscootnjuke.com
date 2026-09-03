@@ -131,6 +131,13 @@ export interface Sleeper {
   Roster: {
     owner_id: number;
     roster_id: number;
+    settings?: {
+      wins: number;
+      losses: number;
+      ties: number;
+      fpts: number;
+      fpts_decimal?: number;
+    };
   };
 
   Matchup: {

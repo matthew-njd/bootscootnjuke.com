@@ -1,43 +1,126 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: false;
+}
 @plugin "daisyui/theme" {
   name: "bsnj";
   default: true;
-  prefersdark: true;
-  color-scheme: "dark";
-  --color-base-100: oklch(20% 0 0);
-  --color-base-200: oklch(26% 0 0);
-  --color-base-300: oklch(32% 0 0);
-  --color-base-content: oklch(86% 0.022 252.894);
-  --color-primary: oklch(85% 0.199 91.936);
-  --color-primary-content: oklch(28% 0.066 53.813);
-  --color-secondary: oklch(97% 0 0);
-  --color-secondary-content: oklch(12% 0.042 264.695);
-  --color-accent: oklch(87% 0.006 286.286);
-  --color-accent-content: oklch(14% 0.005 285.823);
-  --color-neutral: oklch(26% 0 0);
-  --color-neutral-content: oklch(98% 0 0);
-  --color-info: oklch(74% 0.16 232.661);
-  --color-info-content: oklch(29% 0.066 243.157);
-  --color-success: oklch(84% 0.238 128.85);
-  --color-success-content: oklch(27% 0.072 132.109);
-  --color-warning: oklch(75% 0.183 55.934);
-  --color-warning-content: oklch(26% 0.079 36.259);
-  --color-error: oklch(71% 0.194 13.428);
-  --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.25rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.25rem;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: oklch(94% 0.024 84);
+  --color-base-200: oklch(89% 0.036 82);
+  --color-base-300: oklch(83% 0.048 80);
+  --color-base-content: oklch(25% 0.014 70);
+
+  --color-primary: oklch(57% 0.145 45);
+  --color-primary-content: oklch(96% 0.022 84);
+  --color-secondary: oklch(34% 0.055 155);
+  --color-secondary-content: oklch(94% 0.024 84);
+  --color-accent: oklch(37% 0.055 255);
+  --color-accent-content: oklch(94% 0.024 84);
+  --color-neutral: oklch(31% 0.02 70);
+  --color-neutral-content: oklch(94% 0.024 84);
+
+  --color-info: oklch(48% 0.075 250);
+  --color-info-content: oklch(96% 0.022 84);
+  --color-success: oklch(45% 0.09 152);
+  --color-success-content: oklch(96% 0.022 84);
+  --color-warning: oklch(72% 0.13 78);
+  --color-warning-content: oklch(25% 0.05 70);
+  --color-error: oklch(48% 0.16 32);
+  --color-error-content: oklch(96% 0.022 84);
+
+  /* Period print has square corners. */
+  --radius-selector: 0;
+  --radius-field: 0;
+  --radius-box: 0;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
-  --border: 1px;
-  --depth: 1;
-  --noise: 1;
+  --border: 2px;
+  --depth: 0;
+  --noise: 0;
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@theme {
+  --font-display: "Alfa Slab One", Georgia, serif;
+  --font-condensed:
+    "Oswald", "Arial Narrow", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+}
+
+body {
+  font-family: var(--font-serif);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.28;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+.halftone {
+  background-image: radial-gradient(currentColor 0.5px, transparent 0.6px);
+  background-size: 3px 3px;
+  opacity: 0;
+}
+
+.yardlines {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      color-mix(in oklch, var(--color-base-100) 55%, transparent) 0 2px,
+      transparent 2px 4rem
+    ),
+    repeating-linear-gradient(
+      to right,
+      color-mix(in oklch, var(--color-base-100) 25%, transparent) 0 1px,
+      transparent 1px 0.8rem
+    );
+}
+
+.rule-double {
+  border-top: 3px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  height: 6px;
+}
+
+.stub {
+  --notch: 0.6rem;
+  mask-image:
+    radial-gradient(var(--notch) at left 50%, transparent 99%, #000 100%),
+    radial-gradient(var(--notch) at right 50%, transparent 99%, #000 100%);
+  mask-composite: intersect;
+}
+
+.wood-type {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.label-caps {
+  font-family: var(--font-condensed);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+}
+
+.figures {
+  font-family: var(--font-condensed);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
 }

@@ -26,10 +26,11 @@ export default function Recap({ week }: { week?: number }) {
         </p>
       ))}
       footer={<p>Written by a robot who watched you lose</p>}
-      className="card bg-base-200 w-full max-w-4xl"
-      titleClassName="card-title text-3xl font-bold"
-      bodyClassName="text-lg mt-4 text-left"
-      footerClassName="card-footer text-xs italic mt-4"
+      className="border-2 border-base-content bg-base-200 w-full max-w-4xl"
+      cardBodyClassName="p-6 sm:p-8"
+      titleClassName="wood-type text-3xl sm:text-4xl uppercase"
+      bodyClassName="text-lg mt-5 text-left leading-relaxed"
+      footerClassName="text-xs italic mt-5 text-base-content/55"
     />
   );
 }

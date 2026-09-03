@@ -1,18 +1,44 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
-    <div className="flex justify-center mt-12">
-      <span className="text-2xl">Boot Scoot n' Juke</span>{" "}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <path
-          fill="currentColor"
-          d="M9.8 8.44H6.87V16H4.89V8.44H2V7h7.8zM13.5 7l2.46 6.5L18.41 7H21v9h-2v-2.5l.22-4.26L16.63 16h-1.35L12.7 9.25l.2 4.25V16h-1.97V7z"
-        />
-      </svg>
-    </div>
+    <footer className="mt-20 bg-neutral text-neutral-content">
+      <div className="relative h-3 bg-primary overflow-hidden">
+        <div className="absolute inset-0 yardlines opacity-50" aria-hidden />
+      </div>
+
+      <div className="mx-auto max-w-6xl px-6 py-10 grid gap-8 sm:grid-cols-[1fr_auto] items-center">
+        <div>
+          <div className="wood-type text-3xl uppercase">
+            &copy; Boot Scoot n' Juke
+          </div>
+          <p className="mt-2 max-w-md text-sm text-neutral-content/70">
+            A fantasy football league where friendships are tested.
+          </p>
+        </div>
+
+        <nav className="label-caps flex flex-wrap gap-x-6 gap-y-2 text-xs">
+          <Link
+            to="/"
+            onClick={() => window.scrollTo({ top: 0 })}
+            className="hover:text-primary"
+          >
+            Home
+          </Link>
+          <Link to="/owners" className="hover:text-primary">
+            Owners
+          </Link>
+          <Link to="/leaderboards" className="hover:text-primary">
+            Leaderboards
+          </Link>
+          <Link to="/matchups" className="hover:text-primary">
+            Matchups
+          </Link>
+          <Link to="/drafts" className="hover:text-primary">
+            Drafts
+          </Link>
+        </nav>
+      </div>
+    </footer>
   );
 }
