@@ -9,7 +9,7 @@ import {
 } from "../services/sleeper";
 import Recap from "../components/common/Recap";
 import defaultAvatar from "../assets/images/default_avatar.png";
-import { seasonHeadline, seasonPhase } from "../lib/league";
+import { SEASON_NUMBER, seasonHeadline, seasonPhase } from "../lib/league";
 
 type Pair = [MappedMatchup, MappedMatchup];
 
@@ -181,8 +181,8 @@ export default function Home() {
             Fantasy Football League
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-secondary-content/85">
-            Every owner, every draft, every collapse. Ten seasons of receipts,
-            kept in one place.
+            {SEASON_NUMBER} seasons in. The trophy changes hands. The receipts
+            don't.
           </p>
         </div>
       </section>
