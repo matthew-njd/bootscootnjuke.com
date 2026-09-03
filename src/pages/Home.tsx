@@ -24,14 +24,18 @@ function pairUp(teams: MappedMatchup[]): Pair[] {
 function ScoreRow({ team, won }: { team: MappedMatchup; won: boolean }) {
   return (
     <div
-      className={`flex items-center gap-3 px-3 py-2 ${won ? "" : "opacity-55"}`}
+      className={`flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 ${
+        won ? "" : "opacity-55"
+      }`}
     >
       <img
         src={team.avatar || defaultAvatar}
         alt=""
         className="w-7 h-7 object-cover border border-base-100/30"
       />
-      <span className="label-caps text-xs truncate grow">{team.team_name}</span>
+      <span className="label-caps text-xs truncate grow min-w-0">
+        {team.team_name}
+      </span>
       <span className="figures text-xl tabular-nums">
         {team.points?.toFixed(1) ?? "0.0"}
       </span>
@@ -46,9 +50,11 @@ function ScoreRow({ team, won }: { team: MappedMatchup; won: boolean }) {
 function Scoreboard({ pairs, week }: { pairs: Pair[]; week: number }) {
   return (
     <div className="border-2 border-base-content bg-neutral text-neutral-content">
-      <div className="flex items-baseline justify-between px-4 py-2 bg-primary text-primary-content border-b-2 border-base-content">
-        <h2 className="label-caps text-sm">Around the League</h2>
-        <span className="figures text-sm">Week {week}</span>
+      <div className="flex items-baseline justify-between gap-2 px-3 sm:px-4 py-2 bg-primary text-primary-content border-b-2 border-base-content">
+        <h2 className="label-caps text-xs sm:text-sm truncate min-w-0">
+          Around the League
+        </h2>
+        <span className="figures text-sm shrink-0">Week {week}</span>
       </div>
 
       {pairs.length === 0 ? (
@@ -79,9 +85,11 @@ function Scoreboard({ pairs, week }: { pairs: Pair[]; week: number }) {
 function Standings({ standings }: { standings: Standing[] }) {
   return (
     <div className="border-2 border-base-content bg-base-100">
-      <div className="flex items-baseline justify-between px-4 py-2 bg-secondary text-secondary-content border-b-2 border-base-content">
-        <h2 className="label-caps text-sm">Current Rankings</h2>
-        <span className="label-caps text-[0.6rem] opacity-70">
+      <div className="flex items-baseline justify-between gap-2 px-3 sm:px-4 py-2 bg-secondary text-secondary-content border-b-2 border-base-content">
+        <h2 className="label-caps text-xs sm:text-sm truncate min-w-0">
+          Current Rankings
+        </h2>
+        <span className="label-caps text-[0.6rem] opacity-70 shrink-0">
           W-L &middot; PF
         </span>
       </div>
@@ -90,7 +98,7 @@ function Standings({ standings }: { standings: Standing[] }) {
         {standings.map((team, i) => (
           <li
             key={team.roster_id}
-            className={`flex items-center gap-3 px-3 py-2 ${
+            className={`flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 ${
               i < 3 ? "bg-base-200/60" : ""
             }`}
           >
@@ -106,7 +114,7 @@ function Standings({ standings }: { standings: Standing[] }) {
               alt=""
               className="w-8 h-8 object-cover border border-base-content"
             />
-            <span className="label-caps text-xs truncate grow">
+            <span className="label-caps text-xs truncate grow min-w-0">
               {team.team_name}
             </span>
             <span className="figures text-sm tabular-nums">

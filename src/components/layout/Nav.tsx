@@ -47,7 +47,7 @@ export default function Nav() {
       {/* Navigation band */}
       <nav className="relative bg-secondary text-secondary-content border-b-2 border-base-content/80 overflow-hidden">
         <div className="absolute inset-0 yardlines opacity-40" aria-hidden />
-        <ul className="relative mx-auto max-w-6xl px-4 flex justify-center">
+        <ul className="relative mx-auto max-w-6xl px-2 sm:px-4 flex flex-wrap justify-center">
           {LINKS.map(({ to, label }) => {
             const active =
               to === "/" ? pathname === "/" : pathname.startsWith(to);
@@ -59,7 +59,7 @@ export default function Nav() {
                     to === "/" ? () => window.scrollTo({ top: 0 }) : undefined
                   }
                   aria-current={active ? "page" : undefined}
-                  className={`label-caps block px-4 sm:px-7 py-3 text-xs sm:text-sm border-x border-base-100/15 transition-colors ${
+                  className={`label-caps block px-3 sm:px-7 py-3 text-[0.7rem] sm:text-sm border-x border-base-100/15 transition-colors ${
                     active
                       ? "bg-primary text-primary-content"
                       : "hover:bg-base-100/15"

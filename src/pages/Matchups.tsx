@@ -31,7 +31,9 @@ function TeamRow({
 }) {
   return (
     <div
-      className={`flex items-center gap-3 px-4 py-3 ${won ? "" : "opacity-55"}`}
+      className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 ${
+        won ? "" : "opacity-55"
+      }`}
     >
       <img
         src={team.avatar || defaultAvatar}
@@ -48,7 +50,7 @@ function TeamRow({
           </div>
         )}
       </div>
-      <span className="figures text-2xl tabular-nums">
+      <span className="figures text-xl sm:text-2xl tabular-nums">
         {team.points?.toFixed(1) ?? "0.0"}
       </span>
       <span
