@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
 import { getLatestRecap, getRecapByWeek } from "../../services/database";
+
 import type { Database } from "../../types";
 
 type Recap = Database["public"]["Tables"]["recaps"]["Row"];
@@ -25,7 +26,7 @@ export default function Recap({ week }: { week?: number }) {
           {paragraph}
         </p>
       ))}
-      footer={<p>Written by a robot who watched you lose</p>}
+      footer={<p>This Club D'Agostino team is really good</p>}
       className="border-2 border-base-content bg-base-200 w-full max-w-4xl"
       cardBodyClassName="p-6 sm:p-8"
       titleClassName="wood-type text-3xl sm:text-4xl uppercase"

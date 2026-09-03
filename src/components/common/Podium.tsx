@@ -1,24 +1,18 @@
 import React from "react";
-import Card from "./Card";
-
 import firstPlaceImage from "../../assets/images/first_place.png";
 import secondPlaceImage from "../../assets/images/second_place.png";
 import thirdPlaceImage from "../../assets/images/third_place.png";
 
+interface Place {
+  stat: React.ReactNode;
+  details: React.ReactNode;
+}
+
 interface PodiumProps {
   title?: React.ReactNode;
-  firstPlace: {
-    stat: React.ReactNode;
-    details: React.ReactNode;
-  };
-  secondPlace: {
-    stat: React.ReactNode;
-    details: React.ReactNode;
-  };
-  thirdPlace: {
-    stat: React.ReactNode;
-    details: React.ReactNode;
-  };
+  firstPlace: Place;
+  secondPlace: Place;
+  thirdPlace: Place;
   seeMoreButton?: React.ReactNode;
 }
 
@@ -33,86 +27,62 @@ export default function Podium({
     {
       data: secondPlace,
       image: secondPlaceImage,
-      alt: "Second Place",
-      textSize: "text-2xl",
-      minHeight: "min-h-75",
-      imageWidth: "w-[35%]",
-      spacing: "pt-6 pb-2",
-      margin: "mr-2",
+      rank: "2nd",
+      order: "sm:order-1",
+      pad: "sm:pt-10",
+      statSize: "text-2xl",
     },
     {
       data: firstPlace,
       image: firstPlaceImage,
-      alt: "First Place",
-      textSize: "text-3xl",
-      minHeight: "min-h-100",
-      imageWidth: "w-[40%]",
-      spacing: "pt-8 pb-2",
+      rank: "1st",
+      order: "sm:order-2",
+      pad: "",
+      statSize: "text-4xl",
     },
     {
       data: thirdPlace,
       image: thirdPlaceImage,
-      alt: "Third Place",
-      textSize: "text-xl",
-      minHeight: "min-h-62.5",
-      imageWidth: "w-[30%]",
-      spacing: "pt-4 pb-2",
-      margin: "ml-2",
+      rank: "3rd",
+      order: "sm:order-3",
+      pad: "sm:pt-16",
+      statSize: "text-xl",
     },
   ];
 
   return (
-    <div className="flex flex-col md:flex-wrap justify-center lg:grid">
-      {title && <div className="text-3xl mb-2">{title}</div>}
+    <section className="w-full">
+      {title && (
+        <h2 className="wood-type text-2xl sm:text-3xl uppercase text-center mb-6">
+          {title}
+        </h2>
+      )}
 
-      <div className="flex justify-center items-end">
-        {positions.map(
-          (
-            {
-              data,
-              image,
-              alt,
-              textSize,
-              minHeight,
-              imageWidth,
-              spacing,
-              margin = "",
-            },
-            idx
-          ) => (
-            <Card
-              key={idx}
-              title={
-                <div className="flex justify-center">
-                  <img
-                    src={image}
-                    alt={`${alt} (freepik icon)`}
-                    className={`mt-2 ${imageWidth}`}
-                  />
-                </div>
-              }
-              body={
-                <div
-                  className={`flex justify-center ${textSize} ${spacing} font-bold`}
-                >
+      <div className="flex flex-col sm:flex-row sm:items-end justify-center gap-4">
+        {positions.map(({ data, image, rank, order, pad, statSize }) => (
+          <div key={rank} className={`w-full sm:w-64 ${order} ${pad}`}>
+            <div className="border-2 border-base-content bg-base-100">
+              <div className="flex items-center justify-between px-3 py-1.5 bg-primary text-primary-content border-b-2 border-base-content">
+                <span className="label-caps text-[0.65rem]">{rank}</span>
+                <img src={image} alt="" className="w-6" aria-hidden />
+              </div>
+
+              <div className="p-4 text-center">
+                <div className={`figures ${statSize} leading-tight`}>
                   {data.stat}
                 </div>
-              }
-              footer={
-                <div className="text-center w-full font-medium italic">
+                <div className="mt-3 text-sm text-base-content/70 leading-snug">
                   {data.details}
                 </div>
-              }
-              className={`bg-primary text-base-100 w-75 ${minHeight} ${margin} rounded`}
-              cardBodyClassName="card-body"
-              titleClassName=""
-              bodyClassName=""
-            />
-          )
-        )}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {seeMoreButton && <div className="mt-2">{seeMoreButton}</div>}
-    </div>
+      {seeMoreButton && (
+        <div className="mt-5 flex justify-center">{seeMoreButton}</div>
+      )}
+    </section>
   );
 }

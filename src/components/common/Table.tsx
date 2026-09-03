@@ -1,4 +1,4 @@
-interface Column<T> {
+export interface Column<T> {
   header: string;
   accessor: keyof T | ((row: T) => React.ReactNode);
   className?: string;
@@ -28,23 +28,33 @@ export default function Table<T>({
 
   return (
     <div
-      className={`overflow-x-auto rounded-box border border-base-content/5 bg-base-100 ${className}`}
+      className={`overflow-x-auto border-2 border-base-content bg-base-100 ${className}`}
     >
-      <table className="table">
+      <table className="table w-full">
         <thead>
-          <tr>
-            {showIndex && <th></th>}
+          <tr className="bg-secondary text-secondary-content">
+            {showIndex && <th className="label-caps text-[0.6rem] w-10"></th>}
             {columns.map((column, index) => (
-              <th key={index} className={column.className}>
+              <th
+                key={index}
+                className={`label-caps text-[0.65rem] font-medium ${
+                  column.className ?? ""
+                }`}
+              >
                 {column.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="tabular-nums">
           {data.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {showIndex && <th>{rowIndex + 1}</th>}
+            <tr
+              key={rowIndex}
+              className="border-t border-base-content/15 even:bg-base-200/50 hover:bg-warning/15"
+            >
+              {showIndex && (
+                <th className="figures text-primary">{rowIndex + 1}</th>
+              )}
               {columns.map((column, colIndex) => (
                 <td key={colIndex} className={column.className}>
                   {getValue(row, column)}
@@ -53,7 +63,11 @@ export default function Table<T>({
             </tr>
           ))}
         </tbody>
-        {footer && <tfoot>{footer}</tfoot>}
+        {footer && (
+          <tfoot className="border-t-2 border-base-content bg-base-300 text-base-content tabular-nums">
+            {footer}
+          </tfoot>
+        )}
       </table>
     </div>
   );

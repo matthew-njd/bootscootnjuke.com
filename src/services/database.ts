@@ -2,6 +2,7 @@ import { supabase } from "../lib/supabase";
 import type { Database, HighestWeekTotal } from "../types";
 import type { HighestPlayerTotal } from "../types";
 import type { HighestSeasonalTotal } from "../types";
+
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
 type Recap = Database["public"]["Tables"]["recaps"]["Row"];
 
