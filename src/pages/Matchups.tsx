@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import {
   getMappedMatchups,
+  getNflWeek,
   getRecordsThroughWeek,
   type MappedMatchup,
 } from "../services/sleeper";
 import Recap from "../components/common/Recap";
 import Page, { Notice } from "../components/layout/Page";
 import defaultAvatar from "../assets/images/default_avatar.png";
+import { weekInProgress } from "../lib/league";
 
 const FINAL_WEEK = 17;
 
@@ -24,15 +26,17 @@ function TeamRow({
   team,
   won,
   record,
+  live,
 }: {
   team: MappedMatchup;
   won: boolean;
   record?: string;
+  live: boolean;
 }) {
   return (
     <div
       className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 ${
-        won ? "" : "opacity-55"
+        won || live ? "" : "opacity-55"
       }`}
     >
       <img
@@ -54,8 +58,12 @@ function TeamRow({
         {team.points?.toFixed(1) ?? "0.0"}
       </span>
       <span
-        className={`w-2 h-6 ${won ? "bg-primary" : "bg-transparent"}`}
-        aria-label={won ? "Winner" : undefined}
+        className={`w-2 h-6 ${
+          won ? (live ? "bg-success live-dot" : "bg-primary") : "bg-transparent"
+        }`}
+        aria-label={
+          won ? (live ? "Leading, week in progress" : "Winner") : undefined
+        }
       />
     </div>
   );
@@ -94,16 +102,34 @@ function WeekPicker({
 }
 
 export default function Matchups() {
-  const [week, setWeek] = useState(1);
+  // null until getNflWeek resolves, so the picker opens on the current week
+  // instead of loading week 1 and jumping.
+  const [week, setWeek] = useState<number | null>(null);
   const [loaded, setLoaded] = useState<{ week: number; pairs: Pair[] } | null>(
     null,
   );
   const [records, setRecords] = useState<Map<number, string>>(new Map());
+  const [currentWeek, setCurrentWeek] = useState<number | null>(null);
 
-  const loading = loaded?.week !== week;
+  const loading = week === null || loaded?.week !== week;
+  // Only the week actually being played is live, not older weeks you browse to.
+  const live = week === currentWeek && weekInProgress();
+
+  useEffect(() => {
+    getNflWeek()
+      .then((current) => {
+        setCurrentWeek(current);
+        setWeek((selected) => selected ?? current);
+      })
+      .catch((err) => {
+        console.error("Error fetching current week:", err);
+        setWeek((selected) => selected ?? 1);
+      });
+  }, []);
 
   // Records reflect the selected week, not the live standings.
   useEffect(() => {
+    if (week === null) return;
     let stale = false;
 
     getRecordsThroughWeek(week)
@@ -118,6 +144,7 @@ export default function Matchups() {
   }, [week]);
 
   useEffect(() => {
+    if (week === null) return;
     let stale = false;
 
     getMappedMatchups(week)
@@ -140,7 +167,7 @@ export default function Matchups() {
       kicker="Week by Week"
       subtitle="Every head-to-head of the season, with the final margin."
     >
-      <WeekPicker week={week} onChange={setWeek} />
+      {week !== null && <WeekPicker week={week} onChange={setWeek} />}
 
       {loading ? (
         <Notice>Loading matchups…</Notice>
@@ -157,20 +184,24 @@ export default function Matchups() {
                 team={a}
                 won={a.points >= b.points}
                 record={records.get(a.roster_id) ?? "0-0"}
+                live={live}
               />
               <TeamRow
                 team={b}
                 won={b.points > a.points}
                 record={records.get(b.roster_id) ?? "0-0"}
+                live={live}
               />
             </div>
           ))}
         </div>
       )}
 
-      <div className="mt-14 flex justify-center">
-        <Recap week={week} />
-      </div>
+      {week !== null && (
+        <div className="mt-14 flex justify-center">
+          <Recap week={week} />
+        </div>
+      )}
     </Page>
   );
 }

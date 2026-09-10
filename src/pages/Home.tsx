@@ -9,7 +9,12 @@ import {
 } from "../services/sleeper";
 import Recap from "../components/common/Recap";
 import defaultAvatar from "../assets/images/default_avatar.png";
-import { SEASON_NUMBER, seasonHeadline, seasonPhase } from "../lib/league";
+import {
+  SEASON_NUMBER,
+  seasonHeadline,
+  seasonPhase,
+  weekInProgress,
+} from "../lib/league";
 
 type Pair = [MappedMatchup, MappedMatchup];
 
@@ -21,11 +26,19 @@ function pairUp(teams: MappedMatchup[]): Pair[] {
   return [...byId.values()].filter((g): g is Pair => g.length === 2);
 }
 
-function ScoreRow({ team, won }: { team: MappedMatchup; won: boolean }) {
+function ScoreRow({
+  team,
+  won,
+  live,
+}: {
+  team: MappedMatchup;
+  won: boolean;
+  live: boolean;
+}) {
   return (
     <div
       className={`flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 ${
-        won ? "" : "opacity-55"
+        won || live ? "" : "opacity-55"
       }`}
     >
       <img
@@ -40,21 +53,40 @@ function ScoreRow({ team, won }: { team: MappedMatchup; won: boolean }) {
         {team.points?.toFixed(1) ?? "0.0"}
       </span>
       <span
-        className={`w-2 h-2 ${won ? "bg-warning" : "bg-transparent"}`}
-        aria-label={won ? "Leading" : undefined}
+        className={`w-2 h-2 ${
+          won ? (live ? "bg-success live-dot" : "bg-warning") : "bg-transparent"
+        }`}
+        aria-label={
+          won ? (live ? "Leading, week in progress" : "Won") : undefined
+        }
       />
     </div>
   );
 }
 
-function Scoreboard({ pairs, week }: { pairs: Pair[]; week: number }) {
+function Scoreboard({
+  pairs,
+  week,
+  live,
+}: {
+  pairs: Pair[];
+  week: number;
+  live: boolean;
+}) {
   return (
     <div className="border-2 border-base-content bg-neutral text-neutral-content">
       <div className="flex items-baseline justify-between gap-2 px-3 sm:px-4 py-2 bg-primary text-primary-content border-b-2 border-base-content">
         <h2 className="label-caps text-xs sm:text-sm truncate min-w-0">
           Around the League
         </h2>
-        <span className="figures text-sm shrink-0">Week {week}</span>
+        <span className="figures text-sm shrink-0">
+          Week {week}
+          {live && (
+            <span className="label-caps ml-2 text-[0.6rem] opacity-75">
+              In progress
+            </span>
+          )}
+        </span>
       </div>
 
       {pairs.length === 0 ? (
@@ -65,8 +97,8 @@ function Scoreboard({ pairs, week }: { pairs: Pair[]; week: number }) {
         <ul className="divide-y divide-neutral-content/15">
           {pairs.map(([a, b]) => (
             <li key={a.matchup_id} className="py-1">
-              <ScoreRow team={a} won={a.points >= b.points} />
-              <ScoreRow team={b} won={b.points > a.points} />
+              <ScoreRow team={a} won={a.points >= b.points} live={live} />
+              <ScoreRow team={b} won={b.points > a.points} live={live} />
             </li>
           ))}
         </ul>
@@ -189,7 +221,7 @@ export default function Home() {
 
       {/* Scoreboard hero */}
       <section className="mx-auto max-w-6xl px-6 -mt-8 relative z-10 grid gap-6 lg:grid-cols-[1.35fr_1fr]">
-        <Scoreboard pairs={pairs} week={week ?? 1} />
+        <Scoreboard pairs={pairs} week={week ?? 1} live={weekInProgress()} />
         <Standings standings={standings} />
       </section>
 

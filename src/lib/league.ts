@@ -34,3 +34,9 @@ export function seasonHeadline(
   if (phase === "postseason") return "Postseason in progress";
   return week ? `Week ${week} · ${SEASON} Season` : `${SEASON} Season`;
 }
+
+export function weekInProgress(now: Date = new Date()): boolean {
+  if (seasonPhase(now) !== "regular") return false;
+  const day = now.getDay();
+  return day !== 2 && day !== 3;
+}
