@@ -102,8 +102,6 @@ function WeekPicker({
 }
 
 export default function Matchups() {
-  // null until getNflWeek resolves, so the picker opens on the current week
-  // instead of loading week 1 and jumping.
   const [week, setWeek] = useState<number | null>(null);
   const [loaded, setLoaded] = useState<{ week: number; pairs: Pair[] } | null>(
     null,
@@ -112,7 +110,6 @@ export default function Matchups() {
   const [currentWeek, setCurrentWeek] = useState<number | null>(null);
 
   const loading = week === null || loaded?.week !== week;
-  // Only the week actually being played is live, not older weeks you browse to.
   const live = week === currentWeek && weekInProgress();
 
   useEffect(() => {
@@ -127,12 +124,11 @@ export default function Matchups() {
       });
   }, []);
 
-  // Records reflect the selected week, not the live standings.
   useEffect(() => {
     if (week === null) return;
     let stale = false;
 
-    getRecordsThroughWeek(week)
+    getRecordsThroughWeek(live ? week - 1 : week)
       .then((table) => {
         if (!stale) setRecords(table);
       })
@@ -141,7 +137,7 @@ export default function Matchups() {
     return () => {
       stale = true;
     };
-  }, [week]);
+  }, [week, live]);
 
   useEffect(() => {
     if (week === null) return;

@@ -22,12 +22,15 @@ export function tallyRecords(weeks: Matchup[][]): Map<number, string> {
       if (pair.length !== 2) continue;
       const [a, b] = pair;
 
-      if (!a.points && !b.points) continue;
+      const aPoints = a.points ?? 0;
+      const bPoints = b.points ?? 0;
 
-      if (a.points > b.points) {
+      if (aPoints === 0 && bPoints === 0) continue;
+
+      if (aPoints > bPoints) {
         bump(a.roster_id, "wins");
         bump(b.roster_id, "losses");
-      } else if (b.points > a.points) {
+      } else if (bPoints > aPoints) {
         bump(b.roster_id, "wins");
         bump(a.roster_id, "losses");
       } else {
