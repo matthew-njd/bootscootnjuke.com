@@ -74,7 +74,7 @@ function Scoreboard({
   live: boolean;
 }) {
   return (
-    <div className="border-2 border-base-content bg-neutral text-neutral-content">
+    <div className="border-2 border-base-content bg-neutral text-neutral-content flex flex-col">
       <div className="flex items-baseline justify-between gap-2 px-3 sm:px-4 py-2 bg-primary text-primary-content border-b-2 border-base-content">
         <h2 className="label-caps text-xs sm:text-sm truncate min-w-0">
           Around the League
@@ -106,7 +106,7 @@ function Scoreboard({
 
       <Link
         to="/matchups"
-        className="label-caps block px-4 py-3 text-xs text-center border-t-2 border-base-content bg-base-content/20 hover:bg-primary hover:text-primary-content transition-colors"
+        className="label-caps mt-auto block px-4 py-3 text-xs text-center border-t-2 border-base-content bg-base-content/20 hover:bg-primary hover:text-primary-content transition-colors"
       >
         All matchups &rarr;
       </Link>
@@ -116,7 +116,7 @@ function Scoreboard({
 
 function Standings({ standings }: { standings: Standing[] }) {
   return (
-    <div className="border-2 border-base-content bg-base-100">
+    <div className="border-2 border-base-content bg-base-100 flex flex-col">
       <div className="flex items-baseline justify-between gap-2 px-3 sm:px-4 py-2 bg-secondary text-secondary-content border-b-2 border-base-content">
         <h2 className="label-caps text-xs sm:text-sm truncate min-w-0">
           Current Rankings
@@ -162,7 +162,7 @@ function Standings({ standings }: { standings: Standing[] }) {
 
       <Link
         to="/leaderboards"
-        className="label-caps block px-4 py-3 text-xs text-center border-t-2 border-base-content hover:bg-secondary hover:text-secondary-content transition-colors"
+        className="label-caps mt-auto block px-4 py-3 text-xs text-center border-t-2 border-base-content hover:bg-secondary hover:text-secondary-content transition-colors"
       >
         Leaderboards &rarr;
       </Link>
