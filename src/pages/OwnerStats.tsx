@@ -22,6 +22,10 @@ const columns = [
   {
     header: "Win %",
     accessor: (row: Stats) => winPct(row.wins ?? 0, row.loses ?? 0),
+    sortValue: (row: Stats) =>
+      (row.wins ?? 0) + (row.loses ?? 0) > 0
+        ? (row.wins ?? 0) / ((row.wins ?? 0) + (row.loses ?? 0))
+        : -1,
   },
   { header: "Pts For", accessor: "ptsFor" as keyof Stats },
   { header: "Pts Against", accessor: "ptsAgst" as keyof Stats },
