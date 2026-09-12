@@ -58,7 +58,7 @@ function TeamRow({
         {team.points?.toFixed(1) ?? "0.0"}
       </span>
       <span
-        className={`w-2 h-6 ${
+        className={`w-2.5 h-2.5 ${
           won ? (live ? "bg-success live-dot" : "bg-primary") : "bg-transparent"
         }`}
         aria-label={
