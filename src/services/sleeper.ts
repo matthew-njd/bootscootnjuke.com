@@ -13,10 +13,8 @@ export type MappedMatchup = Matchup & {
 
 const leagueId = import.meta.env.VITE_LEAGUE_ID;
 
-export async function getLeagueUsers(): Promise<User[]> {
-  const response = await fetch(
-    `https://api.sleeper.app/v1/league/${leagueId}/users`,
-  );
+async function fetchJson(url: string) {
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`Error: ${response.status}`);
@@ -25,28 +23,18 @@ export async function getLeagueUsers(): Promise<User[]> {
   return response.json();
 }
 
-export async function getLeagueRosters(): Promise<Roster[]> {
-  const response = await fetch(
-    `https://api.sleeper.app/v1/league/${leagueId}/rosters`,
-  );
-
-  if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
-  }
-
-  return response.json();
+export function getLeagueUsers(): Promise<User[]> {
+  return fetchJson(`https://api.sleeper.app/v1/league/${leagueId}/users`);
 }
 
-export async function getLeagueMatchups(week: number): Promise<Matchup[]> {
-  const response = await fetch(
+export function getLeagueRosters(): Promise<Roster[]> {
+  return fetchJson(`https://api.sleeper.app/v1/league/${leagueId}/rosters`);
+}
+
+export function getLeagueMatchups(week: number): Promise<Matchup[]> {
+  return fetchJson(
     `https://api.sleeper.app/v1/league/${leagueId}/matchups/${week}`,
   );
-
-  if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
-  }
-
-  return response.json();
 }
 
 export type Standing = {
@@ -60,13 +48,7 @@ export type Standing = {
 };
 
 export async function getNflWeek(): Promise<number> {
-  const response = await fetch("https://api.sleeper.app/v1/state/nfl");
-
-  if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
-  }
-
-  const state = await response.json();
+  const state = await fetchJson("https://api.sleeper.app/v1/state/nfl");
   return Math.min(17, Math.max(1, state.display_week || state.week || 1));
 }
 
@@ -163,16 +145,6 @@ type RawPick = {
     position?: string;
   };
 };
-
-async function fetchJson(url: string) {
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
-  }
-
-  return response.json();
-}
 
 async function leagueSeasons(): Promise<string[]> {
   const ids: string[] = [];

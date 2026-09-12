@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getOwners } from "../services/database";
+import { useAsync } from "../lib/useAsync";
 import type { Database } from "../types";
-import Page, { Notice } from "../components/layout/Page";
+import Page, { Notice, LoadFailed } from "../components/layout/Page";
 import defaultAvatar from "../assets/images/default_avatar.png";
 
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
@@ -49,20 +49,9 @@ function OwnerCard({ owner, retired }: { owner: Owner; retired?: boolean }) {
 }
 
 export default function Owners() {
-  const [owners, setOwners] = useState<Owner[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, loading, failed } = useAsync(getOwners, []);
 
-  useEffect(() => {
-    getOwners()
-      .then((data) => setOwners(data ?? []))
-      .catch((err) => {
-        setError("Failed to fetch owners");
-        console.error("Error fetching owners:", err);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
+  const owners = data ?? [];
   const active = owners.filter((owner) => owner.active);
   const retired = owners.filter((owner) => !owner.active);
 
@@ -73,9 +62,9 @@ export default function Owners() {
       subtitle="Everyone who has ever held a roster, current and departed (RIP)."
     >
       {loading && <Notice>Loading owners…</Notice>}
-      {error && <Notice>{error}</Notice>}
+      {failed && <LoadFailed />}
 
-      {!loading && !error && (
+      {!loading && !failed && (
         <>
           <div className="flex flex-col gap-4">
             {active.map((owner) => (

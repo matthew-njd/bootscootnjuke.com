@@ -9,11 +9,11 @@ interface Place {
 }
 
 interface PodiumProps {
-  title?: React.ReactNode;
+  title: React.ReactNode;
   firstPlace: Place;
   secondPlace: Place;
   thirdPlace: Place;
-  seeMoreButton?: React.ReactNode;
+  seeMoreButton: React.ReactNode;
 }
 
 export default function Podium({
@@ -52,11 +52,9 @@ export default function Podium({
 
   return (
     <section className="w-full">
-      {title && (
-        <h2 className="wood-type text-2xl sm:text-3xl uppercase text-center mb-6">
-          {title}
-        </h2>
-      )}
+      <h2 className="wood-type text-2xl sm:text-3xl uppercase text-center mb-6">
+        {title}
+      </h2>
 
       <div className="flex flex-col sm:flex-row sm:items-end justify-center gap-4">
         {positions.map(({ data, image, rank, order, pad, statSize }) => (
@@ -80,9 +78,7 @@ export default function Podium({
         ))}
       </div>
 
-      {seeMoreButton && (
-        <div className="mt-5 flex justify-center">{seeMoreButton}</div>
-      )}
+      <div className="mt-5 flex justify-center">{seeMoreButton}</div>
     </section>
   );
 }

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getDraftHistory } from "../services/database";
 import { getSleeperDrafts, type DraftPick } from "../services/sleeper";
+import { useAsync } from "../lib/useAsync";
 import type { Database } from "../types";
-import Page, { Notice } from "../components/layout/Page";
+import Page, { Notice, LoadFailed } from "../components/layout/Page";
 import defaultAvatar from "../assets/images/default_avatar.png";
 
 type DraftRow = Database["public"]["Tables"]["drafts"]["Row"];
@@ -69,38 +70,34 @@ function YearPicker({
   );
 }
 
+async function loadDrafts(): Promise<DraftPick[]> {
+  const [stored, sleeper] = await Promise.all([
+    getDraftHistory(),
+    getSleeperDrafts(),
+  ]);
+
+  const archived: DraftPick[] = ((stored ?? []) as DraftRow[])
+    .filter((row) => row.year !== null)
+    .map((row) => ({
+      key: `db-${row.id}`,
+      year: row.year as number,
+      pickNo: row.pick ?? 0,
+      round: Math.floor(row.pick ?? 0),
+      pick: (row.pick ?? 0).toFixed(2),
+      player: row.player || "Unknown player",
+      team: row.team,
+      owner: row.owner,
+      headshotUrl: row.playerHeadshotUrl,
+    }));
+
+  return [...archived, ...sleeper];
+}
+
 export default function Drafts() {
-  const [drafts, setDrafts] = useState<DraftPick[]>([]);
   const [year, setYear] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, loading, failed } = useAsync(loadDrafts, []);
 
-  useEffect(() => {
-    Promise.all([getDraftHistory(), getSleeperDrafts()])
-      .then(([stored, sleeper]) => {
-        const archived: DraftPick[] = ((stored ?? []) as DraftRow[])
-          .filter((row) => row.year !== null)
-          .map((row) => ({
-            key: `db-${row.id}`,
-            year: row.year as number,
-            pickNo: row.pick ?? 0,
-            round: Math.floor(row.pick ?? 0),
-            pick: (row.pick ?? 0).toFixed(2),
-            player: row.player || "Unknown player",
-            team: row.team,
-            owner: row.owner,
-            headshotUrl: row.playerHeadshotUrl,
-          }));
-
-        setDrafts([...archived, ...sleeper]);
-      })
-      .catch((err) => {
-        setError("Failed to fetch draft history");
-        console.error("Error fetching drafts:", err);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
+  const drafts = data ?? [];
   const years = [...new Set(drafts.map((d) => d.year))].sort((a, b) => b - a);
   const activeYear = year ?? years[0] ?? null;
 
@@ -117,13 +114,13 @@ export default function Drafts() {
       subtitle="Every pick ever made, and everyone who has to live with it."
     >
       {loading && <Notice>Loading draft history…</Notice>}
-      {error && <Notice>{error}</Notice>}
+      {failed && <LoadFailed />}
 
-      {!loading && !error && years.length === 0 && (
+      {!loading && !failed && years.length === 0 && (
         <Notice>No draft history recorded yet.</Notice>
       )}
 
-      {!loading && !error && activeYear !== null && (
+      {!loading && !failed && activeYear !== null && (
         <>
           <YearPicker years={years} active={activeYear} onChange={setYear} />
 

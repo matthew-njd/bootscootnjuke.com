@@ -1,13 +1,8 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  getChampionshipWinners,
-  getHighestWeekTotals,
-  getHighestPlayerTotals,
-  getHighestSeasonTotals,
-} from "../services/database";
+import { getChampionshipWinners, getLeaderboard } from "../services/database";
+import { useAsync } from "../lib/useAsync";
 import Podium from "../components/common/Podium";
-import Page, { Notice } from "../components/layout/Page";
+import Page, { Notice, LoadFailed } from "../components/layout/Page";
 import type {
   Champion,
   HighestWeekTotal,
@@ -47,41 +42,27 @@ function places<T>(rows: T[], render: (row: T | undefined) => Place) {
 
 type Place = { stat: React.ReactNode; details: React.ReactNode };
 
+function loadLeaderboards() {
+  return Promise.all([
+    getChampionshipWinners() as Promise<Champion[]>,
+    getLeaderboard<HighestWeekTotal>("highest_week_totals"),
+    getLeaderboard<HighestPlayerTotal>("highest_player_totals"),
+    getLeaderboard<HighestSeasonalTotal>("highest_season_totals"),
+  ]);
+}
+
 export default function Leaderboards() {
-  const [champs, setChamps] = useState<Champion[]>([]);
-  const [weekTotals, setWeekTotals] = useState<HighestWeekTotal[]>([]);
-  const [playerTotals, setPlayerTotals] = useState<HighestPlayerTotal[]>([]);
-  const [seasonTotals, setSeasonTotals] = useState<HighestSeasonalTotal[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, loading, failed } = useAsync(loadLeaderboards, []);
 
-  useEffect(() => {
-    Promise.all([
-      getChampionshipWinners(),
-      getHighestWeekTotals(),
-      getHighestPlayerTotals(),
-      getHighestSeasonTotals(),
-    ])
-      .then(([champsData, week, player, season]) => {
-        setChamps((champsData as Champion[]) ?? []);
-        setWeekTotals(week ?? []);
-        setPlayerTotals(player ?? []);
-        setSeasonTotals(season ?? []);
-      })
-      .catch((err) => {
-        setError("Failed to fetch data");
-        console.error("Error fetching data:", err);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading || error) {
+  if (loading || failed || !data) {
     return (
       <Page title="Leaderboards" kicker="Record Book">
-        <Notice>{error ?? "Loading leaderboards…"}</Notice>
+        {failed ? <LoadFailed /> : <Notice>Loading leaderboards…</Notice>}
       </Page>
     );
   }
+
+  const [champs, weekTotals, playerTotals, seasonTotals] = data;
 
   return (
     <Page

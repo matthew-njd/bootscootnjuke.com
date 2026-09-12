@@ -13,15 +13,7 @@ export function tallyRecords(weeks: Matchup[][]): Map<number, string> {
   };
 
   for (const matchups of weeks) {
-    const byId = new Map<number, Matchup[]>();
-    for (const m of matchups) {
-      byId.set(m.matchup_id, [...(byId.get(m.matchup_id) ?? []), m]);
-    }
-
-    for (const pair of byId.values()) {
-      if (pair.length !== 2) continue;
-      const [a, b] = pair;
-
+    for (const [a, b] of groupByMatchup(matchups)) {
       const aPoints = a.points ?? 0;
       const bPoints = b.points ?? 0;
 
@@ -46,4 +38,14 @@ export function tallyRecords(weeks: Matchup[][]): Map<number, string> {
       `${r.wins}-${r.losses}${r.ties ? `-${r.ties}` : ""}`,
     ]),
   );
+}
+
+export function groupByMatchup<T extends { matchup_id: number }>(
+  teams: T[],
+): [T, T][] {
+  const byId = new Map<number, T[]>();
+  for (const team of teams) {
+    byId.set(team.matchup_id, [...(byId.get(team.matchup_id) ?? []), team]);
+  }
+  return [...byId.values()].filter((g): g is [T, T] => g.length === 2);
 }

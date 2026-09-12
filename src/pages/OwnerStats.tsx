@@ -1,16 +1,18 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { getOwners, getStatsByOwner } from "../services/database";
+import { useAsync } from "../lib/useAsync";
 import type { Database } from "../types";
 import Table from "../components/common/Table";
-import Page, { Notice } from "../components/layout/Page";
+import Page, { Notice, LoadFailed } from "../components/layout/Page";
 import defaultAvatar from "../assets/images/default_avatar.png";
 
 type Stats = Database["public"]["Tables"]["stats"]["Row"];
-type Owner = Database["public"]["Tables"]["owners"]["Row"];
 
-const winPct = (wins: number, losses: number) =>
-  wins + losses > 0 ? `${((wins / (wins + losses)) * 100).toFixed(1)}%` : "N/A";
+function winPct(wins: number, losses: number) {
+  return wins + losses > 0
+    ? `${((wins / (wins + losses)) * 100).toFixed(1)}%`
+    : "N/A";
+}
 
 const columns = [
   { header: "Year", accessor: "year" as keyof Stats },
@@ -57,29 +59,27 @@ function averagesRow(stats: Stats[]) {
   );
 }
 
+async function loadOwner(ownerId: string) {
+  const [stats, owners] = await Promise.all([
+    getStatsByOwner(ownerId),
+    getOwners(),
+  ]);
+
+  return {
+    stats: (stats ?? []) as Stats[],
+    owner: owners.find((o) => o.ownerId === ownerId) ?? null,
+  };
+}
+
 export default function OwnerStats() {
   const { ownerId } = useParams<{ ownerId: string }>();
-  const [owner, setOwner] = useState<Owner | null>(null);
-  const [stats, setStats] = useState<Stats[]>([]);
-  const [loading, setLoading] = useState(Boolean(ownerId));
-  const [fetchError, setFetchError] = useState<string | null>(null);
-  const error = ownerId ? fetchError : "Owner ID not found";
+  const { data, loading, failed } = useAsync(
+    () => loadOwner(ownerId ?? ""),
+    [ownerId],
+  );
 
-  useEffect(() => {
-    if (!ownerId) return;
-
-    Promise.all([getStatsByOwner(ownerId), getOwners()])
-      .then(([statsData, ownersData]) => {
-        setStats((statsData as Stats[]) ?? []);
-        setOwner(ownersData?.find((o) => o.ownerId === ownerId) ?? null);
-      })
-      .catch((err) => {
-        setFetchError("Failed to fetch data");
-        console.error("Error fetching data:", err);
-      })
-      .finally(() => setLoading(false));
-  }, [ownerId]);
-
+  const owner = data?.owner ?? null;
+  const stats = data?.stats ?? [];
   const seasons = stats.length;
   const record = stats.reduce(
     (acc, s) => ({
@@ -96,9 +96,9 @@ export default function OwnerStats() {
       back={{ to: "/owners", label: "All owners" }}
     >
       {loading && <Notice>Loading stats…</Notice>}
-      {error && <Notice>{error}</Notice>}
+      {failed && <LoadFailed />}
 
-      {!loading && !error && (
+      {!loading && !failed && (
         <>
           <div className="flex flex-wrap items-center gap-6 mb-8">
             <img

@@ -1,178 +1,89 @@
 import { supabase } from "../lib/supabase";
-import type { Database, HighestWeekTotal } from "../types";
-import type { HighestPlayerTotal } from "../types";
-import type { HighestSeasonalTotal } from "../types";
+import type { Database } from "../types";
 
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
 type Recap = Database["public"]["Tables"]["recaps"]["Row"];
 
-// for owners page
-export const getOwners = async (): Promise<Owner[]> => {
-  const { data, error } = await supabase
-    .from("owners")
-    .select("*")
-    .order("ownerId", { ascending: true });
+function unwrap<T>({
+  data,
+  error,
+}: {
+  data: T | null;
+  error: { message: string } | null;
+}): T {
+  if (error) throw new Error(error.message);
+  return data as T;
+}
 
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  } else {
-    return data;
-  }
-};
+// for owners page
+export async function getOwners(): Promise<Owner[]> {
+  return unwrap(
+    await supabase.from("owners").select("*").order("ownerId", {
+      ascending: true,
+    }),
+  );
+}
 
 // for owner's stat page
-export const getStatsByOwner = async (ownerId: string) => {
-  const { data: ownerStats, error } = await supabase
-    .from("stats")
-    .select("*")
-    .eq("ownerId", `${ownerId}`)
-    .order("year", { ascending: false });
-
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  } else {
-    return ownerStats;
-  }
-};
-
-export const getAllStats = async () => {
-  const { data: stats, error } = await supabase
-    .from("stats")
-    .select("*")
-    .order("ownerId", { ascending: true })
-    .order("year", { ascending: true });
-
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  } else {
-    return stats;
-  }
-};
+export async function getStatsByOwner(ownerId: string) {
+  return unwrap(
+    await supabase
+      .from("stats")
+      .select("*")
+      .eq("ownerId", ownerId)
+      .order("year", { ascending: false }),
+  );
+}
 
 // for leaderboard page
-export const getLeaderborders = async () => {
-  const { data: leaderboards, error } = await supabase
-    .from("leaderboards")
-    .select("*")
-    .order("id", { ascending: false });
+export async function getChampionshipWinners() {
+  return unwrap(
+    await supabase
+      .from("champs")
+      .select("*")
+      .order("titlewins", { ascending: false })
+      .order("name", { ascending: true }),
+  );
+}
 
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  } else {
-    return leaderboards;
-  }
-};
-
-export const getChampionshipWinners = async () => {
-  const { data: champs, error } = await supabase
-    .from("champs")
-    .select("*")
-    .order("titlewins", { ascending: false })
-    .order("name", { ascending: true });
-
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  } else {
-    return champs;
-  }
-};
-
-export const getHighestWeekTotals = async (): Promise<HighestWeekTotal[]> => {
-  const { data, error } = await supabase
-    .from("leaderboards")
-    .select("*")
-    .eq("leaderboardId", "highest_week_totals")
-    .order("points", { ascending: false });
-
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  }
-
-  return (data ?? []) as HighestWeekTotal[];
-};
-
-export const getHighestPlayerTotals = async (): Promise<
-  HighestPlayerTotal[]
-> => {
-  const { data, error } = await supabase
-    .from("leaderboards")
-    .select("*")
-    .eq("leaderboardId", "highest_player_totals")
-    .order("points", { ascending: false });
-
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  }
-  return (data ?? []) as HighestPlayerTotal[];
-};
-
-export const getHighestSeasonTotals = async (): Promise<
-  HighestSeasonalTotal[]
-> => {
-  const { data, error } = await supabase
-    .from("leaderboards")
-    .select("*")
-    .eq("leaderboardId", "highest_season_totals")
-    .order("points", { ascending: false });
-
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  }
-  return (data ?? []) as HighestSeasonalTotal[];
-};
+export async function getLeaderboard<T>(leaderboardId: string): Promise<T[]> {
+  return (unwrap(
+    await supabase
+      .from("leaderboards")
+      .select("*")
+      .eq("leaderboardId", leaderboardId)
+      .order("points", { ascending: false }),
+  ) ?? []) as T[];
+}
 
 // for recaps
-export const getLatestRecap = async (): Promise<Recap | null> => {
-  const { data, error } = await supabase
-    .from("recaps")
-    .select("*")
-    .order("year", { ascending: false })
-    .order("week", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+export async function getLatestRecap(): Promise<Recap | null> {
+  return unwrap(
+    await supabase
+      .from("recaps")
+      .select("*")
+      .order("year", { ascending: false })
+      .order("week", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  );
+}
 
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  }
-  return data;
-};
-
-export const getRecapByWeek = async (week: number): Promise<Recap | null> => {
-  const { data, error } = await supabase
-    .from("recaps")
-    .select("*")
-    .eq("week", week)
-    .order("year", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  }
-  return data;
-};
+export async function getRecapByWeek(week: number): Promise<Recap | null> {
+  return unwrap(
+    await supabase
+      .from("recaps")
+      .select("*")
+      .eq("week", week)
+      .order("year", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  );
+}
 
 // for drafts page
-export const getDraftHistory = async () => {
-  const { data: drafts, error } = await supabase
-    .from("drafts")
-    .select("*")
-    .order("id", { ascending: true });
-
-  if (error) {
-    console.log("error", error.message);
-    throw new Error(error.message);
-  } else {
-    return drafts;
-  }
-};
+export async function getDraftHistory() {
+  return unwrap(
+    await supabase.from("drafts").select("*").order("id", { ascending: true }),
+  );
+}

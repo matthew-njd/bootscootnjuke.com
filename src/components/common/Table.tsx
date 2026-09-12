@@ -1,3 +1,5 @@
+import { Notice } from "../layout/Page";
+
 export interface Column<T> {
   header: string;
   accessor: keyof T | ((row: T) => React.ReactNode);
@@ -25,6 +27,8 @@ export default function Table<T>({
     }
     return row[column.accessor] as React.ReactNode;
   };
+
+  if (data.length === 0) return <Notice>No data available yet.</Notice>;
 
   return (
     <div

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   getNflWeek,
@@ -7,6 +6,8 @@ import {
   type Standing,
   type MappedMatchup,
 } from "../services/sleeper";
+import { groupByMatchup } from "../lib/records";
+import { useAsync } from "../lib/useAsync";
 import Recap from "../components/common/Recap";
 import defaultAvatar from "../assets/images/default_avatar.png";
 import {
@@ -17,14 +18,6 @@ import {
 } from "../lib/league";
 
 type Pair = [MappedMatchup, MappedMatchup];
-
-function pairUp(teams: MappedMatchup[]): Pair[] {
-  const byId = new Map<number, MappedMatchup[]>();
-  for (const team of teams) {
-    byId.set(team.matchup_id, [...(byId.get(team.matchup_id) ?? []), team]);
-  }
-  return [...byId.values()].filter((g): g is Pair => g.length === 2);
-}
 
 function ScoreRow({
   team,
@@ -170,29 +163,19 @@ function Standings({ standings }: { standings: Standing[] }) {
   );
 }
 
+async function loadHome() {
+  const [week, standings] = await Promise.all([getNflWeek(), getStandings()]);
+  const pairs = groupByMatchup(await getMappedMatchups(week));
+  return { week, standings, pairs };
+}
+
 export default function Home() {
   const phase = seasonPhase();
-  const [week, setWeek] = useState<number | null>(null);
-  const [pairs, setPairs] = useState<Pair[]>([]);
-  const [standings, setStandings] = useState<Standing[]>([]);
+  const { data } = useAsync(loadHome, []);
 
-  useEffect(() => {
-    let stale = false;
-
-    Promise.all([getNflWeek(), getStandings()])
-      .then(async ([currentWeek, table]) => {
-        if (stale) return;
-        setWeek(currentWeek);
-        setStandings(table);
-        const matchups = await getMappedMatchups(currentWeek);
-        if (!stale) setPairs(pairUp(matchups));
-      })
-      .catch((err) => console.error("Error loading home page:", err));
-
-    return () => {
-      stale = true;
-    };
-  }, []);
+  const week = data?.week ?? null;
+  const standings = data?.standings ?? [];
+  const pairs = data?.pairs ?? [];
 
   return (
     <div>

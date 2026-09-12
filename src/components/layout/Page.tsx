@@ -50,3 +50,7 @@ export function Notice({ children }: { children: ReactNode }) {
     </p>
   );
 }
+
+export function LoadFailed() {
+  return <Notice>Couldn't load this right now. Try refreshing.</Notice>;
+}

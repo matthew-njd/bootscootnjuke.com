@@ -1,26 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   getMappedMatchups,
   getNflWeek,
   getRecordsThroughWeek,
   type MappedMatchup,
 } from "../services/sleeper";
+import { groupByMatchup } from "../lib/records";
+import { useAsync } from "../lib/useAsync";
 import Recap from "../components/common/Recap";
 import Page, { Notice } from "../components/layout/Page";
 import defaultAvatar from "../assets/images/default_avatar.png";
 import { weekInProgress } from "../lib/league";
 
 const FINAL_WEEK = 17;
-
-type Pair = [MappedMatchup, MappedMatchup];
-
-function pairUp(teams: MappedMatchup[]): Pair[] {
-  const byId = new Map<number, MappedMatchup[]>();
-  for (const team of teams) {
-    byId.set(team.matchup_id, [...(byId.get(team.matchup_id) ?? []), team]);
-  }
-  return [...byId.values()].filter((g): g is Pair => g.length === 2);
-}
 
 function TeamRow({
   team,
@@ -101,61 +93,31 @@ function WeekPicker({
   );
 }
 
-export default function Matchups() {
-  const [week, setWeek] = useState<number | null>(null);
-  const [loaded, setLoaded] = useState<{ week: number; pairs: Pair[] } | null>(
-    null,
-  );
-  const [records, setRecords] = useState<Map<number, string>>(new Map());
-  const [currentWeek, setCurrentWeek] = useState<number | null>(null);
+async function loadWeek(week: number, live: boolean) {
+  // A week in progress has no completed result yet, so records stop a week short.
+  const [matchups, records] = await Promise.all([
+    getMappedMatchups(week),
+    getRecordsThroughWeek(live ? week - 1 : week),
+  ]);
 
-  const loading = week === null || loaded?.week !== week;
+  return { pairs: groupByMatchup(matchups), records };
+}
+
+export default function Matchups() {
+  const [selected, setSelected] = useState<number | null>(null);
+  const { data: currentWeek, failed: weekFailed } = useAsync(getNflWeek, []);
+
+  const week = selected ?? currentWeek ?? (weekFailed ? 1 : null);
   const live = week === currentWeek && weekInProgress();
 
-  useEffect(() => {
-    getNflWeek()
-      .then((current) => {
-        setCurrentWeek(current);
-        setWeek((selected) => selected ?? current);
-      })
-      .catch((err) => {
-        console.error("Error fetching current week:", err);
-        setWeek((selected) => selected ?? 1);
-      });
-  }, []);
+  const { data, loading: boardLoading } = useAsync(
+    () => (week === null ? Promise.resolve(null) : loadWeek(week, live)),
+    [week, live],
+  );
 
-  useEffect(() => {
-    if (week === null) return;
-    let stale = false;
-
-    getRecordsThroughWeek(live ? week - 1 : week)
-      .then((table) => {
-        if (!stale) setRecords(table);
-      })
-      .catch((err) => console.error("Error fetching records:", err));
-
-    return () => {
-      stale = true;
-    };
-  }, [week, live]);
-
-  useEffect(() => {
-    if (week === null) return;
-    let stale = false;
-
-    getMappedMatchups(week)
-      .then((data) => {
-        if (!stale) setLoaded({ week, pairs: pairUp(data) });
-      })
-      .catch((err) => {
-        console.error("Error fetching matchups:", err);
-        if (!stale) setLoaded({ week, pairs: [] });
-      });
-
-    return () => {
-      stale = true;
-    };
-  }, [week]);
+  const loading = week === null || boardLoading;
+  const pairs = data?.pairs ?? [];
+  const records = data?.records;
 
   return (
     <Page
@@ -163,15 +125,15 @@ export default function Matchups() {
       kicker="Week by Week"
       subtitle="Every head-to-head of the season, with the final margin."
     >
-      {week !== null && <WeekPicker week={week} onChange={setWeek} />}
+      {week !== null && <WeekPicker week={week} onChange={setSelected} />}
 
       {loading ? (
         <Notice>Loading matchups…</Notice>
-      ) : loaded.pairs.length === 0 ? (
+      ) : pairs.length === 0 ? (
         <Notice>No matchups on the board for this week.</Notice>
       ) : (
         <div className="grid gap-5 md:grid-cols-2">
-          {loaded.pairs.map(([a, b]) => (
+          {pairs.map(([a, b]) => (
             <div
               key={a.matchup_id}
               className="border-2 border-base-content bg-base-100 divide-y divide-base-content/15"
@@ -179,13 +141,13 @@ export default function Matchups() {
               <TeamRow
                 team={a}
                 won={a.points >= b.points}
-                record={records.get(a.roster_id) ?? "0-0"}
+                record={records?.get(a.roster_id) ?? "0-0"}
                 live={live}
               />
               <TeamRow
                 team={b}
                 won={b.points > a.points}
-                record={records.get(b.roster_id) ?? "0-0"}
+                record={records?.get(b.roster_id) ?? "0-0"}
                 live={live}
               />
             </div>

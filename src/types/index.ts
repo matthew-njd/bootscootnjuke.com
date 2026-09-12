@@ -96,32 +96,10 @@ export interface HighestSeasonalTotal {
   leaderboardId: string;
 }
 
-export interface Leaderboards {
-  champs: Champion[];
-  highest_week_totals: HighestWeekTotal[];
-  highest_player_totals: HighestPlayerTotal[];
-  highest_seasonal_totals: HighestSeasonalTotal[];
-}
-
-export interface Draft {
-  year: number;
-  pick: number;
-  player: string;
-  playerHeadshotUrl: string;
-  team: string;
-  owner: string;
-  draftId: string;
-}
-
-export interface Drafts {
-  draft: Draft[];
-}
-
 export interface Sleeper {
   User: {
     user_id: number;
     display_name: string;
-    is_owner: boolean;
     metadata: {
       team_name: string;
       avatar: string;
@@ -144,8 +122,5 @@ export interface Sleeper {
     points: number;
     roster_id: number;
     matchup_id: number;
-    starters: string[];
-    players: string[];
-    custom_points: number | null;
   };
 }
