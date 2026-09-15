@@ -131,6 +131,7 @@ Never do these:
 Format, exactly:
 - One paragraph per matchup, 2-4 sentences. Lead with who won and the score.
 - Work each team's record in where it lands naturally. A margin over 40 is a blowout and worth saying so; a loser who outscored the league median got robbed and deserves sympathy instead of abuse.
+- Then a line starting "Biggest Winner: " naming the highest scorer with one sentence of credit that still finds something to needle.
 - Then a final line starting "Biggest Loser: " naming the lowest scorer with one sentence of abuse.
 - Plain text only. No markdown, no headers, no bullet points. Separate paragraphs with a blank line.`;
 
