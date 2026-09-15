@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { getOwners, getStatsByOwner } from "../services/database";
 import { useAsync } from "../lib/useAsync";
 import type { Database } from "../types";
+import StatCards from "../components/common/StatCards";
 import Table from "../components/common/Table";
 import Page, { Notice, LoadFailed } from "../components/layout/Page";
 import defaultAvatar from "../assets/images/default_avatar.png";
@@ -110,30 +111,20 @@ export default function OwnerStats() {
               alt=""
               className="w-24 h-24 object-cover border-2 border-base-content"
             />
-            <dl className="flex gap-8">
-              <div>
-                <dt className="label-caps text-[0.6rem] text-base-content/55">
-                  Seasons
-                </dt>
-                <dd className="figures text-3xl">{seasons}</dd>
-              </div>
-              <div>
-                <dt className="label-caps text-[0.6rem] text-base-content/55">
-                  All-time
-                </dt>
-                <dd className="figures text-3xl">
-                  {record.wins}&ndash;{record.loses}
-                </dd>
-              </div>
-              <div>
-                <dt className="label-caps text-[0.6rem] text-base-content/55">
-                  Win %
-                </dt>
-                <dd className="figures text-3xl">
-                  {winPct(record.wins, record.loses)}
-                </dd>
-              </div>
-            </dl>
+            <StatCards
+              stats={[
+                { label: "Seasons", value: seasons },
+                {
+                  label: "All-time",
+                  value: (
+                    <>
+                      {record.wins}&ndash;{record.loses}
+                    </>
+                  ),
+                },
+                { label: "Win %", value: winPct(record.wins, record.loses) },
+              ]}
+            />
           </div>
 
           {seasons === 0 ? (
