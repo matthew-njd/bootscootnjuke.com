@@ -46,9 +46,16 @@ function TeamRow({
           </div>
         )}
       </div>
-      <span className="figures text-xl sm:text-2xl tabular-nums">
-        {team.points?.toFixed(1) ?? "0.0"}
-      </span>
+      <div className="text-right">
+        <div className="figures text-xl sm:text-2xl tabular-nums">
+          {team.points?.toFixed(2) ?? "0.00"}
+        </div>
+        {team.projected !== null && (
+          <div className="figures text-[0.65rem] text-base-content/45 tabular-nums">
+            {team.projected.toFixed(2)}
+          </div>
+        )}
+      </div>
       <span
         className={`w-2.5 h-2.5 ${
           won ? (live ? "bg-success live-dot" : "bg-primary") : "bg-transparent"

@@ -122,5 +122,6 @@ export interface Sleeper {
     points: number;
     roster_id: number;
     matchup_id: number;
+    starters?: string[];
   };
 }

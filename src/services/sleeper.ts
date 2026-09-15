@@ -1,4 +1,5 @@
 import type { Sleeper } from "../types";
+import { SEASON } from "../lib/league";
 import { getOwners } from "./database";
 import { tallyRecords } from "../lib/records";
 
@@ -9,6 +10,7 @@ type Matchup = Sleeper["Matchup"];
 export type MappedMatchup = Matchup & {
   avatar: string | null;
   team_name: string | null;
+  projected: number | null;
 };
 
 const leagueId = import.meta.env.VITE_LEAGUE_ID;
@@ -81,6 +83,95 @@ export async function getStandings(): Promise<Standing[]> {
     .sort((a, b) => b.wins - a.wins || b.points - a.points);
 }
 
+const PROJECTION_POSITIONS = ["QB", "RB", "WR", "TE", "K", "DEF"];
+
+type RawGame = {
+  game_id: string;
+  status: string;
+  metadata?: {
+    is_over?: boolean;
+    is_in_progress?: boolean;
+    quarter?: string;
+    time_remaining?: string;
+  };
+};
+
+type RawProjection = {
+  player_id: string;
+  game_id: string | null;
+  stats?: Record<string, number>;
+};
+
+const QUARTER_MINUTES = 15;
+const GAME_MINUTES = 60;
+
+function shareRemaining(game: RawGame): number {
+  const meta = game.metadata ?? {};
+
+  if (game.status === "complete" || meta.is_over) return 0;
+  if (!meta.is_in_progress) return 1;
+
+  const quarter = Number(meta.quarter);
+  if (!quarter || quarter > 4) return 0.05;
+
+  const [minutes = 0, seconds = 0] = (meta.time_remaining ?? "")
+    .split(":")
+    .map(Number);
+  const left = (4 - quarter) * QUARTER_MINUTES + minutes + seconds / 60;
+
+  return Math.min(1, Math.max(0, left / GAME_MINUTES));
+}
+
+async function getProjectedByRoster(
+  week: number,
+  matchups: Matchup[],
+): Promise<Map<number, number>> {
+  const positions = PROJECTION_POSITIONS.map((p) => `position[]=${p}`).join(
+    "&",
+  );
+
+  const [league, projections, actuals, games]: [
+    { scoring_settings?: Record<string, number> },
+    RawProjection[],
+    Record<string, Record<string, number>>,
+    RawGame[],
+  ] = await Promise.all([
+    fetchJson(`https://api.sleeper.app/v1/league/${leagueId}`),
+    fetchJson(
+      `https://api.sleeper.app/projections/nfl/${SEASON}/${week}?season_type=regular&${positions}`,
+    ),
+    fetchJson(`https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}/${week}`),
+    fetchJson(`https://api.sleeper.app/scores/nfl/regular/${SEASON}/${week}`),
+  ]);
+
+  const scoring = league.scoring_settings ?? {};
+  const remaining = new Map(games.map((g) => [g.game_id, shareRemaining(g)]));
+
+  const score = (stats: Record<string, number> | undefined) =>
+    Object.entries(stats ?? {}).reduce(
+      (total, [stat, value]) => total + value * (scoring[stat] ?? 0),
+      0,
+    );
+
+  const livePoints = new Map(
+    projections.map((row) => [
+      row.player_id,
+      score(actuals[row.player_id]) +
+        score(row.stats) * (remaining.get(row.game_id ?? "") ?? 1),
+    ]),
+  );
+
+  return new Map(
+    matchups.map((matchup) => [
+      matchup.roster_id,
+      (matchup.starters ?? []).reduce(
+        (total, id) => total + (livePoints.get(id) ?? 0),
+        0,
+      ),
+    ]),
+  );
+}
+
 export async function getMappedMatchups(
   week: number,
 ): Promise<MappedMatchup[]> {
@@ -93,6 +184,10 @@ export async function getMappedMatchups(
 
   const userMap = new Map(users.map((u) => [u.user_id, u]));
   const ownerMap = new Map(owners.map((o) => [o.sleeperId, o]));
+
+  const projected = await getProjectedByRoster(week, matchups).catch(
+    () => null,
+  );
 
   const rosterToUserMap = new Map();
   rosters.forEach((roster) => {
@@ -110,6 +205,7 @@ export async function getMappedMatchups(
       ...matchup,
       avatar: owner?.logoUrl || null,
       team_name: user?.metadata?.team_name || user?.display_name || "Team",
+      projected: projected?.get(matchup.roster_id) ?? null,
     };
   });
 }

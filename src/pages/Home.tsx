@@ -43,7 +43,7 @@ function ScoreRow({
         {team.team_name}
       </span>
       <span className="figures text-xl tabular-nums">
-        {team.points?.toFixed(1) ?? "0.0"}
+        {team.points?.toFixed(2) ?? "0.00"}
       </span>
       <span
         className={`w-2 h-2 ${
@@ -147,7 +147,7 @@ function Standings({ standings }: { standings: Standing[] }) {
               {team.ties ? `-${team.ties}` : ""}
             </span>
             <span className="figures text-xs tabular-nums text-base-content/55 w-14 text-end">
-              {team.points.toFixed(1)}
+              {team.points.toFixed(2)}
             </span>
           </li>
         ))}
