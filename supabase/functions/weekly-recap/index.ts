@@ -135,6 +135,16 @@ Format, exactly:
 - Then a final line starting "Biggest Loser: " naming the lowest scorer with one sentence of abuse.
 - Plain text only. No markdown, no headers, no bullet points. Separate paragraphs with a blank line.`;
 
+const WHO = `Who these people are to each other:
+- Matthew D'Agostino is Rudy D'Agostino's son.
+- Troy McCusker is Gord McCusker's son.
+- Shayne Rover is Al Rover's son.
+- Kyle Sharpe is Gord's son-in-law and Troy's brother-in-law.
+- Shayne, Matthew, Troy, Garret, Greg and Mark are friends from high school.
+- Shayne, Matthew, Troy, Garret, Greg, Mark and Kyle are in their mid 30s. Rudy, Al and Gord are in their mid 60s.
+
+Use a relationship only when it makes a joke land better. Do not force it in, do not recite the list, and do not mention the same relationship two weeks running.`;
+
 const SAFETY = [
   HarmCategory.HARM_CATEGORY_HARASSMENT,
   HarmCategory.HARM_CATEGORY_HATE_SPEECH,
@@ -199,6 +209,7 @@ Deno.serve(async (req) => {
       config: {
         systemInstruction: [
           VOICE,
+          WHO,
           `League history:\n${await getLeagueContext()}`,
           `Your previous recaps this season, so you do not repeat yourself:\n${JSON.stringify(
             await getRecentRecaps(year, week),
