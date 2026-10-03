@@ -7,7 +7,13 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 
 const LEAGUE_ID = Deno.env.get("LEAGUE_ID")!;
 const SLEEPER = "https://api.sleeper.app/v1";
-const MODEL = Deno.env.get("GEMINI_MODEL") ?? "gemini-3.6-flash";
+
+const MODELS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"];
+
+const ATTEMPTS_PER_MODEL = 2;
+const REQUEST_TIMEOUT_MS = 35_000;
+const TOTAL_BUDGET_MS = 120_000;
+const RETRYABLE = new Set([429, 500, 503]);
 
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -44,6 +50,58 @@ const sleeper = async <T>(path: string): Promise<T> => {
   if (!res.ok) throw new Error(`Sleeper ${path} returned ${res.status}`);
   return (await res.json()) as T;
 };
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+type GenerateParams = Omit<
+  Parameters<typeof ai.models.generateContent>[0],
+  "model"
+>;
+
+async function generateWithRetries(params: GenerateParams) {
+  const deadline = Date.now() + TOTAL_BUDGET_MS;
+  let lastErr: unknown;
+
+  for (const model of MODELS) {
+    for (let attempt = 1; attempt <= ATTEMPTS_PER_MODEL; attempt++) {
+      const remaining = deadline - Date.now();
+      if (remaining < 5_000) {
+        throw lastErr ?? new Error("Ran out of time waiting for Gemini");
+      }
+
+      try {
+        const response = await ai.models.generateContent({
+          ...params,
+          model,
+          config: {
+            ...params.config,
+            abortSignal: AbortSignal.timeout(
+              Math.min(REQUEST_TIMEOUT_MS, remaining),
+            ),
+          },
+        });
+        return { response, model };
+      } catch (err) {
+        lastErr = err;
+        const name = (err as Error)?.name;
+        const timedOut = name === "TimeoutError" || name === "AbortError";
+        const status = (err as { status?: number }).status;
+
+        if (timedOut) {
+          console.warn(`${model} timed out, trying next model`);
+          break;
+        }
+        if (!status || !RETRYABLE.has(status)) throw err;
+
+        console.warn(
+          `${model} attempt ${attempt}/${ATTEMPTS_PER_MODEL} failed (${status})`,
+        );
+        if (attempt < ATTEMPTS_PER_MODEL) await sleep(3000 * attempt);
+      }
+    }
+  }
+  throw lastErr;
+}
 
 async function getMatchups(week: number) {
   const [users, rosters, matchups, { data: owners }] = await Promise.all([
@@ -153,6 +211,14 @@ const SAFETY = [
 ].map((category) => ({ category, threshold: HarmBlockThreshold.BLOCK_NONE }));
 
 Deno.serve(async (req) => {
+  const expectedKey = Deno.env.get("CRON_KEY");
+  const callerKey =
+    req.headers.get("apikey") ??
+    req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+  if (!expectedKey || !callerKey || callerKey !== expectedKey) {
+    return new Response("Forbidden", { status: 403 });
+  }
+
   try {
     const url = new URL(req.url);
     const force = url.searchParams.get("force") === "1";
@@ -203,16 +269,20 @@ Deno.serve(async (req) => {
       }
     }
 
-    const response = await ai.models.generateContent({
-      model: MODEL,
+    const [leagueContext, recentRecaps] = await Promise.all([
+      getLeagueContext(),
+      getRecentRecaps(year, week),
+    ]);
+
+    const { response, model: usedModel } = await generateWithRetries({
       contents: `Week ${week} of the ${year} season is final. Write the recap.\n\n${JSON.stringify(games)}`,
       config: {
         systemInstruction: [
           VOICE,
           WHO,
-          `League history:\n${await getLeagueContext()}`,
+          `League history:\n${leagueContext}`,
           `Your previous recaps this season, so you do not repeat yourself:\n${JSON.stringify(
-            await getRecentRecaps(year, week),
+            recentRecaps,
           )}`,
         ].join("\n\n"),
         safetySettings: SAFETY,
@@ -234,8 +304,8 @@ Deno.serve(async (req) => {
       .upsert({ year, week, body }, { onConflict: "year,week" });
     if (error) throw error;
 
-    console.log(`Wrote recap for ${year} week ${week} using ${MODEL}`);
-    return Response.json({ year, week, body });
+    console.log(`Wrote recap for ${year} week ${week} using ${usedModel}`);
+    return Response.json({ year, week, body, model: usedModel });
   } catch (err) {
     console.error("weekly-recap failed:", err);
     return Response.json({ error: String(err) }, { status: 500 });
