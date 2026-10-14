@@ -3,6 +3,7 @@ import type { Database } from "../types";
 
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
 type Recap = Database["public"]["Tables"]["recaps"]["Row"];
+export type Player = Database["public"]["Tables"]["players"]["Row"];
 
 function unwrap<T>({
   data,
@@ -79,6 +80,17 @@ export async function getRecapByWeek(week: number): Promise<Recap | null> {
       .limit(1)
       .maybeSingle(),
   );
+}
+
+// for matchup lineups
+export async function getPlayers(ids: string[]): Promise<Map<string, Player>> {
+  const rows = unwrap<Player[]>(
+    await supabase
+      .from("players")
+      .select("id, name, position, team")
+      .in("id", ids),
+  );
+  return new Map((rows ?? []).map((p) => [p.id, p]));
 }
 
 // for drafts page

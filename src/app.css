@@ -97,14 +97,6 @@ body::after {
   height: 6px;
 }
 
-.stub {
-  --notch: 0.6rem;
-  mask-image:
-    radial-gradient(var(--notch) at left 50%, transparent 99%, #000 100%),
-    radial-gradient(var(--notch) at right 50%, transparent 99%, #000 100%);
-  mask-composite: intersect;
-}
-
 .wood-type {
   font-family: var(--font-display);
   letter-spacing: -0.015em;

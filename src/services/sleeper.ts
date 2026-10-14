@@ -11,6 +11,8 @@ export type MappedMatchup = Matchup & {
   avatar: string | null;
   team_name: string | null;
   projected: number | null;
+  // Pregame projection per player ID; empty when projections failed to load.
+  player_projections: Record<string, number>;
 };
 
 const leagueId = import.meta.env.VITE_LEAGUE_ID;
@@ -37,6 +39,20 @@ export function getLeagueMatchups(week: number): Promise<Matchup[]> {
   return fetchJson(
     `https://api.sleeper.app/v1/league/${leagueId}/matchups/${week}`,
   );
+}
+
+let starterSlots: Promise<string[]> | null = null;
+
+// Lineup slot per starter index, e.g. ["QB", "RB", "RB", ..., "FLEX", "K", "DEF"].
+export function getStarterSlots(): Promise<string[]> {
+  starterSlots ??= fetchJson(
+    `https://api.sleeper.app/v1/league/${leagueId}`,
+  ).then((league: { roster_positions?: string[] }) =>
+    (league.roster_positions ?? []).filter(
+      (slot) => !["BN", "IR", "TAXI"].includes(slot),
+    ),
+  );
+  return starterSlots;
 }
 
 export type Standing = {
@@ -125,11 +141,13 @@ function shareRemaining(game: RawGame): number {
 async function getProjectedByRoster(
   week: number,
   matchups: Matchup[],
-): Promise<Map<number, number>> {
+  live: boolean,
+): Promise<{ byRoster: Map<number, number>; pregame: Map<string, number> }> {
   const positions = PROJECTION_POSITIONS.map((p) => `position[]=${p}`).join(
     "&",
   );
 
+  // Live stats and game clocks only matter while the week is in progress.
   const [league, projections, actuals, games]: [
     { scoring_settings?: Record<string, number> },
     RawProjection[],
@@ -140,8 +158,16 @@ async function getProjectedByRoster(
     fetchJson(
       `https://api.sleeper.app/projections/nfl/${SEASON}/${week}?season_type=regular&${positions}`,
     ),
-    fetchJson(`https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}/${week}`),
-    fetchJson(`https://api.sleeper.app/scores/nfl/regular/${SEASON}/${week}`),
+    live
+      ? fetchJson(
+          `https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}/${week}`,
+        )
+      : {},
+    live
+      ? fetchJson(
+          `https://api.sleeper.app/scores/nfl/regular/${SEASON}/${week}`,
+        )
+      : [],
   ]);
 
   const scoring = league.scoring_settings ?? {};
@@ -153,27 +179,35 @@ async function getProjectedByRoster(
       0,
     );
 
-  const livePoints = new Map(
-    projections.map((row) => [
-      row.player_id,
-      score(actuals[row.player_id]) +
-        score(row.stats) * (remaining.get(row.game_id ?? "") ?? 1),
-    ]),
+  const pregame = new Map(
+    projections.map((row) => [row.player_id, score(row.stats)]),
   );
+  const teamPoints = live
+    ? new Map(
+        projections.map((row) => [
+          row.player_id,
+          score(actuals[row.player_id]) +
+            score(row.stats) * (remaining.get(row.game_id ?? "") ?? 1),
+        ]),
+      )
+    : pregame;
 
-  return new Map(
+  const byRoster = new Map(
     matchups.map((matchup) => [
       matchup.roster_id,
       (matchup.starters ?? []).reduce(
-        (total, id) => total + (livePoints.get(id) ?? 0),
+        (total, id) => total + (teamPoints.get(id) ?? 0),
         0,
       ),
     ]),
   );
+
+  return { byRoster, pregame };
 }
 
 export async function getMappedMatchups(
   week: number,
+  live = false,
 ): Promise<MappedMatchup[]> {
   const [users, rosters, matchups, owners] = await Promise.all([
     getLeagueUsers(),
@@ -185,7 +219,7 @@ export async function getMappedMatchups(
   const userMap = new Map(users.map((u) => [u.user_id, u]));
   const ownerMap = new Map(owners.map((o) => [o.sleeperId, o]));
 
-  const projected = await getProjectedByRoster(week, matchups).catch(
+  const projected = await getProjectedByRoster(week, matchups, live).catch(
     () => null,
   );
 
@@ -205,7 +239,13 @@ export async function getMappedMatchups(
       ...matchup,
       avatar: owner?.logoUrl || null,
       team_name: user?.metadata?.team_name || user?.display_name || "Team",
-      projected: projected?.get(matchup.roster_id) ?? null,
+      projected: projected?.byRoster.get(matchup.roster_id) ?? null,
+      player_projections: Object.fromEntries(
+        (matchup.players ?? []).flatMap((id) => {
+          const points = projected?.pregame.get(id);
+          return points === undefined ? [] : [[id, points]];
+        }),
+      ),
     };
   });
 }

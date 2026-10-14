@@ -59,6 +59,14 @@ export interface Database {
           finalPlace: number | null;
         };
       };
+      players: {
+        Row: {
+          id: string;
+          name: string;
+          position: string | null;
+          team: string | null;
+        };
+      };
     };
   };
 }
@@ -123,5 +131,8 @@ export interface Sleeper {
     roster_id: number;
     matchup_id: number;
     starters?: string[];
+    starters_points?: number[];
+    players?: string[];
+    players_points?: Record<string, number>;
   };
 }

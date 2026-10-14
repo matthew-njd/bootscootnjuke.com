@@ -8,66 +8,12 @@ import {
 import { groupByMatchup } from "../lib/records";
 import { useAsync } from "../lib/useAsync";
 import Recap from "../components/common/Recap";
+import MatchupCard from "../components/matchups/MatchupCard";
 import StatCards from "../components/common/StatCards";
 import Page, { Notice } from "../components/layout/Page";
-import defaultAvatar from "../assets/images/default_avatar.png";
 import { weekInProgress } from "../lib/league";
 
 const FINAL_WEEK = 17;
-
-function TeamRow({
-  team,
-  won,
-  record,
-  live,
-}: {
-  team: MappedMatchup;
-  won: boolean;
-  record?: string;
-  live: boolean;
-}) {
-  return (
-    <div
-      className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 ${
-        won || live ? "" : "opacity-55"
-      }`}
-    >
-      <img
-        src={team.avatar || defaultAvatar}
-        alt=""
-        className="w-10 h-10 object-cover border-2 border-base-content"
-      />
-      <div className="min-w-0 grow">
-        <div className="label-caps text-sm truncate">
-          {team.team_name || "Team"}
-        </div>
-        {record && (
-          <div className="figures text-[0.65rem] text-base-content/45">
-            {record}
-          </div>
-        )}
-      </div>
-      <div className="text-right">
-        <div className="figures text-xl sm:text-2xl tabular-nums">
-          {team.points?.toFixed(2) ?? "0.00"}
-        </div>
-        {team.projected !== null && (
-          <div className="figures text-[0.65rem] text-base-content/45 tabular-nums">
-            {team.projected.toFixed(2)}
-          </div>
-        )}
-      </div>
-      <span
-        className={`w-2.5 h-2.5 ${
-          won ? (live ? "bg-success live-dot" : "bg-primary") : "bg-transparent"
-        }`}
-        aria-label={
-          won ? (live ? "Leading, week in progress" : "Winner") : undefined
-        }
-      />
-    </div>
-  );
-}
 
 function WeekPicker({
   week,
@@ -155,7 +101,7 @@ function weekStats(pairs: [MappedMatchup, MappedMatchup][]) {
 async function loadWeek(week: number, live: boolean) {
   // A week in progress has no completed result yet, so records stop a week short.
   const [matchups, records] = await Promise.all([
-    getMappedMatchups(week),
+    getMappedMatchups(week, live),
     getRecordsThroughWeek(live ? week - 1 : week),
   ]);
 
@@ -201,25 +147,15 @@ export default function Matchups() {
       ) : pairs.length === 0 ? (
         <Notice>No matchups on the board for this week.</Notice>
       ) : (
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-4 max-w-3xl mx-auto">
           {pairs.map(([a, b]) => (
-            <div
+            <MatchupCard
               key={a.matchup_id}
-              className="border-2 border-base-content bg-base-100 divide-y divide-base-content/15"
-            >
-              <TeamRow
-                team={a}
-                won={a.points >= b.points}
-                record={records?.get(a.roster_id) ?? "0-0"}
-                live={live}
-              />
-              <TeamRow
-                team={b}
-                won={b.points > a.points}
-                record={records?.get(b.roster_id) ?? "0-0"}
-                live={live}
-              />
-            </div>
+              a={a}
+              b={b}
+              records={records}
+              live={live}
+            />
           ))}
         </div>
       )}
