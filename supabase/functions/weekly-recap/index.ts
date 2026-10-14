@@ -746,17 +746,17 @@ Format:
 - Plain text only. No markdown, headers or bullet points. Separate paragraphs with a blank line.
 
 Storylines:
-Also return the running storylines for next week's writer, at most ${MAX_STORYLINES}. Each is one short sentence of fact about something ongoing: a streak, a rivalry, a repeated mistake, a team that keeps getting robbed, a pickup that keeps paying off. Keep storylines that are still alive, update ones this week changed, drop ones that are resolved or stale, and add new ones this week started. Write them as facts, not jokes, so next week's writer can find a fresh angle.`;
+Also return the running storylines for next week's writer, at most ${MAX_STORYLINES}. Each is one short sentence of fact about something ongoing: a streak, a rivalry, a repeated mistake, a team that keeps getting robbed, a pickup that keeps paying off. Keep storylines that are still alive, update ones this week changed, drop ones that are resolved or stale, and add new ones this week started. Write them as facts, not jokes, so next week's writer can find a fresh angle. Storylines are about results only: never mention family relationships in them.`;
 
 const SEED_INSTRUCTIONS = `You keep the running storylines for Boot Scoot n' Juke, a fantasy football league of long-time friends, so that whoever writes each weekly recap remembers what has happened this season.
 
-From the standings and recaps provided, write at most ${MAX_STORYLINES} storylines worth carrying into next week. Each is one short sentence of fact about something ongoing: a streak, a rivalry, a repeated mistake, a team that keeps getting robbed, a pickup that keeps paying off. Write them as facts, not jokes. Use only facts in the data, and trust the standings over the recaps if they disagree.`;
+From the standings and recaps provided, write at most ${MAX_STORYLINES} storylines worth carrying into next week. Each is one short sentence of fact about something ongoing: a streak, a rivalry, a repeated mistake, a team that keeps getting robbed, a pickup that keeps paying off. Write them as facts, not jokes. Use only facts in the data, and trust the standings over the recaps if they disagree. Storylines are about results only: never mention family relationships in them.`;
 
 const WHO = `Who these people are to each other:
-- Matthew D'Agostino is Rudy D'Agostino's son.
-- Troy McCusker is Gord McCusker's son.
-- Shayne Rover is Al Rover's son.
-- Kyle Sharpe is Gord's son-in-law and Troy's brother-in-law.
+- The D'Agostinos: Rudy (father) and Matthew (son).
+- The McCuskers: Gord (father), Troy (son), and Kyle Sharpe (Gord's son-in-law, Troy's brother-in-law).
+- The Rovers: Al (father) and Shayne (son).
+- No one else in the league is related. Garret Beauvais, Greg Telford and Mark Spalding have no family in the league.
 - Shayne, Matthew, Troy, Garret, Greg and Mark are friends from high school.
 - Shayne, Matthew, Troy, Garret, Greg, Mark and Kyle are in their mid 30s. Rudy, Al and Gord are in their mid 60s.
 
