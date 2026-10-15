@@ -2,6 +2,7 @@ import { useState } from "react";
 import { getStarterSlots, type MappedMatchup } from "../../services/sleeper";
 import { getPlayers, type Player } from "../../services/database";
 import { useAsync } from "../../lib/useAsync";
+import type { WeekStatus } from "../../lib/league";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 
 type Slot = { id?: string; points?: number; projected?: number };
@@ -11,20 +12,24 @@ function TeamSide({
   team,
   won,
   record,
-  live,
+  status,
   flip,
 }: {
   team: MappedMatchup;
   won: boolean;
   record: string;
-  live: boolean;
+  status: WeekStatus;
   flip?: boolean;
 }) {
+  const live = status === "live";
+  // A live week can start 0-0; mark the leader only once they have points.
+  const marked = won && team.points > 0 && status !== "upcoming";
+
   return (
     <div
       className={`flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-3 min-w-0 ${
         flip ? "flex-row-reverse text-right" : ""
-      } ${won || live ? "" : "opacity-55"}`}
+      } ${status === "final" && !won ? "opacity-55" : ""}`}
     >
       <img
         src={team.avatar || defaultAvatar}
@@ -48,14 +53,18 @@ function TeamSide({
         >
           <span
             className={`w-2 h-2 shrink-0 ${
-              won
+              marked
                 ? live
                   ? "bg-success live-dot"
                   : "bg-primary"
                 : "bg-transparent"
             }`}
             aria-label={
-              won ? (live ? "Leading, week in progress" : "Winner") : undefined
+              marked
+                ? live
+                  ? "Leading, week in progress"
+                  : "Winner"
+                : undefined
             }
           />
           <span className="figures text-lg sm:text-2xl tabular-nums">
@@ -316,12 +325,12 @@ export default function MatchupCard({
   a,
   b,
   records,
-  live,
+  status,
 }: {
   a: MappedMatchup;
   b: MappedMatchup;
   records?: Map<number, string>;
-  live: boolean;
+  status: WeekStatus;
 }) {
   // Mount the lineup on first open, then keep it so re-opening doesn't refetch.
   const [opened, setOpened] = useState(false);
@@ -336,7 +345,7 @@ export default function MatchupCard({
           team={a}
           won={a.points >= b.points}
           record={records?.get(a.roster_id) ?? "0-0"}
-          live={live}
+          status={status}
         />
         <span aria-hidden className="flex flex-col items-center gap-1">
           <span className="wood-type text-base sm:text-xl text-primary">
@@ -350,7 +359,7 @@ export default function MatchupCard({
           team={b}
           won={b.points > a.points}
           record={records?.get(b.roster_id) ?? "0-0"}
-          live={live}
+          status={status}
           flip
         />
       </summary>

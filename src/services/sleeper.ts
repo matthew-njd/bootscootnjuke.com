@@ -1,5 +1,5 @@
 import type { Sleeper } from "../types";
-import { SEASON } from "../lib/league";
+import { SEASON, weekInProgress, type WeekStatus } from "../lib/league";
 import { getOwners } from "./database";
 import { tallyRecords } from "../lib/records";
 
@@ -107,10 +107,45 @@ type RawGame = {
   metadata?: {
     is_over?: boolean;
     is_in_progress?: boolean;
+    has_started?: boolean;
+    canceled?: boolean;
     quarter?: string;
     time_remaining?: string;
   };
 };
+
+function getWeekGames(week: number): Promise<RawGame[]> {
+  return fetchJson(
+    `https://api.sleeper.app/scores/nfl/regular/${SEASON}/${week}`,
+  );
+}
+
+// Sleeper flips its current week to the upcoming one midweek, so the NFL
+// games themselves decide whether a week has started or finished.
+export function statusFromGames(games: RawGame[]): WeekStatus {
+  const over = (g: RawGame) =>
+    g.status === "complete" || !!g.metadata?.is_over || !!g.metadata?.canceled;
+  const started = (g: RawGame) =>
+    g.status !== "pre_game" || !!g.metadata?.has_started;
+
+  if (games.length > 0 && games.every(over)) return "final";
+  return games.some(started) ? "live" : "upcoming";
+}
+
+export async function getWeekStatus(
+  week: number,
+  currentWeek: number | null,
+): Promise<WeekStatus> {
+  if (currentWeek !== null && week < currentWeek) return "final";
+
+  try {
+    return statusFromGames(await getWeekGames(week));
+  } catch {
+    // Scores endpoint is undocumented; fall back to the game-day calendar.
+    if (week !== currentWeek) return "upcoming";
+    return weekInProgress() ? "live" : "upcoming";
+  }
+}
 
 type RawProjection = {
   player_id: string;
@@ -163,11 +198,7 @@ async function getProjectedByRoster(
           `https://api.sleeper.app/v1/stats/nfl/regular/${SEASON}/${week}`,
         )
       : {},
-    live
-      ? fetchJson(
-          `https://api.sleeper.app/scores/nfl/regular/${SEASON}/${week}`,
-        )
-      : [],
+    live ? getWeekGames(week) : [],
   ]);
 
   const scoring = league.scoring_settings ?? {};

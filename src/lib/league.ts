@@ -40,3 +40,5 @@ export function weekInProgress(now: Date = new Date()): boolean {
   const day = now.getDay();
   return day !== 2 && day !== 3;
 }
+
+export type WeekStatus = "upcoming" | "live" | "final";

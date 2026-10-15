@@ -3,6 +3,7 @@ import {
   getMappedMatchups,
   getNflWeek,
   getRecordsThroughWeek,
+  getWeekStatus,
   type MappedMatchup,
 } from "../services/sleeper";
 import { groupByMatchup } from "../lib/records";
@@ -11,7 +12,6 @@ import Recap from "../components/common/Recap";
 import MatchupCard from "../components/matchups/MatchupCard";
 import StatCards from "../components/common/StatCards";
 import Page, { Notice } from "../components/layout/Page";
-import { weekInProgress } from "../lib/league";
 
 const FINAL_WEEK = 17;
 
@@ -98,14 +98,16 @@ function weekStats(pairs: [MappedMatchup, MappedMatchup][]) {
   ];
 }
 
-async function loadWeek(week: number, live: boolean) {
-  // A week in progress has no completed result yet, so records stop a week short.
+async function loadWeek(week: number, currentWeek: number | null) {
+  const status = await getWeekStatus(week, currentWeek);
+
+  // Only a final week counts toward records, so others stop a week short.
   const [matchups, records] = await Promise.all([
-    getMappedMatchups(week, live),
-    getRecordsThroughWeek(live ? week - 1 : week),
+    getMappedMatchups(week, status === "live"),
+    getRecordsThroughWeek(status === "final" ? week : week - 1),
   ]);
 
-  return { pairs: groupByMatchup(matchups), records };
+  return { pairs: groupByMatchup(matchups), records, status };
 }
 
 export default function Matchups() {
@@ -113,15 +115,15 @@ export default function Matchups() {
   const { data: currentWeek, failed: weekFailed } = useAsync(getNflWeek, []);
 
   const week = selected ?? currentWeek ?? (weekFailed ? 1 : null);
-  const live = week === currentWeek && weekInProgress();
 
   const { data, loading: boardLoading } = useAsync(
-    () => (week === null ? Promise.resolve(null) : loadWeek(week, live)),
-    [week, live],
+    () => (week === null ? Promise.resolve(null) : loadWeek(week, currentWeek)),
+    [week, currentWeek],
   );
 
   const loading = week === null || boardLoading;
   const pairs = data?.pairs ?? [];
+  const status = data?.status ?? "upcoming";
   const records = data?.records;
 
   return (
@@ -154,7 +156,7 @@ export default function Matchups() {
               a={a}
               b={b}
               records={records}
-              live={live}
+              status={status}
             />
           ))}
         </div>

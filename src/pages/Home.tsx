@@ -3,6 +3,7 @@ import {
   getNflWeek,
   getStandings,
   getMappedMatchups,
+  getWeekStatus,
   type Standing,
   type MappedMatchup,
 } from "../services/sleeper";
@@ -14,7 +15,7 @@ import {
   SEASON_NUMBER,
   seasonHeadline,
   seasonPhase,
-  weekInProgress,
+  type WeekStatus,
 } from "../lib/league";
 
 type Pair = [MappedMatchup, MappedMatchup];
@@ -22,16 +23,20 @@ type Pair = [MappedMatchup, MappedMatchup];
 function ScoreRow({
   team,
   won,
-  live,
+  status,
 }: {
   team: MappedMatchup;
   won: boolean;
-  live: boolean;
+  status: WeekStatus;
 }) {
+  const live = status === "live";
+  // A live week can start 0-0; mark the leader only once they have points.
+  const marked = won && team.points > 0 && status !== "upcoming";
+
   return (
     <div
       className={`flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 ${
-        won || live ? "" : "opacity-55"
+        status === "final" && !won ? "opacity-55" : ""
       }`}
     >
       <img
@@ -47,10 +52,14 @@ function ScoreRow({
       </span>
       <span
         className={`w-2 h-2 ${
-          won ? (live ? "bg-success live-dot" : "bg-warning") : "bg-transparent"
+          marked
+            ? live
+              ? "bg-success live-dot"
+              : "bg-warning"
+            : "bg-transparent"
         }`}
         aria-label={
-          won ? (live ? "Leading, week in progress" : "Won") : undefined
+          marked ? (live ? "Leading, week in progress" : "Won") : undefined
         }
       />
     </div>
@@ -60,11 +69,11 @@ function ScoreRow({
 function Scoreboard({
   pairs,
   week,
-  live,
+  status,
 }: {
   pairs: Pair[];
   week: number;
-  live: boolean;
+  status: WeekStatus;
 }) {
   return (
     <div className="border-2 border-base-content bg-neutral text-neutral-content flex flex-col">
@@ -74,7 +83,7 @@ function Scoreboard({
         </h2>
         <span className="figures text-sm shrink-0">
           Week {week}
-          {live && (
+          {status === "live" && (
             <span className="label-caps ml-2 text-[0.6rem] opacity-75">
               In progress
             </span>
@@ -90,8 +99,8 @@ function Scoreboard({
         <ul className="divide-y divide-neutral-content/15">
           {pairs.map(([a, b]) => (
             <li key={a.matchup_id} className="py-1">
-              <ScoreRow team={a} won={a.points >= b.points} live={live} />
-              <ScoreRow team={b} won={b.points > a.points} live={live} />
+              <ScoreRow team={a} won={a.points >= b.points} status={status} />
+              <ScoreRow team={b} won={b.points > a.points} status={status} />
             </li>
           ))}
         </ul>
@@ -165,8 +174,11 @@ function Standings({ standings }: { standings: Standing[] }) {
 
 async function loadHome() {
   const [week, standings] = await Promise.all([getNflWeek(), getStandings()]);
-  const pairs = groupByMatchup(await getMappedMatchups(week));
-  return { week, standings, pairs };
+  const [matchups, status] = await Promise.all([
+    getMappedMatchups(week),
+    getWeekStatus(week, week),
+  ]);
+  return { week, standings, pairs: groupByMatchup(matchups), status };
 }
 
 export default function Home() {
@@ -204,7 +216,11 @@ export default function Home() {
 
       {/* Scoreboard hero */}
       <section className="mx-auto max-w-6xl px-6 -mt-8 relative z-10 grid gap-6 lg:grid-cols-[1.35fr_1fr]">
-        <Scoreboard pairs={pairs} week={week ?? 1} live={weekInProgress()} />
+        <Scoreboard
+          pairs={pairs}
+          week={week ?? 1}
+          status={data?.status ?? "upcoming"}
+        />
         <Standings standings={standings} />
       </section>
 
