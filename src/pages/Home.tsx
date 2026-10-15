@@ -47,21 +47,29 @@ function ScoreRow({
       <span className="label-caps text-xs truncate grow min-w-0">
         {team.team_name}
       </span>
-      <span className="figures text-xl tabular-nums">
-        {team.points?.toFixed(2) ?? "0.00"}
+      <span className="flex items-center gap-1.5">
+        <span
+          className={`w-2 h-2 shrink-0 ${
+            marked
+              ? live
+                ? "bg-success live-dot"
+                : "bg-warning"
+              : "bg-transparent"
+          }`}
+          aria-label={
+            marked ? (live ? "Leading, week in progress" : "Won") : undefined
+          }
+        />
+        <span className="figures text-xl tabular-nums">
+          {team.points?.toFixed(2) ?? "0.00"}
+        </span>
+        {/* A final score needs no forecast. Fixed width keeps scores aligned. */}
+        {status !== "final" && (
+          <span className="figures text-xs tabular-nums text-neutral-content/50 w-[5ch] text-right">
+            {team.projected?.toFixed(2)}
+          </span>
+        )}
       </span>
-      <span
-        className={`w-2 h-2 ${
-          marked
-            ? live
-              ? "bg-success live-dot"
-              : "bg-warning"
-            : "bg-transparent"
-        }`}
-        aria-label={
-          marked ? (live ? "Leading, week in progress" : "Won") : undefined
-        }
-      />
     </div>
   );
 }
@@ -116,15 +124,33 @@ function Scoreboard({
   );
 }
 
+// Shared by the header labels and the row values so the columns line up.
+// Widths use ch, so each slot carries the values' font size even around a label.
+const STAT_GROUP = "flex items-baseline gap-2 shrink-0";
+const RECORD_SLOT = "figures text-sm tabular-nums min-w-[3.5ch] text-center";
+// Sized to "000.00".
+const POINTS_SLOT = "figures text-xs tabular-nums w-[5.5ch]";
+
 function Standings({ standings }: { standings: Standing[] }) {
+  const label = "label-caps text-[0.6rem] opacity-70";
+
   return (
     <div className="border-2 border-base-content bg-base-100 flex flex-col">
-      <div className="flex items-baseline justify-between gap-2 px-3 sm:px-4 py-2 bg-secondary text-secondary-content border-b-2 border-base-content">
+      {/* Right padding matches the rows so labels sit over their columns. */}
+      <div className="flex items-baseline justify-between gap-2 pl-3 sm:pl-4 pr-2 sm:pr-3 py-2 bg-secondary text-secondary-content border-b-2 border-base-content">
         <h2 className="label-caps text-xs sm:text-sm truncate min-w-0">
           Current Rankings
         </h2>
-        <span className="label-caps text-[0.6rem] opacity-70 shrink-0">
-          W-L &middot; PF
+        <span className={STAT_GROUP}>
+          <span className={RECORD_SLOT}>
+            <span className={label}>W-L</span>
+          </span>
+          <span className={`${POINTS_SLOT} text-center`}>
+            <span className={label}>PF</span>
+          </span>
+          <span className={`${POINTS_SLOT} text-center`}>
+            <span className={label}>PA</span>
+          </span>
         </span>
       </div>
 
@@ -151,12 +177,17 @@ function Standings({ standings }: { standings: Standing[] }) {
             <span className="label-caps text-xs truncate grow min-w-0">
               {team.team_name}
             </span>
-            <span className="figures text-sm tabular-nums">
-              {team.wins}-{team.losses}
-              {team.ties ? `-${team.ties}` : ""}
-            </span>
-            <span className="figures text-xs tabular-nums text-base-content/55 w-14 text-end">
-              {team.points.toFixed(2)}
+            <span className={STAT_GROUP}>
+              <span className={RECORD_SLOT}>
+                {team.wins}-{team.losses}
+                {team.ties ? `-${team.ties}` : ""}
+              </span>
+              <span className={`${POINTS_SLOT} text-end text-base-content/55`}>
+                {team.points.toFixed(2)}
+              </span>
+              <span className={`${POINTS_SLOT} text-end text-base-content/55`}>
+                {team.pointsAgainst.toFixed(2)}
+              </span>
             </span>
           </li>
         ))}
@@ -174,10 +205,10 @@ function Standings({ standings }: { standings: Standing[] }) {
 
 async function loadHome() {
   const [week, standings] = await Promise.all([getNflWeek(), getStandings()]);
-  const [matchups, status] = await Promise.all([
-    getMappedMatchups(week),
-    getWeekStatus(week, week),
-  ]);
+  // Status decides whether projections use live game data.
+  const status = await getWeekStatus(week, week);
+  const matchups = await getMappedMatchups(week, status === "live");
+
   return { week, standings, pairs: groupByMatchup(matchups), status };
 }
 

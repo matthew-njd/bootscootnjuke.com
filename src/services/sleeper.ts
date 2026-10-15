@@ -63,7 +63,11 @@ export type Standing = {
   losses: number;
   ties: number;
   points: number;
+  pointsAgainst: number;
 };
+
+// Sleeper splits totals into whole points and hundredths: (646, 4) is 646.04.
+const total = (whole = 0, hundredths = 0) => whole + hundredths / 100;
 
 export async function getNflWeek(): Promise<number> {
   const state = await fetchJson("https://api.sleeper.app/v1/state/nfl");
@@ -93,7 +97,8 @@ export async function getStandings(): Promise<Standing[]> {
         wins: s?.wins ?? 0,
         losses: s?.losses ?? 0,
         ties: s?.ties ?? 0,
-        points: Number(`${s?.fpts ?? 0}.${s?.fpts_decimal ?? 0}`),
+        points: total(s?.fpts, s?.fpts_decimal),
+        pointsAgainst: total(s?.fpts_against, s?.fpts_against_decimal),
       };
     })
     .sort((a, b) => b.wins - a.wins || b.points - a.points);
