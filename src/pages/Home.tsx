@@ -12,6 +12,9 @@ import { useAsync } from "../lib/useAsync";
 import Recap from "../components/common/Recap";
 import defaultAvatar from "../assets/images/default_avatar.png";
 import {
+  CONFERENCES,
+  FREE_DINNER_WINS,
+  SEASON,
   SEASON_NUMBER,
   seasonHeadline,
   seasonPhase,
@@ -178,10 +181,7 @@ function Standings({ standings }: { standings: Standing[] }) {
               {team.team_name}
             </span>
             <span className={STAT_GROUP}>
-              <span className={RECORD_SLOT}>
-                {team.wins}-{team.losses}
-                {team.ties ? `-${team.ties}` : ""}
-              </span>
+              <span className={RECORD_SLOT}>{record(team)}</span>
               <span className={`${POINTS_SLOT} text-end text-base-content/55`}>
                 {team.points.toFixed(2)}
               </span>
@@ -199,6 +199,140 @@ function Standings({ standings }: { standings: Standing[] }) {
       >
         Leaderboards &rarr;
       </Link>
+    </div>
+  );
+}
+
+const record = (t: { wins: number; losses: number; ties: number }) =>
+  `${t.wins}-${t.losses}${t.ties ? `-${t.ties}` : ""}`;
+
+// Scooters pull left in primary, Jukers pull right in secondary.
+const SIDE_COLORS = ["bg-primary", "bg-secondary"];
+
+function SupperBowl({ standings }: { standings: Standing[] }) {
+  const [a, b] = CONFERENCES.map((conf) => {
+    const teams = standings.filter((t) =>
+      conf.rosterIds.includes(t.roster_id),
+    );
+    // Losses would only mirror the other side's wins, so they aren't summed.
+    const sum = (key: "wins" | "points") =>
+      teams.reduce((n, t) => n + t[key], 0);
+
+    return {
+      name: conf.name,
+      teams,
+      wins: sum("wins"),
+      points: sum("points"),
+    };
+  });
+
+  const totalWins = a.wins + b.wins;
+  const share = totalWins ? (a.wins / totalWins) * 100 : 50;
+  // Fewer wins pays; combined points break a tie.
+  const payer =
+    a.wins < b.wins || (a.wins === b.wins && a.points < b.points) ? a : b;
+
+  return (
+    <div className="border-2 border-base-content bg-base-100">
+      <div className="flex items-baseline justify-between gap-2 px-3 sm:px-4 py-2 bg-neutral text-neutral-content border-b-2 border-base-content">
+        {/* The title holds its width; the subtitle wraps on narrow screens. */}
+        <h2 className="label-caps text-xs sm:text-sm shrink-0">
+          The Supper Bowl
+        </h2>
+        <span className="label-caps text-[0.6rem] opacity-75 min-w-0 text-end">
+          Loser buys the food at the {SEASON + 1} draft
+        </span>
+      </div>
+
+      <div className="p-3 sm:p-4">
+        <div className="flex items-end justify-between gap-4">
+          {[a, b].map((side, i) => (
+            <div key={side.name} className={i ? "order-2 text-end" : ""}>
+              <p className="wood-type text-2xl sm:text-4xl uppercase">
+                {side.name}
+              </p>
+              <p className="figures text-xl sm:text-2xl tabular-nums">
+                {side.wins}
+              </p>
+              <p className="label-caps text-[0.6rem] text-base-content/70">
+                {side.wins >= FREE_DINNER_WINS
+                  ? "Clinched"
+                  : `${FREE_DINNER_WINS - side.wins} to go`}
+              </p>
+              <p className="figures text-xs tabular-nums text-base-content/55">
+                {side.points.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                PF
+              </p>
+            </div>
+          ))}
+          {/* order-1 sits it between the two conferences. */}
+          <div className="order-1 text-center">
+            <p className="figures text-3xl sm:text-5xl tabular-nums">
+              {FREE_DINNER_WINS}
+            </p>
+            <p className="label-caps text-[0.6rem] text-base-content/70">
+              Wins for a free dinner
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="mt-3 flex h-6 border-2 border-base-content"
+          role="img"
+          aria-label={`${a.name} ${a.wins} wins, ${b.name} ${b.wins} wins${
+            totalWins ? `. The ${payer.name} are buying the food.` : ""
+          }`}
+        >
+          {[a, b].map((side, i) => (
+            <div
+              key={side.name}
+              className={`${SIDE_COLORS[i]} flex items-center overflow-hidden px-2 ${
+                i
+                  ? "grow justify-end border-l-2 border-base-content"
+                  : "transition-[width] duration-700"
+              }`}
+              style={i ? undefined : { width: `${share}%` }}
+            >
+              {totalWins > 0 && side === payer && (
+                <span
+                  className={`label-caps text-[0.6rem] whitespace-nowrap ${
+                    i ? "text-secondary-content" : "text-primary-content"
+                  }`}
+                >
+                  Buying the food
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          {[a, b].map((side, i) => (
+            <ul key={side.name} className="divide-y divide-base-content/15">
+              {side.teams.map((team) => (
+                <li
+                  key={team.roster_id}
+                  className="flex items-center gap-2 py-1.5"
+                >
+                  <span className={`w-1.5 self-stretch ${SIDE_COLORS[i]}`} />
+                  <img
+                    src={team.avatar || defaultAvatar}
+                    alt=""
+                    className="w-7 h-7 object-cover border border-base-content"
+                  />
+                  <span className="label-caps text-xs truncate grow min-w-0">
+                    {team.team_name}
+                  </span>
+                  <span className={RECORD_SLOT}>{record(team)}</span>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -253,6 +387,11 @@ export default function Home() {
           status={data?.status ?? "upcoming"}
         />
         <Standings standings={standings} />
+      </section>
+
+      {/* Conference race */}
+      <section className="mx-auto max-w-6xl px-6 mt-6">
+        <SupperBowl standings={standings} />
       </section>
 
       {/* Recap */}
