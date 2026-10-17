@@ -5,7 +5,7 @@ import { FOUNDED, SEASON_LABEL, SEASON_NUMBER } from "../../lib/league";
 const LINKS = [
   { to: "/", label: "Home" },
   { to: "/owners", label: "Owners" },
-  { to: "/leaderboards", label: "Leaderboards" },
+  { to: "/leaderboards", label: "Leaderboards", short: "Boards" },
   { to: "/matchups", label: "Matchups" },
   { to: "/drafts", label: "Drafts" },
 ];
@@ -47,25 +47,33 @@ export default function Nav() {
       {/* Navigation band */}
       <nav className="relative bg-secondary text-secondary-content border-b-2 border-base-content/80 overflow-hidden">
         <div className="absolute inset-0 yardlines opacity-40" aria-hidden />
-        <ul className="relative mx-auto max-w-6xl px-2 sm:px-4 flex flex-wrap justify-center">
-          {LINKS.map(({ to, label }) => {
+        {/* Single row; scrolls sideways on very narrow phones instead of wrapping */}
+        <ul className="relative mx-auto max-w-6xl px-2 sm:px-4 flex justify-center-safe overflow-x-auto [scrollbar-width:none]">
+          {LINKS.map(({ to, label, short }) => {
             const active =
               to === "/" ? pathname === "/" : pathname.startsWith(to);
             return (
-              <li key={to}>
+              <li key={to} className="flex-1 sm:flex-none">
                 <Link
                   to={to}
                   onClick={
                     to === "/" ? () => window.scrollTo({ top: 0 }) : undefined
                   }
                   aria-current={active ? "page" : undefined}
-                  className={`label-caps block px-3 sm:px-7 py-3 text-[0.7rem] sm:text-sm border-x border-base-100/15 transition-colors ${
+                  className={`label-caps block px-2 sm:px-7 py-3 text-center whitespace-nowrap text-[0.7rem] sm:text-sm border-x border-base-100/15 transition-colors ${
                     active
                       ? "bg-primary text-primary-content"
                       : "hover:bg-base-100/15"
                   }`}
                 >
-                  {label}
+                  {short ? (
+                    <>
+                      <span className="sm:hidden">{short}</span>
+                      <span className="hidden sm:inline">{label}</span>
+                    </>
+                  ) : (
+                    label
+                  )}
                 </Link>
               </li>
             );
