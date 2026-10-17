@@ -245,10 +245,10 @@ function SupperBowl({ standings }: { standings: Standing[] }) {
       </div>
 
       <div className="p-3 sm:p-4">
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
           {[a, b].map((side, i) => (
             <div key={side.name} className={i ? "order-2 text-end" : ""}>
-              <p className="wood-type text-2xl sm:text-4xl uppercase">
+              <p className="wood-type text-xl sm:text-4xl uppercase">
                 {side.name}
               </p>
               <p className="figures text-xl sm:text-2xl tabular-nums">
@@ -268,8 +268,8 @@ function SupperBowl({ standings }: { standings: Standing[] }) {
               </p>
             </div>
           ))}
-          {/* order-1 sits it between the two conferences. */}
-          <div className="order-1 text-center">
+          {/* Its own line above the conferences on phones; between them from sm up. */}
+          <div className="order-first w-full flex items-baseline justify-center gap-2 sm:order-1 sm:w-auto sm:block text-center">
             <p className="figures text-3xl sm:text-5xl tabular-nums">
               {FREE_DINNER_WINS}
             </p>
