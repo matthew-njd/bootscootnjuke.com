@@ -130,7 +130,7 @@ export default function Matchups() {
     <Page
       title="Matchups"
       kicker="Week by Week"
-      subtitle="Every head-to-head of the season, with the final margin."
+      subtitle="Every head-to-head of the season, with scores and full lineups."
     >
       {week !== null && (
         <div className="flex flex-wrap items-start justify-center lg:justify-between gap-6 mb-4">
@@ -149,7 +149,7 @@ export default function Matchups() {
       ) : pairs.length === 0 ? (
         <Notice>No matchups on the board for this week.</Notice>
       ) : (
-        <div className="grid gap-4 max-w-3xl mx-auto">
+        <div className="grid gap-4">
           {pairs.map(([a, b]) => (
             <MatchupCard
               key={a.matchup_id}

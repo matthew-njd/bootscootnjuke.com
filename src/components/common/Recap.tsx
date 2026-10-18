@@ -15,7 +15,7 @@ function RecapCard({
   footer?: ReactNode;
 }) {
   return (
-    <div className="border-2 border-base-content bg-base-200 w-full max-w-4xl">
+    <div className="border-2 border-base-content bg-base-200 w-full">
       <div className="p-6 sm:p-8">
         <h2 className="wood-type text-3xl sm:text-4xl uppercase">{title}</h2>
         <div className="text-lg mt-5 text-left leading-relaxed">{body}</div>

@@ -395,7 +395,7 @@ export default function Home() {
       </section>
 
       {/* Recap */}
-      <section className="mx-auto max-w-4xl px-6 mt-14">
+      <section className="mx-auto max-w-6xl px-6 mt-14">
         <div className="rule-double text-base-content/30 mb-6" />
         <Recap />
       </section>
