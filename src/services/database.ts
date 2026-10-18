@@ -3,6 +3,7 @@ import type { Database } from "../types";
 
 type Owner = Database["public"]["Tables"]["owners"]["Row"];
 type Recap = Database["public"]["Tables"]["recaps"]["Row"];
+type Stats = Database["public"]["Tables"]["stats"]["Row"];
 export type Player = Database["public"]["Tables"]["players"]["Row"];
 
 function unwrap<T>({
@@ -37,6 +38,10 @@ export async function getStatsByOwner(ownerId: string) {
 }
 
 // for leaderboard page
+export async function getStats(): Promise<Stats[]> {
+  return unwrap(await supabase.from("stats").select("*"));
+}
+
 export async function getChampionshipWinners() {
   return unwrap(
     await supabase

@@ -15,6 +15,10 @@ export const CONFERENCES = [
 // 14 weeks of 5 games puts 70 wins up for grabs, so 36 is a guaranteed majority.
 export const FREE_DINNER_WINS = 36;
 
+// Seasons that crowned no last place. 2022 ended without a loser after an
+// incident in the NFL.
+export const NO_LOSER_SEASONS = [2022];
+
 export const SEASON_START = new Date(2026, 8, 9); // Sep 9, 2026
 export const SEASON_END = new Date(2027, 0, 4); // Jan 4, 2027
 

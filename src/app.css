@@ -48,6 +48,13 @@
   --font-condensed:
     "Oswald", "Arial Narrow", ui-sans-serif, system-ui, sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
+
+  /* Podium medals. Bronze sits browner and darker than primary so they never match. */
+  --color-gold: oklch(78% 0.135 86);
+  --color-silver: oklch(80% 0.012 250);
+  --color-bronze: oklch(55% 0.095 58);
+  /* One text color reads on all three medals. */
+  --color-medal-content: oklch(0% 0 0);
 }
 
 body {

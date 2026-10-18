@@ -22,7 +22,7 @@ export interface Database {
           owner: string | null;
           week: number | null;
           player: string | null;
-          ownderId: string | null;
+          ownerId: string | null;
           leaderboardId: string | null;
         };
       };
@@ -83,6 +83,7 @@ export interface HighestWeekTotal {
   team: string;
   points: number;
   owner: string;
+  ownerId: string;
   leaderboardId: string;
 }
 
@@ -93,6 +94,7 @@ export interface HighestPlayerTotal {
   player: string;
   points: number;
   owner: string;
+  ownerId: string;
   leaderboardId: string;
 }
 
@@ -101,6 +103,7 @@ export interface HighestSeasonalTotal {
   team: string;
   points: number;
   owner: string;
+  ownerId: string;
   leaderboardId: string;
 }
 
