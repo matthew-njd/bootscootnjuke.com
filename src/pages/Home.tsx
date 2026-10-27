@@ -129,7 +129,9 @@ function Scoreboard({
 
 // Shared by the header labels and the row values so the columns line up.
 // Widths use ch, so each slot carries the values' font size even around a label.
-const STAT_GROUP = "flex items-baseline gap-2 shrink-0";
+// Same medal colors as the leaderboard podium.
+const MEDALS = ["text-gold", "text-silver", "text-bronze"];
+const STAT_GROUP ="flex items-baseline gap-2 shrink-0";
 const RECORD_SLOT = "figures text-sm tabular-nums min-w-[3.5ch] text-center";
 // Sized to "000.00".
 const POINTS_SLOT = "figures text-xs tabular-nums w-[5.5ch]";
@@ -167,7 +169,9 @@ function Standings({ standings }: { standings: Standing[] }) {
           >
             <span
               className={`figures w-5 text-end text-sm ${
-                i < 3 ? "text-primary" : "text-base-content/45"
+                i < 3
+                  ? `${MEDALS[i]} [-webkit-text-stroke:2px_var(--color-medal-content)] [paint-order:stroke_fill]`
+                  : "text-base-content/45"
               }`}
             >
               {i + 1}
