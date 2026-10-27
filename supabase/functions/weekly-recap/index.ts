@@ -5,6 +5,7 @@ import {
   Type,
 } from "npm:@google/genai@1.35.0";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { CONFERENCES, FREE_DINNER_WINS } from "../_shared/conferences.ts";
 
 // ---------------------------------------------------------------------------
 // Settings
@@ -21,6 +22,7 @@ const REQUEST_TIMEOUT_MS = 35_000; // max wait for a single Gemini call
 const TOTAL_BUDGET_MS = 120_000; // stay safely under Supabase's 150s limit
 
 const MAX_STORYLINES = 8;
+const CONFERENCE_NAMES = CONFERENCES.map((c) => c.name);
 const MAX_TRANSACTIONS = 25;
 
 // Which player positions can fill each Sleeper lineup slot.
@@ -131,6 +133,7 @@ type SeasonLine = {
 type PreviousRecap = {
   week: number;
   body: string;
+  conference_summary: string | null;
   storylines: string[] | null;
 };
 
@@ -275,7 +278,7 @@ async function getPreviousRecap(
 ): Promise<PreviousRecap | null> {
   const { data, error } = await supabase
     .from("recaps")
-    .select("week, body, storylines")
+    .select("week, body, conference_summary, storylines")
     .eq("year", year)
     .lt("week", week)
     .order("week", { ascending: false })
@@ -600,6 +603,102 @@ async function buildWeekData(league: SleeperLeague, week: number) {
     };
   });
 
+  // --- Conference race ----------------------------------------------------
+  const conferenceOf = new Map(
+    CONFERENCES.flatMap((c) =>
+      c.rosterIds.map((rid) => [rid, c.name] as const),
+    ),
+  );
+  const tally = (gs: Game[]) =>
+    fmtRecord(
+      gs.filter((g) => g.result === "W").length,
+      gs.filter((g) => g.result === "L").length,
+      gs.filter((g) => g.result === "T").length,
+    );
+
+  const winsIn = (gs: Game[]) => gs.filter((g) => g.result === "W").length;
+
+  const race = CONFERENCES.map((c) => {
+    const own = games.filter((g) => c.rosterIds.includes(g.rosterId));
+    const cross = (gs: Game[]) =>
+      gs.filter((g) => conferenceOf.get(g.opponentId) !== c.name);
+    const thisWeek = own.filter((g) => g.week === week);
+    return {
+      conference: c.name,
+      wins: winsIn(own),
+      winsBeforeThisWeek: winsIn(own) - winsIn(thisWeek),
+      pointsFor: round2(own.reduce((s, g) => s + g.points, 0)),
+      crossConferenceRecord: tally(cross(own)),
+      crossConferenceRecordThisWeek: tally(cross(thisWeek)),
+      owners: c.rosterIds.map((rid) => ({
+        owner: ownerOf(rid),
+        record: season.get(rid)?.record,
+        crossConferenceRecord: tally(
+          cross(own.filter((g) => g.rosterId === rid)),
+        ),
+      })),
+    };
+  });
+  const [ca, cb] = race;
+  // Fewer wins pays; combined points break a tie. Matches the Home page.
+  const payer =
+    ca.wins < cb.wins || (ca.wins === cb.wins && ca.pointsFor < cb.pointsFor)
+      ? ca
+      : cb;
+  const other = payer === ca ? cb : ca;
+
+  // Spelled out as sentences so the model reports the race instead of
+  // working it out, which lite models tend to get backwards.
+  const standing = (a: number, b: number, verb: string) =>
+    a === b
+      ? `tied at ${a} wins each`
+      : a > b
+        ? `${ca.conference} ${verb} ${a}-${b}`
+        : `${cb.conference} ${verb} ${b}-${a}`;
+  const swing =
+    ca.wins - cb.wins - (ca.winsBeforeThisWeek - cb.winsBeforeThisWeek);
+
+  const facts = [
+    ca.wins === cb.wins
+      ? `The ${ca.conference} and ${cb.conference} are tied at ${ca.wins} wins each. The ${payer.conference} have fewer combined points, so on the tiebreaker the ${payer.conference} are currently buying the food.`
+      : `The ${other.conference} lead the ${payer.conference} ${other.wins}-${payer.wins} in combined wins, a lead of ${other.wins - payer.wins}. The ${payer.conference} are trailing, so the ${payer.conference} are currently buying the food.`,
+    `Before this week: ${standing(ca.winsBeforeThisWeek, cb.winsBeforeThisWeek, "led")}. After this week: ${standing(ca.wins, cb.wins, "lead")}.`,
+    swing === 0
+      ? "The gap between the conferences did not change this week."
+      : `This week the ${swing > 0 ? ca.conference : cb.conference} gained ${Math.abs(swing)} ${Math.abs(swing) === 1 ? "win" : "wins"} on the ${swing > 0 ? cb.conference : ca.conference}.`,
+    ...race.map((c) =>
+      c.wins >= FREE_DINNER_WINS
+        ? `The ${c.conference} have clinched a free dinner.`
+        : `The ${c.conference} need ${FREE_DINNER_WINS - c.wins} more wins to clinch a free dinner.`,
+    ),
+  ];
+
+  const crossGames = pairs
+    .filter(
+      ([a, b]) =>
+        conferenceOf.get(a.roster_id) !== conferenceOf.get(b.roster_id),
+    )
+    .map((pair) => {
+      const [win, lose] =
+        (pair[0].points ?? 0) >= (pair[1].points ?? 0)
+          ? pair
+          : [pair[1], pair[0]];
+      const label = (m: SleeperMatchup) =>
+        `${ownerOf(m.roster_id)} (${conferenceOf.get(m.roster_id)})`;
+      const margin = round2((win.points ?? 0) - (lose.points ?? 0));
+      return margin === 0
+        ? `${label(win)} and ${label(lose)} tied.`
+        : `${label(win)} beat ${label(lose)} by ${margin}.`;
+    });
+
+  const conferences = {
+    facts,
+    crossConferenceGamesThisWeek: crossGames.length
+      ? crossGames
+      : ["There were no cross-conference games this week."],
+    conferences: race,
+  };
+
   // --- League-wide highlights ---------------------------------------------
   const teamsThisWeek = pairs.flat();
   const byPoints = [...teamsThisWeek].sort(
@@ -718,7 +817,7 @@ async function buildWeekData(league: SleeperLeague, week: number) {
       };
     });
 
-  return { matchups, leagueWeek, transactions, standings };
+  return { matchups, leagueWeek, transactions, standings, conferences };
 }
 
 // ---------------------------------------------------------------------------
@@ -744,6 +843,22 @@ Format:
 - After the matchups, a line starting "Biggest Winner: " naming the week's highest scorer, with one sentence of credit that still needles them. Do not repeat numbers already used above; this line is for the joke, not the stats.
 - Then a final line starting "Biggest Loser: " naming the week's lowest scorer, with one sentence of abuse. Same rule: no repeated numbers.
 - Plain text only. No markdown, headers or bullet points. Separate paragraphs with a blank line.
+
+Conferences stay out of the recap:
+- The recap is about matchups only. Never mention the conferences, the conference race or the Supper Bowl anywhere in the recap field.
+
+Conference summary:
+The league is split into two conferences, the ${CONFERENCE_NAMES.join(" and the ")}. Their race is called the Supper Bowl. Rules:
+- The conference with MORE combined wins at the end of the season eats free. The conference with FEWER combined wins buys the food at next year's draft. The trailing conference is the one buying. Never say the leading conference is buying.
+- Each week both conferences play the same number of games among themselves, and each of those games hands that conference a guaranteed win, so they cancel out. Only cross-conference games change the gap. Talk only about cross-conference games and owners' cross-conference records when explaining why the gap moved.
+
+Write the conferenceSummary field:
+- Exactly 2 or 3 sentences, one paragraph, plain text.
+- Sentence 1: who leads, and who is buying the food. Take this from the "facts" list word for word in meaning; do not work it out yourself.
+- Sentence 2: how the gap moved this week, taken from the "facts" list, and the cross-conference result or owner that caused it.
+- Optional sentence 3: one joke about an owner whose cross-conference record is hurting or carrying their conference.
+- The summary sits under a win tracker that already shows the totals, so use at most two numbers.
+- Same voice and truth rules as the recap. Do not reuse any joke from the recap.
 
 Storylines:
 Also return the running storylines for next week's writer, at most ${MAX_STORYLINES}. Each is one short sentence of fact about something ongoing: a streak, a rivalry, a repeated mistake, a team that keeps getting robbed, a pickup that keeps paying off. Keep storylines that are still alive, update ones this week changed, drop ones that are resolved or stale, and add new ones this week started. Write them as facts, not jokes, so next week's writer can find a fresh angle. Storylines are about results only: never mention family relationships in them.`;
@@ -777,14 +892,18 @@ const RECAP_SCHEMA = {
       description:
         "The full recap in plain text, paragraphs separated by blank lines.",
     },
+    conferenceSummary: {
+      type: Type.STRING,
+      description: `2-3 plain-text sentences on the ${CONFERENCE_NAMES.join(" vs ")} race, based on the conference facts. The trailing conference is the one buying the food. Never mention conferences in the recap field.`,
+    },
     storylines: {
       type: Type.ARRAY,
       items: { type: Type.STRING },
       description: `Running storylines for next week, at most ${MAX_STORYLINES}.`,
     },
   },
-  required: ["recap", "storylines"],
-  propertyOrdering: ["recap", "storylines"],
+  required: ["recap", "conferenceSummary", "storylines"],
+  propertyOrdering: ["recap", "conferenceSummary", "storylines"],
 };
 
 const SEED_SCHEMA = {
@@ -829,6 +948,7 @@ function buildRecapPrompt(
       data.transactions.length ? JSON.stringify(data.transactions) : "none"
     }`,
     `Standings after week ${week}:\n${JSON.stringify(data.standings)}`,
+    `Conference race after week ${week}:\n${JSON.stringify(data.conferences)}`,
   ];
 
   if (previous?.storylines?.length) {
@@ -851,6 +971,12 @@ function buildRecapPrompt(
       )
         .map((o) => `- ${o}`)
         .join("\n")}`,
+    );
+  }
+
+  if (previous?.conference_summary) {
+    sections.push(
+      `Last week's conference summary. Do not reuse its opening, structure or joke:\n${previous.conference_summary}`,
     );
   }
 
@@ -1013,10 +1139,14 @@ Deno.serve(async (req) => {
     const blockReason = response.promptFeedback?.blockReason;
     if (blockReason) throw new Error(`Prompt blocked: ${blockReason}`);
 
-    const output = parseJson<{ recap?: string; storylines?: string[] }>(
-      response.text,
-    );
+    const output = parseJson<{
+      recap?: string;
+      conferenceSummary?: string;
+      storylines?: string[];
+    }>(response.text);
     const body = output.recap?.trim();
+    // Optional: a missing summary hides the block instead of failing the recap.
+    const conference_summary = output.conferenceSummary?.trim() || null;
     if (!body) {
       const finish = response.candidates?.[0]?.finishReason;
       throw new Error(`Model returned no recap (finishReason: ${finish})`);
@@ -1033,6 +1163,7 @@ Deno.serve(async (req) => {
         year,
         week,
         body,
+        conference_summary,
         storylines,
         model: usedModel,
       });
@@ -1041,13 +1172,20 @@ Deno.serve(async (req) => {
     const { error } = await supabase
       .from("recaps")
       .upsert(
-        { year, week, body, storylines, model: usedModel },
+        { year, week, body, conference_summary, storylines, model: usedModel },
         { onConflict: "year,week" },
       );
     if (error) throw error;
 
     console.log(`Wrote recap for ${year} week ${week} using ${usedModel}`);
-    return Response.json({ year, week, body, storylines, model: usedModel });
+    return Response.json({
+      year,
+      week,
+      body,
+      conference_summary,
+      storylines,
+      model: usedModel,
+    });
   } catch (err) {
     console.error("weekly-recap failed:", err);
     return Response.json({ error: String(err) }, { status: 500 });

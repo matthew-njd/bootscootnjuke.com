@@ -9,6 +9,7 @@ import {
 } from "../services/sleeper";
 import { groupByMatchup } from "../lib/records";
 import { useAsync } from "../lib/useAsync";
+import { getLatestRecap } from "../services/database";
 import Recap from "../components/common/Recap";
 import defaultAvatar from "../assets/images/default_avatar.png";
 import {
@@ -131,7 +132,7 @@ function Scoreboard({
 // Widths use ch, so each slot carries the values' font size even around a label.
 // Same medal colors as the leaderboard podium.
 const MEDALS = ["text-gold", "text-silver", "text-bronze"];
-const STAT_GROUP ="flex items-baseline gap-2 shrink-0";
+const STAT_GROUP = "flex items-baseline gap-2 shrink-0";
 const RECORD_SLOT = "figures text-sm tabular-nums min-w-[3.5ch] text-center";
 // Sized to "000.00".
 const POINTS_SLOT = "figures text-xs tabular-nums w-[5.5ch]";
@@ -214,10 +215,12 @@ const record = (t: { wins: number; losses: number; ties: number }) =>
 const SIDE_COLORS = ["bg-primary", "bg-secondary"];
 
 function SupperBowl({ standings }: { standings: Standing[] }) {
+  // Last season's recap shouldn't caption this season's race.
+  const { data: recap } = useAsync(getLatestRecap, []);
+  const summary = recap?.year === SEASON ? recap.conference_summary : null;
+
   const [a, b] = CONFERENCES.map((conf) => {
-    const teams = standings.filter((t) =>
-      conf.rosterIds.includes(t.roster_id),
-    );
+    const teams = standings.filter((t) => conf.rosterIds.includes(t.roster_id));
     // Losses would only mirror the other side's wins, so they aren't summed.
     const sum = (key: "wins" | "points") =>
       teams.reduce((n, t) => n + t[key], 0);
@@ -312,6 +315,16 @@ function SupperBowl({ standings }: { standings: Standing[] }) {
             </div>
           ))}
         </div>
+
+        {/* Written with the recap, so it lags the live numbers above mid-week. */}
+        {summary && (
+          <div className="mt-4">
+            <p className="label-caps text-[0.6rem] text-base-content/70">
+              After week {recap!.week}
+            </p>
+            <p className="mt-1 text-base leading-relaxed">{summary}</p>
+          </div>
+        )}
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           {[a, b].map((side, i) => (

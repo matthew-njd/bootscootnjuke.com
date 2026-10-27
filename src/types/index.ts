@@ -43,6 +43,7 @@ export interface Database {
           year: number;
           week: number;
           body: string;
+          conference_summary: string | null;
           created_at: string;
         };
       };
