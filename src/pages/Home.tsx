@@ -83,7 +83,7 @@ function Scoreboard({
   week,
   status,
 }: {
-  pairs: Pair[];
+  pairs?: Pair[];
   week: number;
   status: WeekStatus;
 }) {
@@ -103,7 +103,11 @@ function Scoreboard({
         </span>
       </div>
 
-      {pairs.length === 0 ? (
+      {!pairs ? (
+        <p className="p-6 text-center text-sm text-neutral-content/60">
+          Loading scores&hellip;
+        </p>
+      ) : pairs.length === 0 ? (
         <p className="p-6 text-center text-sm text-neutral-content/60">
           No games on the board yet.
         </p>
@@ -354,22 +358,23 @@ function SupperBowl({ standings }: { standings: Standing[] }) {
   );
 }
 
-async function loadHome() {
-  const [week, standings] = await Promise.all([getNflWeek(), getStandings()]);
+// Kept apart from standings so the rankings don't wait on this chain.
+async function loadScoreboard() {
+  const week = await getNflWeek();
   // Status decides whether projections use live game data.
   const status = await getWeekStatus(week, week);
   const matchups = await getMappedMatchups(week, status === "live");
 
-  return { week, standings, pairs: groupByMatchup(matchups), status };
+  return { week, pairs: groupByMatchup(matchups), status };
 }
 
 export default function Home() {
   const phase = seasonPhase();
-  const { data } = useAsync(loadHome, []);
+  const { data } = useAsync(loadScoreboard, []);
+  const { data: standingsData } = useAsync(getStandings, []);
 
   const week = data?.week ?? null;
-  const standings = data?.standings ?? [];
-  const pairs = data?.pairs ?? [];
+  const standings = standingsData ?? [];
 
   return (
     <div>
@@ -399,7 +404,7 @@ export default function Home() {
       {/* Scoreboard hero */}
       <section className="mx-auto max-w-6xl px-6 -mt-8 relative z-10 grid gap-6 lg:grid-cols-[1.35fr_1fr]">
         <Scoreboard
-          pairs={pairs}
+          pairs={data?.pairs}
           week={week ?? 1}
           status={data?.status ?? "upcoming"}
         />
