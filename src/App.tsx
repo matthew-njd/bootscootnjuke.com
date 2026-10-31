@@ -7,6 +7,7 @@ import Matchups from "./pages/Matchups";
 import Leaderboards from "./pages/Leaderboards";
 import LeaderboardDetails from "./pages/LeaderboardDetails";
 import Drafts from "./pages/Drafts";
+import Parlay from "./pages/Parlay";
 import "./app.css";
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
             element={<LeaderboardDetails />}
           />
           <Route path="/drafts" element={<Drafts />} />
+          <Route path="/parlay" element={<Parlay />} />
         </Routes>
       </Layout>
     </BrowserRouter>

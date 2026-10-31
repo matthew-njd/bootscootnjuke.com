@@ -68,6 +68,23 @@ export interface Database {
           team: string | null;
         };
       };
+      parlay_legs: {
+        Row: {
+          id: number;
+          year: number;
+          week: number;
+          ownerId: string;
+          bet: string;
+          hit: boolean | null;
+        };
+      };
+      parlays: {
+        Row: {
+          year: number;
+          week: number;
+          payout: number | null;
+        };
+      };
     };
   };
 }

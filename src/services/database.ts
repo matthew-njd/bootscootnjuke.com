@@ -5,6 +5,8 @@ type Owner = Database["public"]["Tables"]["owners"]["Row"];
 type Recap = Database["public"]["Tables"]["recaps"]["Row"];
 type Stats = Database["public"]["Tables"]["stats"]["Row"];
 export type Player = Database["public"]["Tables"]["players"]["Row"];
+export type ParlayLeg = Database["public"]["Tables"]["parlay_legs"]["Row"];
+type Parlay = Database["public"]["Tables"]["parlays"]["Row"];
 
 function unwrap<T>({
   data,
@@ -96,6 +98,27 @@ export async function getPlayers(ids: string[]): Promise<Map<string, Player>> {
       .in("id", ids),
   );
   return new Map((rows ?? []).map((p) => [p.id, p]));
+}
+
+// for parlay page
+export async function getParlayLegs(): Promise<ParlayLeg[]> {
+  return unwrap(
+    await supabase
+      .from("parlay_legs")
+      .select("*")
+      .order("year", { ascending: false })
+      .order("week", { ascending: false }),
+  );
+}
+
+export async function getParlays(): Promise<Parlay[]> {
+  return unwrap(
+    await supabase
+      .from("parlays")
+      .select("*")
+      .order("year", { ascending: false })
+      .order("week", { ascending: false }),
+  );
 }
 
 // for drafts page

@@ -7,6 +7,7 @@ const LINKS = [
   { to: "/owners", label: "Owners" },
   { to: "/leaderboards", label: "Leaderboards", short: "Boards" },
   { to: "/matchups", label: "Matchups" },
+  { to: "/parlay", label: "Parlay" },
   { to: "/drafts", label: "Drafts" },
 ];
 
@@ -60,7 +61,7 @@ export default function Nav() {
                     to === "/" ? () => window.scrollTo({ top: 0 }) : undefined
                   }
                   aria-current={active ? "page" : undefined}
-                  className={`label-caps block px-2 sm:px-7 py-3 text-center whitespace-nowrap text-[0.7rem] sm:text-sm border-x border-base-100/15 transition-colors ${
+                  className={`label-caps block px-1 sm:px-7 py-3 text-center whitespace-nowrap text-[0.7rem] sm:text-sm border-x border-base-100/15 transition-colors ${
                     active
                       ? "bg-primary text-primary-content"
                       : "hover:bg-base-100/15"

@@ -11,6 +11,8 @@ import { groupByMatchup } from "../lib/records";
 import { useAsync } from "../lib/useAsync";
 import { getLatestRecap } from "../services/database";
 import Recap from "../components/common/Recap";
+import ParlayCard from "../components/common/ParlayCard";
+import { loadParlay } from "../lib/parlay";
 import defaultAvatar from "../assets/images/default_avatar.png";
 import {
   CONFERENCES,
@@ -372,6 +374,9 @@ export default function Home() {
   const phase = seasonPhase();
   const { data } = useAsync(loadScoreboard, []);
   const { data: standingsData } = useAsync(getStandings, []);
+  const { data: parlay } = useAsync(loadParlay, []);
+  // Last season's final slip shouldn't headline this season.
+  const slip = parlay?.weeks[0]?.year === SEASON ? parlay.weeks[0] : null;
 
   const week = data?.week ?? null;
   const standings = standingsData ?? [];
@@ -415,6 +420,13 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-6 mt-6">
         <SupperBowl standings={standings} />
       </section>
+
+      {/* This week's parlay */}
+      {slip && (
+        <section className="mx-auto max-w-6xl px-6 mt-6">
+          <ParlayCard {...slip} names={parlay!.names} link wide hideYear />
+        </section>
+      )}
 
       {/* Recap */}
       <section className="mx-auto max-w-6xl px-6 mt-14">
