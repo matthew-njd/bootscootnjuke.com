@@ -34,6 +34,9 @@ export default function Footer() {
           <Link to="/matchups" className="hover:text-primary">
             Matchups
           </Link>
+          <Link to="/parlay" className="hover:text-primary">
+            Parlay
+          </Link>
           <Link to="/drafts" className="hover:text-primary">
             Drafts
           </Link>
