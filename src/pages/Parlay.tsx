@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useAsync } from "../lib/useAsync";
 import { loadParlay, type ParlayWeek } from "../lib/parlay";
 import Page, { Notice, LoadFailed } from "../components/layout/Page";
@@ -27,7 +27,7 @@ const COLUMNS: Column<OwnerRecord>[] = [
   },
 ];
 
-// The all-time longest run of hits, and the longest run of misses still going.
+// The all-time longest run of hits, plus the longest runs of hits and misses still going.
 function streaks(weeks: ParlayWeek[], names: Map<string, string>) {
   const results = new Map<string, boolean[]>();
   // Weeks arrive newest first; streaks are counted oldest first.
@@ -49,10 +49,9 @@ function streaks(weeks: ParlayWeek[], names: Map<string, string>) {
     }
     return most;
   };
-  const currentMisses = (hits: boolean[]) => {
-    const lastHit = hits.lastIndexOf(true);
-    return hits.length - 1 - lastHit;
-  };
+  // The run still going at the end of the list, of hits or of misses.
+  const current = (want: boolean) => (hits: boolean[]) =>
+    hits.length - 1 - hits.lastIndexOf(!want);
 
   // Ties share the tile rather than one owner getting it by list order.
   const leader = (score: (hits: boolean[]) => number) => {
@@ -61,24 +60,44 @@ function streaks(weeks: ParlayWeek[], names: Map<string, string>) {
     const who = scored
       .filter((s) => s.n === top)
       .map((s) => names.get(s.id) ?? s.id);
-    return { n: top, who: top ? who.join(" & ") : "Nobody" };
+    return { n: top, who: top ? who : [] };
   };
 
-  return { heater: leader(longestHits), cold: leader(currentMisses) };
+  return {
+    heater: leader(longestHits),
+    active: leader(current(true)),
+    cold: leader(current(false)),
+  };
 }
 
-// A stat with the owner it belongs to underneath, like the Matchups tiles.
-const tile = (label: string, value: number, caption: string) => ({
+const CAPTION = "label-caps text-[0.65rem] text-base-content/45";
+
+// A stat with a short caption underneath, like the Matchups tiles.
+const tile = (label: string, value: ReactNode, caption: ReactNode) => ({
   label,
   value: (
     <>
       {value}
-      <span className="block label-caps text-[0.65rem] text-base-content/45 truncate max-w-40">
-        {caption}
-      </span>
+      {/* No truncate: its overflow clip would cut off the tooltip. */}
+      <span className={`block ${CAPTION}`}>{caption}</span>
     </>
   ),
 });
+
+// The owners a stat belongs to. Big ties collapse to a count, with the
+// names in a tooltip (tap works too).
+const ownersCaption = (who: string[]) =>
+  who.length > 2 ? (
+    <span
+      tabIndex={0}
+      data-tip={who.join(", ")}
+      className="tooltip tooltip-bottom before:text-[0.65rem]! before:font-medium! cursor-help underline decoration-dotted"
+    >
+      {who.length} tied
+    </span>
+  ) : (
+    who.join(" & ") || "Nobody"
+  );
 
 export default function Parlay() {
   const [year, setYear] = useState<number | null>(null);
@@ -120,16 +139,19 @@ export default function Parlay() {
   );
 
   // Some weeks were short a leg, so the best week keeps its own leg count.
-  const best = weeks
-    .map((w) => ({
-      hits: w.legs.filter((l) => l.hit).length,
-      legs: w.legs.length,
-    }))
-    .sort((a, b) => b.hits - a.hits)[0];
-  const cashed = weeks.filter(
-    (w) => w.legs.length >= 10 && w.legs.every((l) => l.hit),
-  ).length;
-  const { heater, cold } = streaks(weeks, names);
+  const scored = weeks.map((w) => ({
+    ...w,
+    hits: w.legs.filter((l) => l.hit).length,
+  }));
+  const top = Math.max(...scored.map((w) => w.hits));
+  // Weeks are newest first, so a tie shows the most recent best week.
+  const bestWeeks = scored.filter((w) => w.hits === top);
+  const best = bestWeeks[0];
+
+  // The latest season on its own, to compare against the all-time rate.
+  const thisSeason = settled.filter((l) => l.year === years[0]);
+  const thisSeasonHits = thisSeason.filter((l) => l.hit).length;
+  const { heater, active, cold } = streaks(weeks, names);
 
   return (
     <Page
@@ -141,27 +163,32 @@ export default function Parlay() {
         <Notice>No slips on the books yet.</Notice>
       ) : (
         <>
-          <div className="flex flex-wrap items-start justify-center lg:justify-between gap-6 mb-4">
-            <StatCards
-              className="justify-center"
-              stats={[
-                tile("Longest heater", heater.n, heater.who),
-                tile("Ice cold", cold.n, cold.who),
-              ]}
-            />
-            <StatCards
-              className="grow justify-center lg:justify-end"
-              stats={[
-                { label: "Weeks", value: weeks.length },
-                { label: "Slips cashed", value: cashed },
-                {
-                  label: "Legs hit",
-                  value: `${Math.round(pct(hits, settled.length) * 100)}%`,
-                },
-                { label: "Best week", value: `${best.hits}/${best.legs}` },
-              ]}
-            />
-          </div>
+          <StatCards
+            className="mb-4 justify-between"
+            stats={[
+              tile("Weeks", weeks.length, `Since ${years.at(-1)}`),
+              tile(
+                `${years[0]} hit %`,
+                `${Math.round(pct(thisSeasonHits, thisSeason.length) * 100)}%`,
+                `${thisSeasonHits} of ${thisSeason.length}`,
+              ),
+              tile(
+                "Legs hit",
+                `${Math.round(pct(hits, settled.length) * 100)}%`,
+                `${hits} of ${settled.length}`,
+              ),
+              tile(
+                "Best week",
+                `${best.hits}/${best.legs.length}`,
+                bestWeeks.length > 1
+                  ? `${bestWeeks.length} times`
+                  : `Wk ${best.week}, ${best.year}`,
+              ),
+              tile("Longest heater", heater.n, ownersCaption(heater.who)),
+              tile("Active heater", active.n, ownersCaption(active.who)),
+              tile("Ice cold", cold.n, ownersCaption(cold.who)),
+            ]}
+          />
 
           <Table data={owners} columns={COLUMNS} />
 

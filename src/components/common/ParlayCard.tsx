@@ -26,7 +26,7 @@ const mark = (hit: boolean | null) =>
 function status(legs: ParlayLeg[]) {
   if (legs.some((l) => l.hit === false)) return "Busted";
   if (legs.length >= 10 && legs.every((l) => l.hit)) return "Cashed";
-  return "Live";
+  return "In progress";
 }
 
 export default function ParlayCard({
@@ -57,7 +57,11 @@ export default function ParlayCard({
         <h2 className="label-caps text-xs sm:text-sm truncate min-w-0">
           {!hideYear && <>{year} &middot; </>}Week {week} Parlay
         </h2>
+        {/* Count first, then the state, like the Around the League header. */}
         <span className="flex items-baseline gap-2 shrink-0">
+          <span className="figures text-sm tabular-nums">
+            {hits}/{legs.length}
+          </span>
           <span
             className={`label-caps text-[0.6rem] ${
               // Gold on gold would vanish, so a cashed slip gets a dark badge.
@@ -68,9 +72,6 @@ export default function ParlayCard({
           >
             {state}
             {payout != null && ` · $${payout.toFixed(2)}`}
-          </span>
-          <span className="figures text-sm tabular-nums">
-            {hits}/{legs.length}
           </span>
         </span>
       </div>
