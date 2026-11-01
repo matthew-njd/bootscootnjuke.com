@@ -18,7 +18,6 @@ import {
   CONFERENCES,
   FREE_DINNER_WINS,
   SEASON,
-  SEASON_NUMBER,
   seasonHeadline,
   seasonPhase,
   type WeekStatus,
@@ -400,8 +399,7 @@ export default function Home() {
             Fantasy Football League
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-secondary-content/85">
-            {SEASON_NUMBER} seasons in. The trophy changes hands. The receipts
-            don't.
+            Nobody has ever lost fair and square. Just ask them.
           </p>
         </div>
       </section>
