@@ -166,9 +166,10 @@ export default function Parlay() {
           <Table data={owners} columns={COLUMNS} />
 
           <section className="mt-14">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <h2 className="wood-type text-3xl sm:text-5xl uppercase">
+            {/* One row at every width; the subtitle wraps instead of the picker. */}
+            <div className="flex items-end justify-between gap-4">
+              <div className="min-w-0">
+                <h2 className="wood-type text-3xl sm:text-5xl uppercase text-nowrap!">
                   The Slips
                 </h2>
                 <p className="mt-3 max-w-2xl text-base-content/70">

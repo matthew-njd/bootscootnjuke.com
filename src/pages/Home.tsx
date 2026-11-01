@@ -416,17 +416,17 @@ export default function Home() {
         <Standings standings={standings} />
       </section>
 
-      {/* Conference race */}
-      <section className="mx-auto max-w-6xl px-6 mt-6">
-        <SupperBowl standings={standings} />
-      </section>
-
-      {/* This week's parlay */}
+      {/* This week's parlay settles game by game, so it sits with the live scores. */}
       {slip && (
         <section className="mx-auto max-w-6xl px-6 mt-6">
           <ParlayCard {...slip} names={parlay!.names} link wide hideYear />
         </section>
       )}
+
+      {/* Conference race */}
+      <section className="mx-auto max-w-6xl px-6 mt-6">
+        <SupperBowl standings={standings} />
+      </section>
 
       {/* Recap */}
       <section className="mx-auto max-w-6xl px-6 mt-14">
