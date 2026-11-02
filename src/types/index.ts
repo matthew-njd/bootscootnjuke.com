@@ -76,6 +76,7 @@ export interface Database {
           ownerId: string;
           bet: string;
           hit: boolean | null;
+          hit_reason: string | null;
         };
       };
       parlays: {

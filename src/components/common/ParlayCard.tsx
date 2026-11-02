@@ -95,6 +95,7 @@ export default function ParlayCard({
             return (
               <li
                 key={leg.id}
+                title={leg.hit_reason ?? undefined}
                 className={`flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 ${
                   leg.hit === false ? "opacity-55" : ""
                 }`}
