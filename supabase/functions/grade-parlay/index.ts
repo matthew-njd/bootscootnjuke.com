@@ -42,7 +42,10 @@ type Graded = {
 };
 
 const espn = async <T>(path: string): Promise<T> => {
-  const res = await fetch(`${ESPN}${path}`);
+  // ESPN returns 403 to Deno's default User-Agent ("Deno/x.y").
+  const res = await fetch(`${ESPN}${path}`, {
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; bootscootnjuke-grader/1.0)" },
+  });
   if (!res.ok) throw new Error(`ESPN ${path} returned ${res.status}`);
   return (await res.json()) as T;
 };
