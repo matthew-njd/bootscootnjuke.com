@@ -128,6 +128,7 @@ For each leg:
 - Player over or under ("Lamar O21.5 rush yds", "Gesicki O3.5 Receptions"): kind "over_under". actual = that player's stat. line = the number.
 - Player N+ ("Bowers 70+ rec yards", "Allen 2+ pass TDs"): kind "at_least". actual = that player's stat. line = N.
 - Anytime TD ("Pitts TD", "Gibbs anytime TD"): kind "at_least". actual = that player's anytime TD. line = 1.
+- "TD" or "N+ TD" without the word "pass" always means anytime TD, even for a QB. "J. Allen 1+ TD": actual = Josh Allen's anytime TD, line = 1. Never use pass TD unless the bet says "pass".
 - "yds" with no type means rec yds for a WR or TE, rush yds for a RB, and pass yds for a QB.
 3. Use kind "unsure", with actual 0 and line 0, when:
 - The bet needs a number and has none ("Dolphins/Jets O").
